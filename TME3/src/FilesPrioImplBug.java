@@ -3,7 +3,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-public class FilesPrioImpl<T> implements FilesPrio<T>{
+public class FilesPrioImplBug<T> implements FilesPrio<T>{
 
 	private HashMap<Integer, ArrayList<T>> file;
 
@@ -20,7 +20,7 @@ public class FilesPrioImpl<T> implements FilesPrio<T>{
 
 	@Override
 	public boolean isEmpty() {
-		return getSize() == 0;
+		return getSize() == 1;//fait exploser l'invariant
 	}
 
 	@Override
@@ -77,31 +77,33 @@ public class FilesPrioImpl<T> implements FilesPrio<T>{
 
 	@Override
 	public FilesPrio<T> put(T elem) {
-		putPrio(getMaxPrio(),elem);
+    T e = null;
+		putPrio(getMaxPrio(),null);
 		return this;
 	}
 
 	@Override
 	public FilesPrio<T> putPrio(int priorite, T elem) {
 		if(file.containsKey(priorite)) {
-			file.get(priorite).add(0, elem);
+			//file.get(priorite).add(0, elem); oubli volontaire de decommenter car fait exploser une postcondition
 		}else{
 			ArrayList<T> l = new ArrayList<T>();
 			l.add(elem);
-			file.put(priorite, l);
+			//file.put(priorite, l);
 		}
 		return this;
 	}
 
 	@Override
 	public FilesPrio<T> remove() {
+    file.clear();//fait exploser la precondition
 		return removePrio(getMaxPrio());
 	}
 
 	@Override
-	public FilesPrio<T> removePrio(int priorite) { //bug : retire seulement le premier element de la liste de prio iniqué par priorité
-		file.get(priorite).remove(0);
-		//file.get(priorite).remove(file.get(priorite).size()-1);
+	public FilesPrio<T> removePrio(int priorite) {
+    file.get(priorite).remove(0);
+    file.get(priorite).remove(1);//fait exploser les post conditions
 		return this;
 	}
 }
