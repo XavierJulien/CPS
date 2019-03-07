@@ -12,18 +12,17 @@ public class LimitedRoadContract extends LimitedRoadDecorator {
 	public void checkInvariant() {
 		// remarque : include et non refine donc on n'hérite
 		// pas des invariants de RoadSectionService, il faut refaire des tests.
-<<<<<<< HEAD
-	
-		// inv: getNbCars() >= 0
+		
+		// inv de RS : getNbCars() >= 0
 		if(!(getNbCars() >= 0))
 			Contractor.defaultContractor().invariantError("RoadSectionService","The number of cars should be positive");
-		
+		// inv : isFull() == (getNbCars() == getLimit())
 		if (isFull() != (getNbCars() == getLimit()))
 			Contractor.defaultContractor().invariantError("LimiteRoadService", "isFull() == (getNbCars() == getLimit())");
-		
+		// inv : getNbCars() > getLimit()
 		if (getNbCars() > getLimit())
 			Contractor.defaultContractor().invariantError("LimitedRoadService", "getNbCars() <= getLimit()");
-		/* A COMPLETER */
+
 	}
 	
 	public void init(int lim) {
@@ -34,9 +33,13 @@ public class LimitedRoadContract extends LimitedRoadDecorator {
 		super.init(lim);
 		// post inv
 		checkInvariant();
-		// post
+		// post : getLimit() == lim
 		if (getLimit() != lim){
 			Contractor.defaultContractor().postconditionError("LimitedRoadServce", "init", "getLimit() == lim");
+		}
+		// post : getNbCars() == 0
+		if (getNbCars() != 0){
+			Contractor.defaultContractor().postconditionError("LimitedRoadServce", "init", "getNbCars() == 0");
 		}
 	}
 	
@@ -49,16 +52,15 @@ public class LimitedRoadContract extends LimitedRoadDecorator {
 		// run 
 		super.enter();
 		//post inv
-		check
-		
-	}
-=======
-				
-		/* A COMPLETER */
+		checkInvariant();
 	}
 	
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-	/* A COMPLETER */
+	public void leave() {
+		// reprend le meme leave ?
+		super.leave();
+	}
+	
+
 	
 	
 }

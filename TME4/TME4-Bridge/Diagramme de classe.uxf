@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
-  <zoom_level>7</zoom_level>
+  <zoom_level>4</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1624</x>
-      <y>819</y>
-=======
-      <x>763</x>
-      <y>868</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>231</w>
-      <h>77</h>
+      <x>684</x>
+      <y>396</y>
+      <w>132</w>
+      <h>44</h>
     </coordinates>
     <panel_attributes>bridge.contracts::BridgeComponentContract
 --
@@ -23,15 +18,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>854</x>
-      <y>462</y>
-=======
-      <x>329</x>
-      <y>595</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>168</w>
-      <h>77</h>
+      <x>340</x>
+      <y>416</y>
+      <w>96</w>
+      <h>44</h>
     </coordinates>
     <panel_attributes>bridge.components::TrafficLight
 --
@@ -42,15 +32,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1946</x>
-      <y>1162</y>
-=======
-      <x>1085</x>
-      <y>1211</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>364</w>
-      <h>84</h>
+      <x>868</x>
+      <y>592</y>
+      <w>208</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>bridge.components::BridgeController
 --
@@ -60,15 +45,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1876</x>
-      <y>812</y>
-=======
-      <x>1015</x>
-      <y>861</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>245</w>
-      <h>84</h>
+      <x>828</x>
+      <y>392</y>
+      <w>140</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>bridge.contracts::BridgeContract
 --
@@ -78,15 +58,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1652</x>
-      <y>567</y>
-=======
-      <x>791</x>
-      <y>616</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>161</w>
-      <h>56</h>
+      <x>700</x>
+      <y>252</y>
+      <w>92</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 bridge.services::BridgeService
@@ -96,15 +71,10 @@ bridge.services::BridgeService
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>2394</x>
-      <y>1183</y>
-=======
-      <x>1533</x>
-      <y>1232</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>210</w>
-      <h>56</h>
+      <x>1124</x>
+      <y>604</y>
+      <w>120</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>bridge.components::BridgeSimulator
 --
@@ -114,15 +84,10 @@ bridge.services::BridgeService
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1911</x>
-      <y>574</y>
-=======
-      <x>1183</x>
-      <y>623</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>252</w>
-      <h>56</h>
+      <x>876</x>
+      <y>256</y>
+      <w>144</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>bridge.decorators::BridgeDecorator
 --
@@ -133,15 +98,10 @@ bridge.services::BridgeService
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>133</x>
-      <y>665</y>
-=======
-      <x>0</x>
-      <y>742</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>287</w>
-      <h>56</h>
+      <x>204</x>
+      <y>496</y>
+      <w>120</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>bridge.contracts::TrafficLightContract
 --
@@ -151,15 +111,10 @@ bridge.services::BridgeService
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1183</x>
-      <y>63</y>
-=======
-      <x>322</x>
-      <y>112</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>371</w>
-      <h>63</h>
+      <x>320</x>
+      <y>36</y>
+      <w>212</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>bridge.contracts::Contractor
 --
@@ -169,15 +124,10 @@ bridge.services::BridgeService
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1414</x>
-      <y>1288</y>
-=======
-      <x>553</x>
-      <y>1337</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>189</w>
-      <h>56</h>
+      <x>564</x>
+      <y>664</y>
+      <w>108</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>bridge.components::CarSensor
 --
@@ -187,14 +137,10 @@ bridge.services::BridgeService
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>273</x>
-      <y>245</y>
-=======
-      <x>812</x>
-      <y>119</y>
-      <w>238</w>
-      <h>49</h>
+      <x>0</x>
+      <y>372</y>
+      <w>136</w>
+      <h>28</h>
     </coordinates>
     <panel_attributes>bridge.decorators::LightDecorator
 --
@@ -204,11 +150,10 @@ bridge.services::BridgeService
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>56</x>
-      <y>462</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>189</w>
-      <h>49</h>
+      <x>188</x>
+      <y>332</y>
+      <w>108</w>
+      <h>28</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 bridge.services::TrafficLightService
@@ -219,15 +164,10 @@ bridge.services::TrafficLightService
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>2163</x>
-      <y>462</y>
-=======
-      <x>1302</x>
-      <y>511</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>217</w>
-      <h>63</h>
+      <x>992</x>
+      <y>192</y>
+      <w>124</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>bridge.decorators::LimitedRoadDecorator
 --
@@ -237,15 +177,10 @@ bridge.services::TrafficLightService
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>315</x>
-      <y>420</y>
-=======
-      <x>7</x>
-      <y>602</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>294</w>
-      <h>70</h>
+      <x>164</x>
+      <y>384</y>
+      <w>136</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>bridge.decorators::TrafficLightDecorator
 --
@@ -255,15 +190,10 @@ bridge.services::TrafficLightService
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1981</x>
-      <y>336</y>
-=======
-      <x>1120</x>
-      <y>385</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>189</w>
-      <h>56</h>
+      <x>864</x>
+      <y>120</y>
+      <w>108</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 bridge.services::RoadSectionService
@@ -274,14 +204,10 @@ bridge.services::RoadSectionService
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1911</x>
-      <y>455</y>
-=======
-      <x>1008</x>
-      <y>0</y>
-      <w>154</w>
-      <h>56</h>
+      <x>128</x>
+      <y>240</y>
+      <w>88</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 bridge.services::LightService
@@ -292,11 +218,10 @@ bridge.services::LightService
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1050</x>
-      <y>504</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>189</w>
-      <h>56</h>
+      <x>864</x>
+      <y>188</y>
+      <w>108</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 bridge.services::LimitedRoadService
@@ -307,14 +232,10 @@ bridge.services::LimitedRoadService
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>2205</x>
-      <y>1036</y>
-=======
-      <x>847</x>
-      <y>252</y>
-      <w>231</w>
-      <h>56</h>
+      <x>20</x>
+      <y>496</y>
+      <w>104</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>bridge.contracts::LightContract
 --
@@ -324,11 +245,10 @@ bridge.services::LimitedRoadService
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1344</x>
-      <y>1085</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>210</w>
-      <h>56</h>
+      <x>1016</x>
+      <y>520</y>
+      <w>120</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 bridge.services::BridgeControllerService
@@ -339,15 +259,10 @@ bridge.services::BridgeControllerService
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>2422</x>
-      <y>497</y>
-=======
-      <x>1561</x>
-      <y>546</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>301</w>
-      <h>56</h>
+      <x>1140</x>
+      <y>196</y>
+      <w>172</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>bridge.contracts::RoadSectionContract
 --
@@ -357,15 +272,10 @@ bridge.services::BridgeControllerService
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>2422</x>
-      <y>1036</y>
-=======
-      <x>1561</x>
-      <y>1085</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>210</w>
-      <h>56</h>
+      <x>1140</x>
+      <y>520</y>
+      <w>120</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 bridge.services::CarSensorServerService
@@ -376,15 +286,10 @@ bridge.services::CarSensorServerService
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1183</x>
-      <y>217</y>
-=======
-      <x>322</x>
-      <y>266</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>175</w>
-      <h>56</h>
+      <x>320</x>
+      <y>124</y>
+      <w>100</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>bridge.services::SensorData
 --
@@ -394,15 +299,10 @@ bridge.services::CarSensorServerService
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1925</x>
-      <y>1036</y>
-=======
-      <x>1064</x>
-      <y>1085</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>266</w>
-      <h>49</h>
+      <x>856</x>
+      <y>520</y>
+      <w>152</w>
+      <h>28</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 bridge.services::RequireBridgeControllerService
@@ -412,15 +312,10 @@ bridge.services::RequireBridgeControllerService
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1505</x>
-      <y>1169</y>
-=======
-      <x>644</x>
-      <y>1218</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>259</w>
-      <h>56</h>
+      <x>616</x>
+      <y>596</y>
+      <w>148</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 bridge.services::RequireCarSensorServerService
@@ -431,15 +326,10 @@ bridge.services::RequireCarSensorServerService
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1295</x>
-      <y>1092</y>
-=======
-      <x>434</x>
-      <y>1141</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>252</w>
-      <h>56</h>
+      <x>496</x>
+      <y>552</y>
+      <w>144</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 bridge.services::RequireCarSensorClientService
@@ -450,15 +340,10 @@ bridge.services::RequireCarSensorClientService
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1330</x>
-      <y>679</y>
-=======
-      <x>469</x>
-      <y>728</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>210</w>
-      <h>56</h>
+      <x>516</x>
+      <y>316</y>
+      <w>120</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 bridge.services::CarSensorClientService
@@ -468,15 +353,10 @@ bridge.services::CarSensorClientService
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1694</x>
-      <y>1036</y>
-=======
-      <x>833</x>
-      <y>1085</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>224</w>
-      <h>56</h>
+      <x>724</x>
+      <y>520</y>
+      <w>128</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 bridge.services::RequireTrafficLightService
@@ -487,15 +367,10 @@ bridge.services::RequireTrafficLightService
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1183</x>
+      <x>320</x>
       <y>0</y>
-=======
-      <x>322</x>
-      <y>49</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>252</w>
-      <h>56</h>
+      <w>144</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 bridge.services::RequireBridgeService
@@ -506,15 +381,10 @@ bridge.services::RequireBridgeService
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>2219</x>
-      <y>630</y>
-=======
-      <x>1274</x>
-      <y>756</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>210</w>
-      <h>56</h>
+      <x>992</x>
+      <y>300</y>
+      <w>120</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>bridge.contracts::LimitedRoadContract
 --
@@ -524,15 +394,10 @@ bridge.services::RequireBridgeService
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1183</x>
-      <y>147</y>
-=======
-      <x>322</x>
-      <y>196</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>189</w>
-      <h>56</h>
+      <x>320</x>
+      <y>84</y>
+      <w>108</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>bridge.contracts::ContractError
 --
@@ -542,15 +407,10 @@ bridge.services::RequireBridgeService
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1183</x>
-      <y>287</y>
-=======
-      <x>322</x>
-      <y>336</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>189</w>
-      <h>49</h>
+      <x>320</x>
+      <y>164</y>
+      <w>108</w>
+      <h>28</h>
     </coordinates>
     <panel_attributes>bridge.main::BridgeSimulatorMain2
 --</panel_attributes>
@@ -559,15 +419,10 @@ bridge.services::RequireBridgeService
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1379</x>
-      <y>287</y>
-=======
-      <x>518</x>
-      <y>336</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>189</w>
-      <h>49</h>
+      <x>432</x>
+      <y>164</y>
+      <w>108</w>
+      <h>28</h>
     </coordinates>
     <panel_attributes>bridge.main::BridgeSimulatorMain1
 --</panel_attributes>
@@ -576,31 +431,21 @@ bridge.services::RequireBridgeService
   <element>
     <id>Relation</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>2226</x>
-      <y>1085</y>
-=======
-      <x>1365</x>
-      <y>1134</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>77</w>
-      <h>91</h>
+      <x>1028</x>
+      <y>548</y>
+      <w>12</w>
+      <h>52</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>90.0;10.0;10.0;110.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1533</x>
-      <y>714</y>
-=======
-      <x>672</x>
-      <y>763</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>56</w>
-      <h>21</h>
+      <x>632</x>
+      <y>336</y>
+      <w>32</w>
+      <h>12</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
     <additional_attributes>10.0;10.0;60.0;10.0</additional_attributes>
@@ -608,15 +453,10 @@ bridge.services::RequireBridgeService
   <element>
     <id>Relation</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1722</x>
-      <y>616</y>
-=======
-      <x>861</x>
-      <y>665</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>21</w>
-      <h>98</h>
+      <x>740</x>
+      <y>280</y>
+      <w>12</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
@@ -624,15 +464,10 @@ bridge.services::RequireBridgeService
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1575</x>
-      <y>700</y>
-=======
-      <x>714</x>
-      <y>749</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>182</w>
-      <h>35</h>
+      <x>656</x>
+      <y>328</y>
+      <w>104</w>
+      <h>20</h>
     </coordinates>
     <panel_attributes>bridge.components::Bridge
 --</panel_attributes>
@@ -641,100 +476,65 @@ bridge.services::RequireBridgeService
   <element>
     <id>Relation</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1813</x>
-      <y>1085</y>
-=======
-      <x>952</x>
-      <y>1134</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>175</w>
-      <h>91</h>
+      <x>792</x>
+      <y>548</y>
+      <w>84</w>
+      <h>68</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;230.0;110.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;150.0;190.0;150.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>434</x>
-      <y>287</y>
-      <w>532</w>
-      <h>189</h>
+      <x>292</x>
+      <y>344</y>
+      <w>112</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;740.0;250.0</additional_attributes>
-=======
-      <x>147</x>
-      <y>504</y>
-      <w>294</w>
-      <h>105</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;400.0;130.0</additional_attributes>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
+    <additional_attributes>10.0;10.0;260.0;10.0;260.0;180.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>2100</x>
-      <y>1078</y>
-=======
-      <x>1239</x>
-      <y>1127</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>28</w>
-      <h>98</h>
+      <x>956</x>
+      <y>544</y>
+      <w>12</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;20.0;120.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>2506</x>
-      <y>1085</y>
-=======
-      <x>1645</x>
-      <y>1134</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>63</w>
-      <h>112</h>
+      <x>1212</x>
+      <y>548</y>
+      <w>12</w>
+      <h>64</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;70.0;140.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>2394</x>
-      <y>1085</y>
-=======
-      <x>1533</x>
-      <y>1134</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>28</w>
-      <h>112</h>
+      <x>1128</x>
+      <y>548</y>
+      <w>12</w>
+      <h>64</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;20.0;140.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1456</x>
-      <y>1141</y>
-=======
-      <x>595</x>
-      <y>1190</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>21</w>
-      <h>161</h>
+      <x>588</x>
+      <y>580</y>
+      <w>12</w>
+      <h>92</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;210.0</additional_attributes>
@@ -742,15 +542,10 @@ bridge.services::RequireBridgeService
   <element>
     <id>Relation</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1561</x>
-      <y>1218</y>
-=======
-      <x>700</x>
-      <y>1267</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>21</w>
-      <h>84</h>
+      <x>648</x>
+      <y>624</y>
+      <w>12</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
@@ -758,15 +553,10 @@ bridge.services::RequireBridgeService
   <element>
     <id>Relation</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1687</x>
-      <y>728</y>
-=======
-      <x>826</x>
-      <y>777</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>21</w>
-      <h>105</h>
+      <x>720</x>
+      <y>344</y>
+      <w>12</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
@@ -774,15 +564,10 @@ bridge.services::RequireBridgeService
   <element>
     <id>Relation</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1785</x>
-      <y>616</y>
-=======
-      <x>924</x>
-      <y>665</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>21</w>
-      <h>217</h>
+      <x>776</x>
+      <y>280</y>
+      <w>12</w>
+      <h>124</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;290.0</additional_attributes>
@@ -790,15 +575,10 @@ bridge.services::RequireBridgeService
   <element>
     <id>Relation</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1505</x>
-      <y>728</y>
-=======
-      <x>644</x>
-      <y>777</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>133</w>
-      <h>126</h>
+      <x>616</x>
+      <y>344</y>
+      <w>76</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;160.0;170.0;160.0</additional_attributes>
@@ -806,15 +586,10 @@ bridge.services::RequireBridgeService
   <element>
     <id>Relation</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1806</x>
-      <y>595</y>
-=======
-      <x>945</x>
-      <y>644</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>98</w>
-      <h>231</h>
+      <x>788</x>
+      <y>268</y>
+      <w>56</w>
+      <h>132</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
     <additional_attributes>10.0;10.0;120.0;10.0;120.0;310.0</additional_attributes>
@@ -822,78 +597,43 @@ bridge.services::RequireBridgeService
   <element>
     <id>Relation</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1981</x>
-      <y>665</y>
-      <w>252</w>
-      <h>161</h>
+      <x>964</x>
+      <y>328</y>
+      <w>76</w>
+      <h>96</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>340.0;10.0;10.0;10.0;10.0;210.0</additional_attributes>
-=======
-      <x>1120</x>
-      <y>791</y>
-      <w>168</w>
-      <h>84</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>220.0;10.0;10.0;10.0;10.0;100.0</additional_attributes>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
+    <additional_attributes>170.0;10.0;170.0;220.0;10.0;220.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1806</x>
-      <y>574</y>
-      <w>119</w>
-      <h>21</h>
+      <x>788</x>
+      <y>256</y>
+      <w>96</w>
+      <h>12</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;150.0;10.0</additional_attributes>
-=======
-      <x>945</x>
-      <y>623</y>
-      <w>252</w>
-      <h>21</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;340.0;10.0</additional_attributes>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
+    <additional_attributes>10.0;10.0;220.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>2086</x>
-      <y>518</y>
-      <w>154</w>
-      <h>70</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>200.0;10.0;10.0;80.0</additional_attributes>
-=======
-      <x>1358</x>
-      <y>567</y>
-      <w>21</w>
-      <h>70</h>
+      <x>1008</x>
+      <y>224</y>
+      <w>12</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>2359</x>
-      <y>385</y>
-=======
-      <x>1498</x>
-      <y>434</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>21</w>
-      <h>91</h>
+      <x>1108</x>
+      <y>148</y>
+      <w>12</w>
+      <h>52</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
@@ -901,262 +641,157 @@ bridge.services::RequireBridgeService
   <element>
     <id>Relation</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>2093</x>
-      <y>483</y>
-=======
-      <x>1232</x>
-      <y>532</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>84</w>
-      <h>21</h>
+      <x>968</x>
+      <y>204</y>
+      <w>32</w>
+      <h>12</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;100.0;10.0</additional_attributes>
+    <additional_attributes>10.0;10.0;60.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>2163</x>
-      <y>364</y>
-=======
-      <x>1302</x>
-      <y>413</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>217</w>
-      <h>21</h>
+      <x>968</x>
+      <y>136</y>
+      <w>148</w>
+      <h>12</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;290.0;10.0</additional_attributes>
+    <additional_attributes>10.0;10.0;350.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>2555</x>
-      <y>385</y>
-=======
-      <x>1694</x>
-      <y>434</y>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-      <w>21</w>
-      <h>126</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;160.0</additional_attributes>
-  </element>
-  <element>
-<<<<<<< HEAD
-    <id>UMLClass</id>
-    <coordinates>
-      <x>2366</x>
-      <y>343</y>
-      <w>308</w>
-      <h>49</h>
-    </coordinates>
-    <panel_attributes>bridge.decorators::RoadSectionDecorator
---
-</panel_attributes>
-    <additional_attributes/>
-=======
-    <id>Relation</id>
-    <coordinates>
-      <x>1029</x>
-      <y>49</y>
-      <w>42</w>
-      <h>84</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>40.0;10.0;10.0;100.0</additional_attributes>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-<<<<<<< HEAD
-      <x>2303</x>
-      <y>518</y>
-      <w>21</w>
-      <h>126</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;160.0</additional_attributes>
-=======
-      <x>868</x>
-      <y>161</y>
-      <w>21</w>
-      <h>105</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-<<<<<<< HEAD
-      <x>406</x>
-      <y>287</y>
-      <w>21</w>
-      <h>147</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;190.0</additional_attributes>
-=======
-      <x>133</x>
-      <y>665</y>
-      <w>21</w>
-      <h>91</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-<<<<<<< HEAD
-      <x>7</x>
-      <y>434</y>
-      <w>238</w>
-      <h>49</h>
-    </coordinates>
-    <panel_attributes>bridge.decorators::LightDecorator
---
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>217</x>
-      <y>133</y>
-      <w>154</w>
+      <x>1216</x>
+      <y>148</y>
+      <w>12</w>
       <h>56</h>
     </coordinates>
-    <panel_attributes>&lt;&lt;interface&gt;&gt;
-bridge.services::LightService
---
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>0</x>
-      <y>539</y>
-      <w>231</w>
-      <h>56</h>
-    </coordinates>
-    <panel_attributes>bridge.contracts::LightContract
-=======
-      <x>1505</x>
-      <y>392</y>
-      <w>308</w>
-      <h>49</h>
-    </coordinates>
-    <panel_attributes>bridge.decorators::RoadSectionDecorator
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
---
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-<<<<<<< HEAD
-      <x>224</x>
-      <y>182</y>
-      <w>28</w>
-      <h>266</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>20.0;10.0;10.0;360.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>21</x>
-      <y>476</y>
-      <w>21</w>
-      <h>77</h>
-    </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>301</x>
-      <y>182</y>
-      <w>21</w>
-      <h>77</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>140</x>
-      <y>588</y>
-      <w>21</w>
-      <h>91</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
-=======
-      <x>1442</x>
-      <y>567</y>
-      <w>21</w>
-      <h>203</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;270.0</additional_attributes>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-<<<<<<< HEAD
-      <x>266</x>
-      <y>287</y>
-      <w>28</w>
-      <h>392</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>20.0;10.0;10.0;540.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>238</x>
-      <y>455</y>
-      <w>91</w>
-      <h>21</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;110.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>2030</x>
-      <y>385</y>
-      <w>21</w>
-      <h>84</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
-=======
-      <x>98</x>
-      <y>504</y>
-      <w>28</w>
+      <x>124</x>
+      <y>268</y>
+      <w>12</w>
       <h>112</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>20.0;10.0;10.0;140.0</additional_attributes>
->>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
+    <additional_attributes>10.0;10.0;10.0;260.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>32</x>
+      <y>396</y>
+      <w>12</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;250.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1108</x>
+      <y>124</y>
+      <w>176</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>bridge.decorators::RoadSectionDecorator
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1088</x>
+      <y>224</y>
+      <w>12</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>216</x>
+      <y>356</y>
+      <w>12</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>204</x>
+      <y>268</y>
+      <w>12</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>120</x>
+      <y>512</y>
+      <w>92</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;210.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>132</x>
+      <y>388</y>
+      <w>40</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;80.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>272</x>
+      <y>356</y>
+      <w>48</w>
+      <h>148</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0;100.0;50.0;100.0;350.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>916</x>
+      <y>148</y>
+      <w>12</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>760</x>
+      <y>196</y>
+      <w>112</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>260.0;10.0;10.0;10.0;10.0;140.0</additional_attributes>
   </element>
 </diagram>
