@@ -12,6 +12,7 @@ public class LimitedRoadContract extends LimitedRoadDecorator {
 	public void checkInvariant() {
 		// remarque : include et non refine donc on n'hérite
 		// pas des invariants de RoadSectionService, il faut refaire des tests.
+<<<<<<< HEAD
 	
 		// inv: getNbCars() >= 0
 		if(!(getNbCars() >= 0))
@@ -51,6 +52,12 @@ public class LimitedRoadContract extends LimitedRoadDecorator {
 		check
 		
 	}
+=======
+				
+		/* A COMPLETER */
+	}
+	
+>>>>>>> fc14157098d62069b3d239fe6d8f50a96a97fbbc
 	/* A COMPLETER */
 	
 	
