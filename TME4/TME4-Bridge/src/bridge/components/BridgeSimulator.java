@@ -60,17 +60,17 @@ public class BridgeSimulator implements
 
 	
 	public void stepRandom() {
-		if(rand.nextBoolean()) {
+		if(rand.nextBoolean() && controller.canEnter() && controller.canEnterOut()) {
 			sensors.get("InIsland").activate();
 		}
 
-		if(rand.nextBoolean()) {
+		if(rand.nextBoolean() && controller.canEnter() && controller.canEnterIn()) {
 			sensors.get("InMainland").activate();
 		}
-		if(rand.nextBoolean()) {
+		if(rand.nextBoolean() && controller.canLeave() && controller.canLeaveIn()) {
 			sensors.get("OutIsland").activate();
 		}
-		if(rand.nextBoolean()) {
+		if(rand.nextBoolean() && controller.canLeave() && controller.canLeaveOut()) {
 			sensors.get("OutMainland").activate();
 		}
 	}

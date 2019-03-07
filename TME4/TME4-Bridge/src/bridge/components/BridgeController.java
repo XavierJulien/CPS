@@ -78,7 +78,19 @@ public class BridgeController implements
 		return bridge.getNbCars() > 0;
 	}
 	
-
+	public boolean canEnterIn() {
+		return mainlandLight.isGreen();
+	}
 	
+	public boolean canEnterOut() {
+		return islandLight.isGreen();
+	}
 	
+	public boolean canLeaveIn() {
+		return bridge.getNbIn() > 0;
+	}
+	
+	public boolean canLeaveOut() {
+		return bridge.getNbOut() > 0;
+	}
 }
