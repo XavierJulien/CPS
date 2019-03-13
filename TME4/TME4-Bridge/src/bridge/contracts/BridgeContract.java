@@ -41,7 +41,7 @@ public class BridgeContract extends LimitedRoadContract implements BridgeService
 	@Override
 	public void init() {
 		// TODO
-		getDelegate().init();
+		super.init();
 		// post inv
 		checkInvariant();
 		// post: getNbIn() == 0
@@ -61,7 +61,7 @@ public class BridgeContract extends LimitedRoadContract implements BridgeService
 		if (lim <= 0)
 			Contractor.defaultContractor().preconditionError("BridgeService", "init", "lim > 0");
 		// run
-		getDelegate().init(lim);
+		super.init(lim);
 		// post inv
 		checkInvariant();
 		// post: getNbIn() == 0
@@ -86,7 +86,7 @@ public class BridgeContract extends LimitedRoadContract implements BridgeService
 		int nbIn_at_pre = getNbIn();
 		int nbOut_at_pre = getNbOut();
 		// appel
-		getDelegate().enterIn();
+		super.enterIn();
 		// post-invariants
 		checkInvariant();
 		// post-conditions
@@ -110,7 +110,7 @@ public class BridgeContract extends LimitedRoadContract implements BridgeService
 		int nbIn_at_pre = getNbIn();
 		int nbOut_at_pre = getNbOut();
 		// appel
-		getDelegate().leaveIn();
+		super.leaveIn();
 		// post-invariants
 		checkInvariant();
 		// post-conditions
@@ -134,7 +134,7 @@ public class BridgeContract extends LimitedRoadContract implements BridgeService
 		int nbIn_at_pre = getNbIn();
 		int nbOut_at_pre = getNbOut();
 		// appel
-		getDelegate().enterOut();
+		super.enterOut();
 		// post-invariants
 		checkInvariant();
 		// post-conditions
@@ -158,7 +158,7 @@ public class BridgeContract extends LimitedRoadContract implements BridgeService
 		int nbIn_at_pre = getNbIn();
 		int nbOut_at_pre = getNbOut();
 		// appel
-		getDelegate().leaveOut();
+		super.leaveOut();
 		// post-invariants
 		checkInvariant();
 		// post-conditions
