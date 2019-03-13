@@ -14,14 +14,15 @@ import lift.services.DoorStatus;
 import lift.services.LiftService;
 import lift.services.LiftStatus;
 import liftimpl1.Lift1;
+import liftimpl2.Lift2;
 
-public class LiftTest1 extends AbstractLiftTest {
+public class LiftTest2 extends AbstractLiftTest {
 
 	LiftService l;
 	CommandsService c;
 	@Override
 	public void beforeTests() {
-		Lift1 lift = new Lift1();
+		Lift2 lift = new Lift2();
 		setLift(new LiftContract(lift));
 		l = getLift();
 		c = getLift().getCommands();
