@@ -2,7 +2,7 @@
 /FilesPrioContract.class
 /FilesPrioDecorator.class
 /FilesPrioImpl.class
-/FilsPrioImplBug.class
+/FilesPrioImplBug.class
 /InvariantError.class
 /PostcondError.class
 /PrecondError.class
