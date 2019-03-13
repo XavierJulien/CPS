@@ -42,29 +42,178 @@ public class LiftTest1 extends AbstractLiftTest {
 		//Conditions Initiales : None
 		//Opération(s)
 		l.init(-2,5);
-		//Oracle : None
+		//Oracle : exception expected
 	}
 	@Test
 	public void preBeginMoveUpPass() {
 		//Conditions Initiales
-		l.init(2, 5);//-> IDLE
-		l.selectLevel(3); // -> STANDBY UP
-		l.closeDoor();
-		l.doorAck();
+		l.init(2, 5);// liftStatus -> IDLE
+		l.selectLevel(3);
+		l.closeDoor(); //door status -> CLOSING
+		l.doorAck(); //door status -> CLOSED
 		//Opération(s)
 		l.beginMoveUp();
 		//Oracle : None
 	}
 
+	@Test(expected = PreconditionError.class)
+	public void preBeginMoveUpFail1() {
+		//Conditions Initiales
+		l.init(2, 5);// liftStatus -> IDLE
+		l.selectLevel(3);
+		l.closeDoor(); //door status -> CLOSING
+		//Opération(s)
+		l.beginMoveUp();
+		//Oracle : exception expected
+	}
+	
+	@Test(expected = PreconditionError.class)
+	public void preBeginMoveUpFail2() {
+		//Conditions Initiales
+		l.init(2, 5);// liftStatus -> IDLE
+		l.closeDoor(); //door status -> CLOSING
+		l.doorAck(); //door status -> CLOSED
+		l.getCommands().addUpCommand(5);
+		//Opération(s)
+		l.beginMoveUp();
+		//Oracle : exception expected
+	}
+
+		
+	@Test
+	public void preStepMoveUpPass() {
+		//Conditions Initiales
+		l.init(2, 5);// liftStatus -> IDLE
+		l.selectLevel(3); 
+		l.closeDoor(); // door status -> CLOSING
+		l.doorAck(); // door status -> CLOSED
+		l.beginMoveUp(); // liftStatus -> MOVING UP 
+		//Opération(s)
+		l.stepMoveUp();
+		//Oracle : None
+	}
+
+	@Test(expected = PreconditionError.class)
+	public void preStepMoveUpFail1() {
+		//Conditions Initiales
+		l.init(2, 5);// liftStatus -> IDLE
+		l.selectLevel(3); 
+		l.closeDoor(); // door status -> CLOSING
+		l.doorAck(); // door status -> CLOSED
+		//Opération(s)
+		l.stepMoveUp();
+		//Oracle : exception expected
+	}
+
+	@Test(expected = PreconditionError.class)
+	public void preStepMoveUpFail2() {
+		//Conditions Initiales
+		l.init(2, 5);// liftStatus -> IDLE
+		l.selectLevel(3); 
+		l.closeDoor(); // door status -> CLOSING
+		//Opération(s)
+		l.stepMoveUp();
+		//Oracle : exception expected
+	}
+	
+	@Test
+	public void preEndMoveUpPass() {
+		//Conditions Initiales
+		l.init(2, 5);// liftStatus -> IDLE
+		l.selectLevel(3); //
+		l.closeDoor(); // door status -> CLOSING
+		l.doorAck(); // door status -> CLOSED
+		l.beginMoveUp(); // liftStatus -> MOVING UP 
+		l.stepMoveUp(); 
+		//Opération(s)
+		l.endMoveUp();
+		//Oracle : None
+	}
+
+	@Test(expected = PreconditionError.class)
+	public void preEndMoveUpFail1() {
+		//Conditions Initiales
+		l.init(2, 5);// liftStatus -> IDLE
+		l.selectLevel(3); //
+		l.closeDoor(); // door status -> CLOSING
+		l.doorAck(); // door status -> CLOSED
+		l.beginMoveUp(); // liftStatus -> MOVING UP 
+		//Opération(s)
+		l.endMoveUp();
+		//Oracle : exception expected
+	}
+	
+	
+	@Test(expected = PreconditionError.class)
+	public void preEndMoveUpFail2() {
+		//Conditions Initiales
+		l.init(2, 5);// liftStatus -> IDLE
+		l.selectLevel(3); //
+		l.closeDoor(); // door status -> CLOSING
+		l.doorAck(); // door status -> CLOSED
+		//Opération(s)
+		l.endMoveUp();
+		//Oracle : exception expected
+	}
+	
+	
+	@Test
+	public void preBeginMoveDownPass() {
+		//Conditions Initiales
+		l.init(2, 5);// liftStatus -> IDLE
+		l.selectLevel(3);
+		l.closeDoor(); //door status -> CLOSING
+		l.doorAck(); //door status -> CLOSED + liftStatus -> standby up
+		l.beginMoveUp();//lift status -> Moving up
+		l.stepMoveUp();//level(l) = level(l)+1
+		l.endMoveUp();//lift status -> STOP UP
+		l.openDoor();
+		l.doorAck();
+		l.selectLevel(2);//lift status -> standby down
+		l.closeDoor();
+		l.doorAck(); //door status -> CLOSED / lift status -> STANDBY DOWN si nb de commande down est pas 0
+		//Opération(s)
+		l.beginMoveDown();
+		//Oracle : None
+	}
+
+	@Test(expected = PreconditionError.class)
+	public void preBeginMoveDownFail1() {
+		//Conditions Initiales
+		l.init(2, 5);// liftStatus -> IDLE
+		l.selectLevel(3);
+		l.closeDoor(); //door status -> CLOSING
+		l.doorAck(); //door status -> CLOSED + liftStatus -> standby up
+		l.beginMoveUp();//lift status -> Moving up
+		l.stepMoveUp();//level(l) = level(l)+1
+		l.endMoveUp();//lift status -> STOP UP
+		l.openDoor();
+		l.doorAck();
+		l.selectLevel(2);//lift status -> standby down
+		l.closeDoor();
+		//Opération(s)
+		l.beginMoveDown();
+		//Oracle : exception expected
+	}
+	
 //	@Test(expected = PreconditionError.class)
-//	public void preBeginMoveUpFail() {
+//	public void preBeginMoveDownFail2() {
 //		//Conditions Initiales
+//		l.init(2, 5);// liftStatus -> IDLE
+//		l.selectLevel(3);
+//		l.closeDoor(); //door status -> CLOSING
+//		l.doorAck(); //door status -> CLOSED + liftStatus -> standby up
+//		l.beginMoveUp();//lift status -> Moving up
 //		//Opération(s)
-//		//Oracle : None
+//		l.beginMoveDown();
+//		//Oracle : exception expected
 //	}
+	
+	
+	
 //	
 //	@Test
-//	public void prePass() {
+//	public void preStepMoveDownPass() {
 //		//Conditions Initiales
 //		
 //		//Opération(s)
@@ -72,13 +221,13 @@ public class LiftTest1 extends AbstractLiftTest {
 //	}
 //
 //	@Test(expected = PreconditionError.class)
-//	public void preFail() {
+//	public void preStepMoveDownFail() {
 //		//Conditions Initiales
 //		//Opération(s)
 //		//Oracle : None
 //	}
 //	@Test
-//	public void prePass() {
+//	public void preEndMoveDownPass() {
 //		//Conditions Initiales
 //		
 //		//Opération(s)
@@ -86,65 +235,114 @@ public class LiftTest1 extends AbstractLiftTest {
 //	}
 //
 //	@Test(expected = PreconditionError.class)
-//	public void preFail() {
+//	public void preEndMoveDownFail() {
 //		//Conditions Initiales
 //		//Opération(s)
 //		//Oracle : None
 //	}
-//	@Test
+	
+	
+	
+	
+	@Test
+	public void preOpenDoorPass() {
+		//Conditions Initiales
+		l.init(2, 5);
+		l.closeDoor();
+		l.doorAck();
+		//Opération(s)
+		l.openDoor();
+		//Oracle : None
+	}
+
+	@Test(expected = PreconditionError.class)
+	public void preOpenDoorFail1() {
+		//Conditions Initiales
+		l.init(2, 5);
+		l.closeDoor();
+		//Opération(s)
+		l.openDoor();
+		//Oracle : exception expected
+	}
+	
+	@Test(expected = PreconditionError.class)
+	public void preOpenDoorFail2() {
+		//Conditions Initiales
+		l.init(2, 5);
+		l.closeDoor();
+		l.doorAck();
+		//Opération(s)
+		l.openDoor();
+		//Oracle : exception expected
+	}
+	
 //	public void prePass() {
-//		//Conditions Initiales
-//		
-//		//Opération(s)
-//		//Oracle : None
-//	}
+//	//Conditions Initiales
+//	
+//	//Opération(s)
+//	//Oracle : None
+//}
 //
-//	@Test(expected = PreconditionError.class)
-//	public void preFail() {
-//		//Conditions Initiales
-//		//Opération(s)
-//		//Oracle : None
-//	}
-//	@Test
+//@Test(expected = PreconditionError.class)
+//public void preFail() {
+//	//Conditions Initiales
+//	//Opération(s)
+//	//Oracle : None
+//}
+	
 //	public void prePass() {
-//		//Conditions Initiales
-//		
-//		//Opération(s)
-//		//Oracle : None
-//	}
+//	//Conditions Initiales
+//	
+//	//Opération(s)
+//	//Oracle : None
+//}
 //
-//	@Test(expected = PreconditionError.class)
-//	public void preFail() {
-//		//Conditions Initiales
-//		//Opération(s)
-//		//Oracle : None
-//	}
-//	@Test
+//@Test(expected = PreconditionError.class)
+//public void preFail() {
+//	//Conditions Initiales
+//	//Opération(s)
+//	//Oracle : None
+//}
+	
 //	public void prePass() {
-//		//Conditions Initiales
-//		
-//		//Opération(s)
-//		//Oracle : None
-//	}
+//	//Conditions Initiales
+//	
+//	//Opération(s)
+//	//Oracle : None
+//}
 //
-//	@Test(expected = PreconditionError.class)
-//	public void preFail() {
-//		//Conditions Initiales
-//		//Opération(s)
-//		//Oracle : None
-//	}
-//	@Test
+//@Test(expected = PreconditionError.class)
+//public void preFail() {
+//	//Conditions Initiales
+//	//Opération(s)
+//	//Oracle : None
+//}
+	
 //	public void prePass() {
-//		//Conditions Initiales
-//		
-//		//Opération(s)
-//		//Oracle : None
-//	}
+//	//Conditions Initiales
+//	
+//	//Opération(s)
+//	//Oracle : None
+//}
 //
-//	@Test(expected = PreconditionError.class)
-//	public void preFail() {
-//		//Conditions Initiales
-//		//Opération(s)
-//		//Oracle : None
-//	}
+//@Test(expected = PreconditionError.class)
+//public void preFail() {
+//	//Conditions Initiales
+//	//Opération(s)
+//	//Oracle : None
+//}
+	
+//	public void prePass() {
+//	//Conditions Initiales
+//	
+//	//Opération(s)
+//	//Oracle : None
+//}
+//
+//@Test(expected = PreconditionError.class)
+//public void preFail() {
+//	//Conditions Initiales
+//	//Opération(s)
+//	//Oracle : None
+//}
 }

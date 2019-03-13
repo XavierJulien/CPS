@@ -408,7 +408,7 @@ public class LiftContract extends LiftDecorator {
 				}
 			}
 		} else {
-			if(!(getLiftStatus() == getLiftStatus_atPre)) {
+			if(!(getLiftStatus() == LiftStatus.IDLE)) {
 				throw new PostconditionError("L'état de l'ascenseur n'aurait pas du changer");
 			}
 		}
