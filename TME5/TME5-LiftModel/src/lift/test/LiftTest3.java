@@ -831,13 +831,115 @@ public class LiftTest3 extends AbstractLiftTest {
 
 	/**
 	*  PAIRES DE TRANSITIONS
-	*
-	*
-	*
-	*
 	*/
 
+	@Test 
+	public void PairesCloseDoorDoorAck() {
+		//CI
+		l.init(2, 5);
+		//OP
+		l.closeDoor();
+		DoorStatus doorStatus_atPre = l.getDoorStatus();
+		LiftStatus liftStatus_atPre = l.getLiftStatus();
+		
+		l.doorAck();
+		//Oracle 
+		if (doorStatus_atPre == DoorStatus.OPENING)
+			assertTrue(l.getDoorStatus() == DoorStatus.OPENED);
+		if (doorStatus_atPre == DoorStatus.CLOSING)
+			assertTrue(l.getDoorStatus() == DoorStatus.CLOSED);
+		if (liftStatus_atPre == LiftStatus.IDLE && l.getCommands().getNbDownCommands() > 0)
+			assertTrue(l.getLiftStatus() == LiftStatus.STANDBY_DOWN);
+		if (liftStatus_atPre == LiftStatus.IDLE && l.getCommands().getNbUpCommands() > 0)
+			assertTrue(l.getLiftStatus() == LiftStatus.STANDBY_UP);
+		if (liftStatus_atPre == LiftStatus.IDLE && l.getCommands().getNbUpCommands() == 0 && l.getCommands().getNbDownCommands() == 0)
+			assertTrue(l.getLiftStatus() == LiftStatus.IDLE);
+		if (liftStatus_atPre != LiftStatus.IDLE)
+			assertTrue(l.getLiftStatus() == LiftStatus.IDLE);
+		/*inv*/
+		assertTrue(l.getMinLevel() <= l.getLevel() && l.getLevel() <= l.getMaxLevel());
+		if (l.getLiftStatus()==LiftStatus.MOVING_UP || l.getLiftStatus()==LiftStatus.MOVING_DOWN) 
+			assertTrue(l.getDoorStatus() == DoorStatus.CLOSED);
+	}
 
+	@Test 
+	public void PairesOpenDoorDoorAck() {
+		//CI
+		l.init(2, 5);
+		l.closeDoor();
+		l.doorAck();
+		//OP
+		l.openDoor();
+		DoorStatus doorStatus_atPre = l.getDoorStatus();
+		LiftStatus liftStatus_atPre = l.getLiftStatus();
+		l.doorAck();
+		//Oracle 
+		if (doorStatus_atPre == DoorStatus.OPENING)
+			assertTrue(l.getDoorStatus() == DoorStatus.OPENED);
+		if (doorStatus_atPre == DoorStatus.CLOSING)
+			assertTrue(l.getDoorStatus() == DoorStatus.CLOSED);
+		if (liftStatus_atPre == LiftStatus.IDLE && l.getCommands().getNbDownCommands() > 0)
+			assertTrue(l.getLiftStatus() == LiftStatus.STANDBY_DOWN);
+		if (liftStatus_atPre == LiftStatus.IDLE && l.getCommands().getNbUpCommands() > 0)
+			assertTrue(l.getLiftStatus() == LiftStatus.STANDBY_UP);
+		if (liftStatus_atPre == LiftStatus.IDLE && l.getCommands().getNbUpCommands() == 0 && l.getCommands().getNbDownCommands() == 0)
+			assertTrue(l.getLiftStatus() == LiftStatus.IDLE);
+		if (liftStatus_atPre != LiftStatus.IDLE)
+			assertTrue(l.getLiftStatus() == LiftStatus.IDLE);
+		/*inv*/
+		assertTrue(l.getMinLevel() <= l.getLevel() && l.getLevel() <= l.getMaxLevel());
+		if (l.getLiftStatus()==LiftStatus.MOVING_UP || l.getLiftStatus()==LiftStatus.MOVING_DOWN) 
+			assertTrue(l.getDoorStatus() == DoorStatus.CLOSED);
+	}
+
+	@Test 
+	public void PairesDoorAckCloseDoor() {
+		//CI
+		l.init(2, 5);
+		l.closeDoor();
+		l.doorAck();
+		l.openDoor();
+		//OP
+		l.doorAck();
+		l.closeDoor();
+		//Oracle 
+		assertTrue(l.getDoorStatus() == DoorStatus.CLOSING);
+		/*inv*/
+		assertTrue(l.getMinLevel() <= l.getLevel() && l.getLevel() <= l.getMaxLevel());
+		if (l.getLiftStatus()==LiftStatus.MOVING_UP || l.getLiftStatus()==LiftStatus.MOVING_DOWN) 
+			assertTrue(l.getDoorStatus() == DoorStatus.CLOSED);
+	}
+	
+	@Test 
+	public void PairesInitSelectLevel() {
+		//CI : None
+		//OP
+		l.init(2,5);
+		int level = 3;
+		int nbUpCmd_atPre = l.getCommands().getNbUpCommands();
+		int nbDownCmd_atPre = l.getCommands().getNbDownCommands();
+		
+		l.selectLevel(3);
+		//Oracle 
+		if (level == l.getLevel()) {
+			assertTrue(l.getCommands().getNbDownCommands() == nbDownCmd_atPre);
+			assertTrue(l.getCommands().getNbUpCommands() == nbUpCmd_atPre);
+		}
+		if (level > l.getLevel()) {
+			assertTrue(l.getCommands().getNbUpCommands() == nbUpCmd_atPre +1);
+			assertTrue(l.getCommands().getNbDownCommands() == nbDownCmd_atPre);
+		}
+		if (level < l.getLevel()) {
+			assertTrue(l.getCommands().getNbDownCommands() == nbDownCmd_atPre +1);
+			assertTrue(l.getCommands().getNbUpCommands() == nbUpCmd_atPre);
+		}
+		/*inv*/
+		assertTrue(l.getMinLevel() <= l.getLevel() && l.getLevel() <= l.getMaxLevel());
+		if (l.getLiftStatus()==LiftStatus.MOVING_UP || l.getLiftStatus()==LiftStatus.MOVING_DOWN) 
+			assertTrue(l.getDoorStatus() == DoorStatus.CLOSED);
+		if (l.getLiftStatus()==LiftStatus.IDLE) 
+			assertTrue(l.getDoorStatus()==DoorStatus.OPENED);
+	}
 
 	/**
 	*  SCENARIOS
