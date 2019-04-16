@@ -1,0 +1,42 @@
+digraph p_feu {
+size="8,10";
+  GT [shape=box,style=dotted,label="feu"];
+  GT -> S29;
+	S29 -> S2  [color=black,style=bold,label="((etatfeu==initial))"];
+	S2 -> S3  [color=black,style=bold,label="coulfeu = orangeclignotant"];
+	S3 -> S4  [color=black,style=bold,label="etatfeu = normal"];
+	S4 -> S5  [color=black,style=bold,label="coulfeu = rouge"];
+	S5 -> S26  [color=black,style=solid,label="else"];
+	S26 -> S20  [color=black,style=bold,label="((etatfeu==normal))"];
+	S26 -> S24  [color=black,style=bold,label="((etatfeu==enpanne))"];
+	S20 -> S8  [color=black,style=bold,label="((panne==oui))"];
+	S8 -> S9  [color=black,style=bold,label="etatfeu = enpanne"];
+	S9 -> S16  [color=black,style=solid,label="else"];
+	S16 -> S11  [color=black,style=bold,label="((coulfeu==rouge))"];
+	S16 -> S13  [color=black,style=bold,label="((coulfeu==vert))"];
+	S16 -> S15  [color=black,style=bold,label="((coulfeu==orange))"];
+	S11 -> S20  [color=black,style=bold,label="coulfeu = vert"];
+	S13 -> S20  [color=black,style=bold,label="coulfeu = orange"];
+	S15 -> S20  [color=black,style=bold,label="coulfeu = rouge"];
+	S24 -> S32  [color=black,style=bold,label="coulfeu = orangeclignotant"];
+	S32 -> S32  [color=black,style=bold,label="coulfeu = orangeclignotant"];
+}
+digraph p_ispanne {
+size="8,10";
+  GT [shape=box,style=dotted,label="ispanne"];
+  GT -> S5;
+	S5 -> S2  [color=black,style=solid,label="(1)"];
+	S5 -> S4  [color=black,style=solid,label="(1)"];
+	S2 -> S7  [color=black,style=bold,label="panne = non"];
+	S7 -> S0  [color=black,style=solid,label="-end-"];
+  S7 [color=blue,style=bold,shape=box];
+	S4 -> S7  [color=black,style=bold,label="panne = oui"];
+}
+digraph init {
+size="8,10";
+  GT [shape=box,style=dotted,label="init"];
+  GT -> S1;
+	S1 -> S2  [color=black,style=solid,label="(run feu())"];
+	S2 -> S0  [color=black,style=solid,label="-end-"];
+  S2 [color=blue,style=bold,shape=box];
+}
