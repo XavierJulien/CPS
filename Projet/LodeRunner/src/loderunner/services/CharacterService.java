@@ -3,59 +3,86 @@ package loderunner.services;
 public interface CharacterService {
 	/* Observators */
 	public EnvironnementService getEnvi();
-	public int getHeight();
-	public int getWidth();
+	public int getHgt();
+	public int getWdt();
 	
 	
 	/* Constructors */
 	/**
-	 * pre : init(h,w) require 0<h && 0<w
-	 * post : getHeight(init(h,w)) == h 
-	 * 	 	  getWidth(init(h,w)) == w
-	 * 		  \forall x: Integer \in [0..getWidth()-1]
-	 * 		  	\forall y: Integer \in [0..getHeight()-1]
-	 * 			  getCellNature(init(h,w),x,y) == EMP
+	 * pre : init(x,y) require getEnvi().getCellNature(x,y) == EMP
 	 */
-	public void init(ScreenService s,int height,int width);
+	public void init(ScreenService s,int x,int y);
 	
 	
 	/* Invariant */
 	/**
-	 * Environnement::CellNature(getEnvi(),getWidth(),getHeight()) \in {Cell.EMP,Cell.HOL,Cell.LAD,Cell.HDR}
-	 * Environnement::CellNature(getEnvi(),getWidth(),getHeight()) \in {Cell.EMP,Cell.HOL,Cell.LAD,Cell.HDR}
+	 * getEnvi().getCellNature(getWdt(),getHgt()) \in {Cell.EMP,Cell.HOL,Cell.LAD,Cell.HDR}
+	 * \exists x : Character \in getEnvi().getCellContent(getWdt(),getHgt()) \implies x==this
+	 *
 	 */
 		
 	
 	/* Operators */
 	/**
-	 * post : getHeigth(goLeft()) = getHeight()
-	 *		  getWidth() == 0 \implies getWidth(goLeft()) == getWidth()
-	 *		  Environnement::CellNature(getEnvi(),getWidth()-1,getHeight()) \in {Cell.MTL,Cell.PLT,Cell.LAD}
-	 *		  	\implies getWidth(goLeft()) == getWidth()
-	 *		  Environnement::CellNature(getEnvi(),getWidth(),getHeight()) \not \in {Cell.HDR,Cell.LAD} &&
-	 *	   	  	Environnement::CellNature(getEnvi(),getWidth(),getHeight()-1) \not \in {Cell.MTL,Cell.PLT} &&
-	 *	   	  	\not \exists c : Character \in Environment::CellContent(getEnvi(),getWidth(),getHeight()-1)
-	 *	      		\implies getWidth(goLeft()) == getWidth()
-	 *		  \exists c : Character \in Environment::CellContent(getEnvi(),getWidth()-1,getHeight())
-	 *			\implies getWidth(goLeft()) == getWidth()
-	 *		  getWidth() != 0 &&
-	 *			Environnement::CellNature(getEnvi(),getWidth()-1,getHeight()) \not \in {Cell.MTL,Cell.PLT} &&
-	 *			Environnement::CellNature(getEnvi(),getWidth(),getHeight()) \in {Cell.LAD,Cell.HDR} ||
-	 *			Environnement::CellNature(getEnvi(),getWidth(),getHeight()-1) \in {Cell.MTL,Cell.PLT,Cell.LAD} ||
-	 *			\exists c : Character \in Environment::CellContent(getEnvi(),getWidth(),getHeight()-1) &&
-	 *			\not \exists c : Character \in Environment::CellContent(getEnvi(),getWidth()-1,getHeight())
-	 *			\implies getWidth(goLeft()) == getWidth()-1
+	 * post : getHgt(goLeft()) = getHgt()
+	 *		  getWdt() == 0 \implies getWdt(goLeft()) == getWdt()
+	 *		  getEnvi().getCellNature(getWdt()-1,getHgt()) \in {MTL,PLT}
+	 *		  	\implies getWdt(goLeft()) == getWdt()
+	 *		  getEnvi().getCellNature(getWdt(),getHgt()) \not \in {HDR,LAD} &&
+	 *	   	  	getEnvi().getCellNature(getWdt(),getHgt()-1) \not \in {MTL,PLT} &&
+	 *	   	  	\not \exists c : Character \in getEnvi().getCellContent(getWdt(),getHgt()-1)
+	 *	      		\implies getWdt(goLeft()) == getWdt()
+	 *		  \exists c : Character \in getEnvi().getCellNature(getWdt()-1,getHgt())
+	 *			\implies getWdt(goLeft()) == getWdt()
+	 *		  getWdt() != 0 &&
+	 *			getEnvi().getCellNature(getWdt()-1,getHgt()) \not \in {MTL,PLT} &&
+	 *			getEnvi().getCellNature(getWdt(),getHgt()) \in {LAD,HDR} ||
+	 *			getEnvi().getCellNature(getWdt(),getHgt()-1) \in {MTL,PLT,LAD} ||
+	 *			\exists c : Character \in getEnvi().getCellContent(getWdt(),getHgt()-1) &&
+	 *			\not \exists c : Character \in getEnvi().getCellContent(getWdt()-1,getHgt())
+	 *			\implies getWdt(goLeft()) == getWdt()-1
 	 *		  
 	 */
 	public void goLeft();
+	
+	/**
+	 * post : getHgt(goRight()) = getHgt()
+	 *		  getWdt() == getEnvi().getWidth()-1 \implies getWdt(goRight()) == getWdt()
+	 *		  getEnvi().getCellNature(getWdt()+1,getHgt()) \in {MTL,PLT}
+	 *		  	\implies getWdt(goRight()) == getWdt()
+	 *		  getEnvi().getCellNature(getWdt(),getHgt()) \not \in {HDR,LAD} &&
+	 *	   	  	getEnvi().getCellNature(getWdt(),getHgt()-1) \not \in {MTL,PLT} &&
+	 *	   	  	\not \exists c : Character \in getEnvi().getCellContent(getWdt(),getHgt()-1)
+	 *	      		\implies getWdt(goRight()) == getWdt()
+	 *		  \exists c : Character \in getEnvi().getCellNature(getWdt()+1,getHgt())
+	 *			\implies getWdt(goRight()) == getWdt()
+	 *		  getWdt() != 0 &&
+	 *			getEnvi().getCellNature(getWdt()+1,getHgt()) \not \in {MTL,PLT} &&
+	 *			getEnvi().getCellNature(getWdt(),getHgt()) \in {LAD,HDR} ||
+	 *			getEnvi().getCellNature(getWdt(),getHgt()-1) \in {MTL,PLT,LAD} ||
+	 *			\exists c : Character \in getEnvi().getCellContent(getWdt(),getHgt()-1) &&
+	 *			\not \exists c : Character \in getEnvi().getCellContent(getWdt()-1,getHgt())
+	 *			\implies getWdt(goRight()) == getWdt()+1
+	 *		  
+	 */
 	public void goRight();
+	
+	/**
+	 * post : getWdt(goUp()) = getWdt()
+	 *		  getHgt() == getEnvi().getHeight()-1 \implies getHgt(goUp()) == getHgt()
+	 *		  getEnvi().getCellNature(getWdt(),getHgt()+1) \in {MTL,PLT}
+	 *		  	\implies getHgt(goUp()) == getHgt()
+	 *		  getEnvi().getCellNature(getWdt(),getHgt()) == HDR &&
+	 *	   	  	\not \exists c : Character \in getEnvi().getCellContent(getWdt(),getHgt()+1)
+	 *	      		\implies getHgt(goUp()) == getHgt()+1
+	 */
 	public void goUp();
 	public void goDown();
 	/**
 	 * pre : dig(x,y) require getCellNature(x,y) == PLT
 	 * post : getCellNature(dig(x,y),x,y) == HOL
-	 * 		  \forall x: Integer \in [0..getWidth()-1]
-	 * 		  	\forall y: Integer \in [0..getHeight()-1]
+	 * 		  \forall x: Integer \in [0..getWdt()-1]
+	 * 		  	\forall y: Integer \in [0..getHgt()-1]
 	 * 			  \with (x,y)!=(u,v)
 	 * 			    \implies getCellNature(dig(u,v),x,y) == CellNature(x,y)
 	 */
@@ -64,8 +91,8 @@ public interface CharacterService {
 	/**
 	 * pre : fill(x,y) require getCellNature(x,y) == HOL
 	 * post : getCellNature(fill(x,y),x,y) == PLT
-	 * 		  \forall x: Integer \in [0..getWidth()-1]
-	 * 		  	\forall y: Integer \in [0..getHeight()-1]
+	 * 		  \forall x: Integer \in [0..getWdt()-1]
+	 * 		  	\forall y: Integer \in [0..getHgt()-1]
 	 * 			  \with (x,y)!=(u,v)
 	 * 			    \implies getCellNature(fill(u,v),x,y) == CellNature(x,y)
 	  */

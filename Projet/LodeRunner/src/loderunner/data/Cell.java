@@ -1,4 +1,4 @@
-package loderunner.services;
+package loderunner.data;
 
 public enum Cell {
 	EMP,	// case vide

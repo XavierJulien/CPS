@@ -1,12 +1,14 @@
 package loderunner.services;
 
+import loderunner.data.Cell;
+
 public interface ScreenService {
 	/* Observators */
 	public int getHeight();
 	public int getWidth();
 	
 	/**
-	 * pre : getCellNature(x,y) require 0<=x<getHeight() && require 0<=y<getHeight() 
+	 * pre : getCellNature(x,y) require 0<=x<getWidth() && require 0<=y<getHeight() 
 	 */
 	public Cell getCellNature(int x,int y);
 	
@@ -15,11 +17,11 @@ public interface ScreenService {
 	/* Constructors */
 	/**
 	 * pre : init(h,w) require 0<h && 0<w
-	 * post : getHeight(init(h,w)) == h 
-	 * 	 	  getWidth(init(h,w)) == w
+	 * post : getHeight() == h
+	 * 	 	  getWidth() == w
 	 * 		  \forall x: Integer \in [0..getWidth()-1]
 	 * 		  	\forall y: Integer \in [0..getHeight()-1]
-	 * 			  getCellNature(init(h,w),x,y) == EMP
+	 * 			  getCellNature(x,y) == EMP
 	 */
 	public void init(int height,int width);
 	
@@ -28,22 +30,22 @@ public interface ScreenService {
 		
 	/* Operators */
 	/**
-	 * pre : dig(x,y) require getCellNature(x,y) == PLT
-	 * post : getCellNature(dig(x,y),x,y) == HOL
+	 * pre : dig(u,v) require getCellNature(u,v) == PLT
+	 * post : getCellNature(u,v) == HOL
 	 * 		  \forall x: Integer \in [0..getWidth()-1]
 	 * 		  	\forall y: Integer \in [0..getHeight()-1]
 	 * 			  \with (x,y)!=(u,v)
-	 * 			    \implies getCellNature(dig(u,v),x,y) == CellNature(x,y)
+	 * 			    \implies getCellNature(x,y) == getCellNature(x,y)@pre
 	 */
 	public void dig(int x, int y);
 	
 	/**
-	 * pre : fill(x,y) require getCellNature(x,y) == HOL
-	 * post : getCellNature(fill(x,y),x,y) == PLT
+	 * pre : fill(u,v) require getCellNature(u,v) == HOL
+	 * post : getCellNature(u,v) == PLT
 	 * 		  \forall x: Integer \in [0..getWidth()-1]
 	 * 		  	\forall y: Integer \in [0..getHeight()-1]
 	 * 			  \with (x,y)!=(u,v)
-	 * 			    \implies getCellNature(fill(u,v),x,y) == CellNature(x,y)
+	 * 			    \implies getCellNature(x,y) == getCellNature(x,y)@pre
 	  */
 	public void fill(int x, int y);
 }
