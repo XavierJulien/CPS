@@ -78,23 +78,4 @@ public interface CharacterService {
 	 */
 	public void goUp();
 	public void goDown();
-	/**
-	 * pre : dig(x,y) require getCellNature(x,y) == PLT
-	 * post : getCellNature(dig(x,y),x,y) == HOL
-	 * 		  \forall x: Integer \in [0..getWdt()-1]
-	 * 		  	\forall y: Integer \in [0..getHgt()-1]
-	 * 			  \with (x,y)!=(u,v)
-	 * 			    \implies getCellNature(dig(u,v),x,y) == CellNature(x,y)
-	 */
-	public void dig(int x, int y);
-	
-	/**
-	 * pre : fill(x,y) require getCellNature(x,y) == HOL
-	 * post : getCellNature(fill(x,y),x,y) == PLT
-	 * 		  \forall x: Integer \in [0..getWdt()-1]
-	 * 		  	\forall y: Integer \in [0..getHgt()-1]
-	 * 			  \with (x,y)!=(u,v)
-	 * 			    \implies getCellNature(fill(u,v),x,y) == CellNature(x,y)
-	  */
-	public void fill(int x, int y);
 }

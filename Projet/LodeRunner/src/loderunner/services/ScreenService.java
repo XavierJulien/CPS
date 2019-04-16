@@ -23,7 +23,7 @@ public interface ScreenService {
 	 * 		  	\forall y: Integer \in [0..getHeight()-1]
 	 * 			  getCellNature(x,y) == EMP
 	 */
-	public void init(int height,int width);
+	public void init(int width,int height);
 	
 	/* Invariant */
 	/*   Empty   */

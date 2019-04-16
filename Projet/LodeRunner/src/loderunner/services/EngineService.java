@@ -11,7 +11,7 @@ public interface EngineService {
 	/* Observators */
 	public EnvironnementService getEnvi();
 	public PlayerService getPlayer();
-	public GuardService getGuards();
+	public ArrayList<GuardService> getGuards();
 	public ArrayList<Coord> getTreasures();
 	public GameState getStatus();
 	public Command getNextCommand();
