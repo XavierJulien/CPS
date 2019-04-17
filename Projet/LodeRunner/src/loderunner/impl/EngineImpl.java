@@ -58,10 +58,14 @@ public class EngineImpl implements EngineService{
 		return null;
 	}
 
+	public ListIterator<Command> getLI(){
+		return lit;
+	}
+	
 	@Override
 	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Coord> treasures) {
-		envi = (EnvironnementService) e;
-		//player = new PlayerService(player.getX(),player.getY());
+		envi.init(e);
+		this.player.init(envi, player.getX(), player.getY());
 		/*for(Coord co : guards) {
 			this.guards.add(new GuardService(co.getX(),co.getY()));
 		}*/
@@ -70,7 +74,7 @@ public class EngineImpl implements EngineService{
 
 	@Override
 	public void step() {
-		//player.step();
+		player.step();
 		//for(GuardService guard : guards) guard.step();
 	}
 

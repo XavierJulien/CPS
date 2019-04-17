@@ -24,58 +24,73 @@ public interface CharacterService {
 	
 	/* Operators */
 	/**
-	 * post : getHgt(goLeft()) = getHgt()
-	 *		  getWdt() == 0 \implies getWdt(goLeft()) == getWdt()
-	 *		  getEnvi().getCellNature(getWdt()-1,getHgt()) \in {MTL,PLT}
-	 *		  	\implies getWdt(goLeft()) == getWdt()
-	 *		  getEnvi().getCellNature(getWdt(),getHgt()) \not \in {HDR,LAD} &&
-	 *	   	  	getEnvi().getCellNature(getWdt(),getHgt()-1) \not \in {MTL,PLT} &&
-	 *	   	  	\not \exists c : Character \in getEnvi().getCellContent(getWdt(),getHgt()-1)
-	 *	      		\implies getWdt(goLeft()) == getWdt()
-	 *		  \exists c : Character \in getEnvi().getCellNature(getWdt()-1,getHgt())
-	 *			\implies getWdt(goLeft()) == getWdt()
-	 *		  getWdt() != 0 &&
-	 *			getEnvi().getCellNature(getWdt()-1,getHgt()) \not \in {MTL,PLT} &&
-	 *			getEnvi().getCellNature(getWdt(),getHgt()) \in {LAD,HDR} ||
-	 *			getEnvi().getCellNature(getWdt(),getHgt()-1) \in {MTL,PLT,LAD} ||
-	 *			\exists c : Character \in getEnvi().getCellContent(getWdt(),getHgt()-1) &&
-	 *			\not \exists c : Character \in getEnvi().getCellContent(getWdt()-1,getHgt())
-	 *			\implies getWdt(goLeft()) == getWdt()-1
+	 * post : getHgt() = getHgt()@pre
+	 *		  getWdt()@pre == 0 \implies getWdt() == getWdt()@pre
+	 *		  getEnvi().getCellNature(getWdt()@pre-1,getHgt()@pre) \in {MTL,PLT}
+	 *		  	\implies getWdt() == getWdt()@pre
+	 *		  getEnvi().getCellNature(getWdt()@pre,getHgt()@pre) \not \in {HDR,LAD} &&
+	 *	   	  	getEnvi().getCellNature(getWdt()@pre,getHgt()@pre-1) \not \in {MTL,PLT} &&
+	 *	   	  	\not \exists c : Character \in getEnvi().getCellContent(getWdt()@pre,getHgt()@pre-1)
+	 *	      		\implies getWdt() == getWdt()@pre
+	 *		  \exists c : Character \in getEnvi().getCellNature(getWdt()@pre-1,getHgt()@pre)
+	 *			\implies getWdt() == getWdt()@pre
+	 *		  getWdt()@pre != 0 &&
+	 *			getEnvi().getCellNature(getWdt()@pre-1,getHgt()@pre) \not \in {MTL,PLT} &&
+	 *				(getEnvi().getCellNature(getWdt()@pre,getHgt()@pre) \in {LAD,HDR} ||
+	 *				getEnvi().getCellNature(getWdt()@pre,getHgt()@pre-1) \in {MTL,PLT,LAD} ||
+	 *				\exists c : Character \in getEnvi().getCellContent(getWdt()@pre,getHgt()@pre-1)) &&
+	 *			\not \exists c : Character \in getEnvi().getCellContent(getWdt()@pre-1,getHgt()@pre)
+	 *			\implies getWdt() == getWdt()@pre-1
 	 *		  
 	 */
 	public void goLeft();
 	
 	/**
-	 * post : getHgt(goRight()) = getHgt()
-	 *		  getWdt() == getEnvi().getWidth()-1 \implies getWdt(goRight()) == getWdt()
-	 *		  getEnvi().getCellNature(getWdt()+1,getHgt()) \in {MTL,PLT}
-	 *		  	\implies getWdt(goRight()) == getWdt()
-	 *		  getEnvi().getCellNature(getWdt(),getHgt()) \not \in {HDR,LAD} &&
-	 *	   	  	getEnvi().getCellNature(getWdt(),getHgt()-1) \not \in {MTL,PLT} &&
-	 *	   	  	\not \exists c : Character \in getEnvi().getCellContent(getWdt(),getHgt()-1)
-	 *	      		\implies getWdt(goRight()) == getWdt()
-	 *		  \exists c : Character \in getEnvi().getCellNature(getWdt()+1,getHgt())
-	 *			\implies getWdt(goRight()) == getWdt()
-	 *		  getWdt() != 0 &&
-	 *			getEnvi().getCellNature(getWdt()+1,getHgt()) \not \in {MTL,PLT} &&
-	 *			getEnvi().getCellNature(getWdt(),getHgt()) \in {LAD,HDR} ||
-	 *			getEnvi().getCellNature(getWdt(),getHgt()-1) \in {MTL,PLT,LAD} ||
-	 *			\exists c : Character \in getEnvi().getCellContent(getWdt(),getHgt()-1) &&
-	 *			\not \exists c : Character \in getEnvi().getCellContent(getWdt()-1,getHgt())
-	 *			\implies getWdt(goRight()) == getWdt()+1
+	 * post : getHgt() = getHgt()@pre
+	 *		  getWdt()@pre == getEnvi().getWidth()-1 \implies getWdt() == getWdt()@pre
+	 *		  getEnvi().getCellNature(getWdt()@pre+1,getHgt()@pre) \in {MTL,PLT}
+	 *		  	\implies getWdt() == getWdt()@pre
+	 *		  getEnvi().getCellNature(getWdt()@pre,getHgt()@pre) \not \in {HDR,LAD} &&
+	 *	   	  	getEnvi().getCellNature(getWdt()@pre,getHgt()@pre-1) \not \in {MTL,PLT} &&
+	 *	   	  	\not \exists c : Character \in getEnvi().getCellContent(getWdt()@pre,getHgt()@pre-1)
+	 *	      		\implies getWdt() == getWdt()@pre
+	 *		  \exists c : Character \in getEnvi().getCellNature(getWdt()@pre+1,getHgt()@pre)
+	 *			\implies getWdt() == getWdt()@pre
+	 *		  getWdt()@pre != 0 &&
+	 *			getEnvi().getCellNature(getWdt()@pre+1,getHgt()@pre) \not \in {MTL,PLT} &&
+	 *				(getEnvi().getCellNature(getWdt()@pre,getHgt()@pre) \in {LAD,HDR} ||
+	 *				getEnvi().getCellNature(getWdt()@pre,getHgt()@pre-1) \in {MTL,PLT,LAD} ||
+	 *				\exists c : Character \in getEnvi().getCellContent(getWdt(@pre),getHgt()@pre-1)) &&
+	 *			\not \exists c : Character \in getEnvi().getCellContent(getWdt()@pre-1,getHgt()@pre)
+	 *			\implies getWdt() == getWdt()@pre+1
 	 *		  
 	 */
 	public void goRight();
 	
 	/**
-	 * post : getWdt(goUp()) = getWdt()
-	 *		  getHgt() == getEnvi().getHeight()-1 \implies getHgt(goUp()) == getHgt()
-	 *		  getEnvi().getCellNature(getWdt(),getHgt()+1) \in {MTL,PLT}
-	 *		  	\implies getHgt(goUp()) == getHgt()
-	 *		  getEnvi().getCellNature(getWdt(),getHgt()) == HDR &&
-	 *	   	  	\not \exists c : Character \in getEnvi().getCellContent(getWdt(),getHgt()+1)
-	 *	      		\implies getHgt(goUp()) == getHgt()+1
+	 * post : getWdt() = getWdt()@pre
+	 *		  getHgt()@pre == getEnvi().getHeight()-1 \implies getHgt() == getHgt()@pre
+	 *		  getEnvi().getCellNature(getWdt()@pre,getHgt()@pre+1) != LAD
+	 *		  	\implies getHgt() == getHgt()
+	 *		  getEnvi().getCellNature(getWdt(),getHgt()) == LAD &&
+	 *	   	  	\not \exists c : Character \in getEnvi().getCellContent(getWdt()@pre,getHgt()@pre+1)
+	 *	      		\implies getHgt() == getHgt()+1
 	 */
 	public void goUp();
+	
+	/**
+	 * post : getWdt() = getWdt()@pre
+	 *		  getHgt()@pre == 0 \implies getHgt() == getHgt()@pre
+	 *		  getEnvi().getCellNature(getWdt()@pre,getHgt()@pre-1) \in {PLT,MTL}
+	 *		  	\implies getHgt() == getHgt()@pre
+	 *		  getEnvi().getCellNature(getWdt()@pre,getHgt()@pre == HOL &&
+	 *			getEnvi().getCellNature(getWdt()@pre,getHgt()@pre-1 \in {MTL,PLT}
+	 *			\implies getHgt() == getHgt()@pre 
+	 *		  getEnvi().getCellNature(getWdt()@pre,getHgt()@pre) \in {LAD,HDR} &&
+	 *			getEnvi().getCellNature(getWdt()@pre,getHgt()@pre-1) \in {EMP,HDR,LAD,HOL}
+	 *	   	  	\not \exists c : Character \in getEnvi().getCellContent(getWdt()@pre,getHgt()@pre-1)
+	 *	      		\implies getHgt() == getHgt()@pre-1
+	 */
 	public void goDown();
+	
 }

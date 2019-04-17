@@ -8,7 +8,7 @@ public interface ScreenService {
 	public int getWidth();
 	
 	/**
-	 * pre : getCellNature(x,y) require 0<=x<getWidth() && require 0<=y<getHeight() 
+	 * pre : getCellNature(x,y) require 0<=x<getWidth() && 0<=y<getHeight() 
 	 */
 	public Cell getCellNature(int x,int y);
 	

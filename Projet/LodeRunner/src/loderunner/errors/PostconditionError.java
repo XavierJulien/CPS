@@ -1,4 +1,4 @@
-package lift.contracts;
+package loderunner.errors;
 
 import loderunner.errors.ContractError;
 

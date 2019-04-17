@@ -1,16 +1,19 @@
-package loderunnner.decorators;
+package loderunner.decorators;
 
 import loderunner.data.Cell;
 import loderunner.services.ScreenService;
 
 public abstract class ScreenDecorator implements ScreenService{
 
-	private final ScreenService delegate;
+	protected final ScreenService delegate;
 	
 	public ScreenDecorator(ScreenService delegate) {
 		this.delegate = delegate;
 	}
 	
+	protected ScreenService getDelegate() {
+		return delegate;
+	}
 	@Override
 	public int getHeight() {
 		return delegate.getHeight();

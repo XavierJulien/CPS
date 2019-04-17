@@ -1,12 +1,12 @@
-package loderunnner.decorators;
+package loderunner.decorators;
 
 import loderunner.services.CharacterService;
 import loderunner.services.EnvironnementService;
 import loderunner.services.ScreenService;
 
-public class CharacterDecorator implements CharacterService{
+public abstract class CharacterDecorator implements CharacterService{
 
-	private final CharacterService delegate;
+	protected final CharacterService delegate;
 	
 	public CharacterDecorator(CharacterService delegate) {
 		this.delegate = delegate;

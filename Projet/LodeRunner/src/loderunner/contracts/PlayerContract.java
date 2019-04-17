@@ -1,7 +1,7 @@
 package loderunner.contracts;
 
+import loderunner.decorators.PlayerDecorator;
 import loderunner.services.CharacterService;
-import loderunnner.decorators.PlayerDecorator;
 
 public class PlayerContract extends PlayerDecorator{
 
