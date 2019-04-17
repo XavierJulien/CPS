@@ -121,7 +121,7 @@ public class CharacterContract extends CharacterDecorator {
 				   ||
 				   (getEnvi().getCellContent(getWdt(), getHgt()-1).getCharacter() != null)){
 					if(getEnvi().getCellContent(getWdt()-1, getHgt()).getCharacter() == null) {
-						if(getWdt() == wdt_capture) throw new PostconditionError("goLeft : le personnage aurait du bouger");
+						if(getWdt() == wdt_capture-1) throw new PostconditionError("goLeft : le personnage aurait du bouger");
 					}
 				}
 					
@@ -135,11 +135,52 @@ public class CharacterContract extends CharacterDecorator {
 		//2.checkInvariants
 		checkInvariants();
 		//3.capture
+		int hgt_capture = getHgt();
+		int wdt_capture = getWdt();
 		//4.run
 		super.goRight();
 		//5.checkInvariants
 		checkInvariants();
 		//6.post
+		if(getHgt() != hgt_capture) throw new PostconditionError("goLeft : la hauteur du personnage à changé");
+		if(wdt_capture == getEnvi().getWidth()-1 ) {
+			if(getWdt() != wdt_capture) throw new PostconditionError("goLeft : le personnage à franchi la droite de l'écran");
+		}
+		if(getEnvi().getCellNature(getWdt()+1, getHgt()) == Cell.MTL || 
+		   getEnvi().getCellNature(getWdt()+1, getHgt()) == Cell.PLT) {
+			if(getWdt() != wdt_capture) throw new PostconditionError("goLeft : le personnage à franchi un mur");
+		}
+		if(getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD && 
+		   getEnvi().getCellNature(getWdt(), getHgt()) != Cell.HDR) {
+			if(getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && 
+			   getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
+			   getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.LAD) {
+				if(getEnvi().getCellContent(getWdt(), getHgt()-1).getCharacter() == null) {
+					if(getWdt() != wdt_capture) throw new PostconditionError("goLeft : le personnage n'était pas censé se déplacer");
+				}
+			}
+		}
+		if(getEnvi().getCellContent(getWdt()+1, getHgt()).getCharacter() != null) {
+			if(getWdt() != wdt_capture) throw new PostconditionError("goLeft : le personnage à traversé un personnage");
+		}
+		if(getWdt() != 0) {
+			if(getEnvi().getCellNature(getWdt()+1, getHgt()) != Cell.MTL &&
+			   getEnvi().getCellNature(getWdt()+1, getHgt()) != Cell.PLT) {
+				if((getEnvi().getCellNature(getWdt()+1, getHgt()) == Cell.LAD ||
+				   getEnvi().getCellNature(getWdt()+1, getHgt()) == Cell.HDR)
+				   || 
+				   (getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT ||
+				    getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL ||
+				    getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.LAD)
+				   ||
+				   (getEnvi().getCellContent(getWdt(), getHgt()-1).getCharacter() != null)){
+					if(getEnvi().getCellContent(getWdt()+1, getHgt()).getCharacter() == null) {
+						if(getWdt() == wdt_capture+1) throw new PostconditionError("goLeft : le personnage aurait du bouger");
+					}
+				}
+					
+			}
+		}
 	}
 
 	@Override
