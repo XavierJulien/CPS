@@ -26,6 +26,8 @@ public interface EngineService {
 	 *  \forall treasure : Treasure \in t 
 	 *  	e.getCellNature(treasure.getX(),treasure.getY()) == EMP &&
 	 *  	e.getCellNature(treasure.getX(),treasure.getY()-1) \in {PLT,MTL}
+	 *  	&& \forall t : Treasure \in t \without treasure
+	 *  		t.getX() != treasure.getX() || t.getY() != treasure.getY()
 	 *  
 	 */
 	public void init(EditableScreenService e,
@@ -34,7 +36,7 @@ public interface EngineService {
 					 List<Coord> treasures);
 	/* Invariant */
 	/**
-	 *  pre : step() require c : CellContent \def getEnvi().getCellContent(getPlayer.getWdt(),getPlayer().getHgt())
+	 *                                          ??    pre : step() require c : CellContent \def getEnvi().getCellContent(getPlayer.getWdt(),getPlayer().getHgt())
 	 *  c : CellContent \def getEnvi().getCellContent(getPlayer.getWdt(),getPlayer().getHgt()) 
 	 * 		\implies c.getCharacter() == getPlayer() &&
 	 *  \forall guard : Guard \in getGuards() 
