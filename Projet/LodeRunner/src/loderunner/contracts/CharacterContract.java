@@ -231,9 +231,21 @@ public class CharacterContract extends CharacterDecorator {
 				|| getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL) {
 			if (getHgt() != hgt_capture) throw new PostconditionError("goDown : le personnage a pu descendre à travers la matière");
 		}
-		if (getEnvi().getCellNature(wdt_capture, hgt_capture) == Cell.HOL
+		/*if (getEnvi().getCellNature(wdt_capture, hgt_capture) == Cell.HOL
 			&& (getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL
-				|| getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.PLT )) {}
+				|| getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.PLT )) {
+			if (getHgt() != hgt_capture-1) throw new PostconditionError("goDown : le personnage ")
+		}*/
+		if (getEnvi().getCellNature(wdt_capture, hgt_capture) == Cell.LAD 
+				|| getEnvi().getCellNature(wdt_capture, hgt_capture)== Cell.HDR) {
+			if (getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.EMP
+					|| getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.HDR
+					|| getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.LAD
+					|| getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.HOL) {
+				if (getEnvi().getCellContent(wdt_capture, hgt_capture-1).getCharacter() == null ) 
+					if (getHgt() == hgt_capture-1) throw new PostconditionError("doDown : le joueur n'est pas descendu alors qu'il devait");
+			}
+		}
 	}
 
 

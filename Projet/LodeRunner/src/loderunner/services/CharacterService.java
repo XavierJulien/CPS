@@ -86,8 +86,10 @@ public interface CharacterService {
 	 *		  getEnvi().getCellNature(getWdt()@pre,getHgt()@pre == HOL &&
 	 *			getEnvi().getCellNature(getWdt()@pre,getHgt()@pre-1 \in {MTL,PLT}
 	 *			\implies getHgt() == getHgt()@pre 
-	 *		  getEnvi().getCellNature(getWdt()@pre,getHgt()@pre) \in {LAD,HDR} &&
-	 *			getEnvi().getCellNature(getWdt()@pre,getHgt()@pre-1) \in {EMP,HDR,LAD,HOL}
+	 *		  (getEnvi().getCellNature(getWdt()@pre,getHgt()@pre) \in {LAD,HDR} &&
+	 *			getEnvi().getCellNature(getWdt()@pre,getHgt()@pre-1) \in {EMP,HDR,LAD,HOL})
+	 *			|| (getEnvi().getCellNature(getWdt()@pre,getHgt()@pre-1) == EMP &&
+	 *				getEnvi().getCellNature(getwdt()@pre,getHgt()@pre-1) == LAD)
 	 *	   	  	\not \exists c : Character \in getEnvi().getCellContent(getWdt()@pre,getHgt()@pre-1)
 	 *	      		\implies getHgt() == getHgt()@pre-1
 	 */
