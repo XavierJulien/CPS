@@ -39,11 +39,11 @@ public class EngineContract extends EngineDecorator{
 	public void checkInvariants() {
 		CellContent cell_check = getEnvi().getCellContent(getPlayer().getWdt(), getPlayer().getHgt());
 		if(cell_check.getCharacter() != getPlayer()) throw new InvariantError("checkInvariants : Le player aux position du player n'est pas le player");
-		for(GuardService g : getGuards()) {
+		/*for(GuardService g : getGuards()) {
 			cell_check = getEnvi().getCellContent(g.getWdt(), g.getHgt());
 			if(cell_check.getCharacter() != g) throw new InvariantError("checkInvariants : Le guard aux position du guard n'est pas le guard");
 			
-		}
+		}*/
 		for(Coord t : getTreasures()) {
 			cell_check = getEnvi().getCellContent(t.getX(), t.getY());
 			if(cell_check.getItem().getNature() != ItemType.Treasure) throw new InvariantError("checkInvariants : Il devrait y avoir un trésor en ("+t.getX()+","+t.getY()+")");
@@ -192,7 +192,7 @@ public class EngineContract extends EngineDecorator{
 		if(getTreasures().size() == 0) {
 			if (getStatus() != GameState.Win) throw new PostconditionError("le joueur à ramassé tous les trésors, il aurait du gagné");
 		}else {
-			if (getStatus() != GameState.Playing) throw new PostconditionError("le joueur n'as pas tout ramassé");
+			if (getStatus() == GameState.Win) throw new PostconditionError("le joueur n'as pas tout ramassé");
 		}
 		if(treasure_capture.size() != getTreasures().size()) {
 			for(Coord treasure : getTreasures()) {
@@ -203,13 +203,13 @@ public class EngineContract extends EngineDecorator{
 				if(treasure.getX() == getPlayer().getWdt() && treasure.getY() == getPlayer().getHgt()) throw new PostconditionError("un trésor aurait du disparaître");
 			}
 		}
-		for(GuardService g : getGuards()) {
+		/*for(GuardService g : getGuards()) {
 			if(g.getWdt()-getPlayer().getWdt() == 1 || g.getWdt()-getPlayer().getWdt() == -1) {
 				if(getStatus() != GameState.Loss) throw new PostconditionError("le player aurait du mourir");
 			}
 			if(g.getHgt()-getPlayer().getHgt() == 1 || g.getHgt()-getPlayer().getHgt() == -1) {
 				if(getStatus() != GameState.Loss) throw new PostconditionError("le player aurait du mourir");
 			}
-		}
+		}*/
 	}
 }

@@ -1,16 +1,16 @@
 package loderunner.impl;
 
 import loderunner.services.CharacterService;
-import loderunner.services.EnvironnementService;
+import loderunner.impl.EnvironnementImpl;
 import loderunner.services.ScreenService;
 
 public class CharacterImpl implements CharacterService{
 
-	private EnvironnementService envi;
+	private EnvironnementImpl envi;
 	private int hgt,wdt;
 	
 	@Override
-	public EnvironnementService getEnvi() {
+	public EnvironnementImpl getEnvi() {
 		return envi;
 	}
 
@@ -26,7 +26,7 @@ public class CharacterImpl implements CharacterService{
 
 	@Override
 	public void init(ScreenService s, int x, int y) {
-		envi = (EnvironnementService)s;
+		envi = (EnvironnementImpl)s;
 		wdt = x;
 		hgt = y;
 	}

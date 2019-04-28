@@ -7,30 +7,30 @@ import java.util.ListIterator;
 import loderunner.data.Command;
 import loderunner.data.Coord;
 import loderunner.data.GameState;
+import loderunner.data.Item;
+import loderunner.data.ItemType;
 import loderunner.services.EditableScreenService;
 import loderunner.services.EngineService;
-import loderunner.services.EnvironnementService;
 import loderunner.services.GuardService;
-import loderunner.services.PlayerService;
 
 public class EngineImpl implements EngineService{
 
-	protected EnvironnementService envi;
-	protected PlayerService player;
+	protected EnvironnementImpl envi;
+	protected PlayerImpl player;
 	protected ArrayList<GuardService> guards;
 	protected ArrayList<Coord> treasures;
 	protected GameState status;
 	protected ArrayList<Command> commands;
-	protected ListIterator<Command> lit = commands.listIterator(commands.size());
+	protected ListIterator<Command> lit;
 	
 	@Override
-	public EnvironnementService getEnvi() {
+	public EnvironnementImpl getEnvi() {
 		
 		return envi;
 	}
 
 	@Override
-	public PlayerService getPlayer() {
+	public PlayerImpl getPlayer() {
 		
 		return player;
 	}
@@ -52,10 +52,7 @@ public class EngineImpl implements EngineService{
 
 	@Override
 	public Command getNextCommand() {
-		if(lit.hasNext()) {
-			return lit.next();
-		}
-		return null;
+		return commands.remove(0);
 	}
 
 	public ListIterator<Command> getLI(){
@@ -64,18 +61,37 @@ public class EngineImpl implements EngineService{
 	
 	@Override
 	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Coord> treasures) {
+		envi = new EnvironnementImpl();
 		envi.init(e);
+		
+		this.player = new PlayerImpl();
 		this.player.init(envi, player.getX(), player.getY());
+		this.player.setEngine(this);
+		
 		/*for(Coord co : guards) {
 			this.guards.add(new GuardService(co.getX(),co.getY()));
 		}*/
+		
 		this.treasures = (ArrayList<Coord>)treasures;
+		for(int i = 0;i<treasures.size();i++) envi.getCellContent(treasures.get(i).getX(), treasures.get(i).getY()).setItem(new Item(treasures.get(i).getX(), treasures.get(i).getY(), ItemType.Treasure));;
+		
+		envi.getCellContent(player.getX(), player.getY()).setCharacter(this.player);
+		commands = new ArrayList<>();
+		lit = commands.listIterator();
 	}
 
 	@Override
 	public void step() {
 		player.step();
 		//for(GuardService guard : guards) guard.step();
+		if(treasures.isEmpty()) {
+			System.out.println("WELLPLAYED");
+		}
+	}
+
+	
+	public ArrayList<Command> getCommands() {
+		return commands;
 	}
 
 }
