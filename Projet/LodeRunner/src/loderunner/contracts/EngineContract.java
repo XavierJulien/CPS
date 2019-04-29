@@ -22,10 +22,17 @@ import loderunner.services.PlayerService;
 
 public class EngineContract extends EngineDecorator{
 
+	protected EngineService delegate;
+	
 	public EngineContract(EngineService delegate) {
 		super(delegate);
+		this.delegate = delegate;
 	}
 
+	protected EngineService getDelegate() {
+		return (EngineService) super.delegate;
+	}
+	
 	public void checkInvariants() {
 		CellContent cell_check = getEnvi().getCellContent(getPlayer().getWdt(), getPlayer().getHgt());
 		if(cell_check.getCharacter() != getPlayer()) throw new InvariantError("checkInvariants : Le player aux position du player n'est pas le player");

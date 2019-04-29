@@ -1,6 +1,7 @@
 package loderunner.impl;
 
 import loderunner.services.CharacterService;
+import loderunner.contracts.EnvironnementContract;
 import loderunner.data.Cell;
 import loderunner.services.EnvironnementService;
 import loderunner.services.ScreenService;
@@ -27,7 +28,7 @@ public class CharacterImpl implements CharacterService{
 
 	@Override
 	public void init(ScreenService s, int x, int y) {
-		envi = (EnvironnementImpl)s;
+		envi = (EnvironnementContract)s;
 		wdt = x;
 		hgt = y;
 	}

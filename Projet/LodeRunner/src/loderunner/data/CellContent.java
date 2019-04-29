@@ -3,13 +3,8 @@ package loderunner.data;
 import loderunner.services.CharacterService;
 
 public class CellContent {
-	private CharacterService character;
-	private Item item;
-	
-	public CellContent(CharacterService character,Item item) {
-		this.character = character;
-		this.item = item;
-	}
+	private CharacterService character = null;
+	private Item item = null;
 
 	public CharacterService getCharacter() {return character;}
 	public Item getItem() {return item;}

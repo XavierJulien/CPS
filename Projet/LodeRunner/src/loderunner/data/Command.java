@@ -6,5 +6,6 @@ public enum Command {
 	LEFT,
 	RIGHT,
 	DIGL,
-	DIGR
+	DIGR,
+	NEUTRAL
 }

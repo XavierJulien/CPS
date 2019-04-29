@@ -37,8 +37,8 @@ public class Main implements KeyListener{
 		engineContract.init(editScreenContract, new Coord(1,1), null, t);
 		Scanner sc = new Scanner(System.in);
 		System.out.println("---------------");
-		System.out.println(engine.getEnvi().toString());
-		class Listener extends Thread implements KeyListener{
+		System.out.println(engine.getEnvi());
+		/*class Listener extends Thread implements KeyListener{
 
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -70,7 +70,7 @@ public class Main implements KeyListener{
 			
 		}
 		Listener l = new Listener();
-		l.start();
+		l.start();*/
 		while(true) {
 			System.out.println("Veuillez saisir un d�placement(UP,DOWN,LEFT,RIGHT) : ");
 			String s = sc.nextLine();

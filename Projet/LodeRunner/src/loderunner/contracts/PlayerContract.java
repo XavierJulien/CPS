@@ -48,7 +48,7 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		//6.post
 		if (getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.LAD 
 				&& getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.HDR) {
-			if (getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.EMP) {
+			if (getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.MTL && getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.PLT) {
 				if (getEnvi().getCellContent(wdt_capture, hgt_capture-1).getCharacter() == null) {
 					if (getHgt() != hgt_capture-1) throw new PostconditionError("Player step : le joueur devrait être en chute libre");
 				}
@@ -94,7 +94,8 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		//2.checkInvariants
 		//3.capture
 		//4.run
-		super.init(e.getEnvi(), c.getX(), c.getY());
+		delegate.init(e, c);
+		//super.init(e.getEnvi(), c.getX(), c.getY());
 		//5.checkInvariants
 		//6.post
 	}

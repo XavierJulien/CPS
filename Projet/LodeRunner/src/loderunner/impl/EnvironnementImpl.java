@@ -26,7 +26,7 @@ public class EnvironnementImpl extends ScreenImpl implements EnvironnementServic
 		for(int i = 0;i<width;i++) {
 			for(int j = 0;j<height;j++) {
 				super.screen[i][j] = e.getCellNature(i, j);
-				screenContent[i][j] = new CellContent(null,null);
+				screenContent[i][j] = new CellContent();
 			}
 		}
 	}

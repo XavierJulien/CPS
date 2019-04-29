@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import loderunner.contracts.EnvironnementContract;
+import loderunner.contracts.PlayerContract;
 import loderunner.data.Command;
 import loderunner.data.Coord;
 import loderunner.data.GameState;
@@ -63,10 +65,10 @@ public class EngineImpl implements EngineService{
 	
 	@Override
 	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Item> treasures) {
-		envi = new EnvironnementImpl();
+		envi = new EnvironnementContract(new EnvironnementImpl());
 		envi.init(e);
 		
-		this.player = new PlayerImpl();
+		this.player = new PlayerContract(new PlayerImpl());
 		this.player.init(this,player);
 		envi.getCellContent(player.getX(), player.getY()).setCharacter(this.player);
 		/*for(Coord co : guards) {
@@ -80,7 +82,7 @@ public class EngineImpl implements EngineService{
 		
 		envi.getCellContent(player.getX(), player.getY()).setCharacter(this.player);
 		commands = new ArrayList<>();
-		lit = commands.listIterator();
+		//lit = commands.listIterator();
 	}
 
 	@Override
