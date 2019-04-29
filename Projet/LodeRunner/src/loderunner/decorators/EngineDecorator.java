@@ -6,6 +6,7 @@ import java.util.List;
 import loderunner.data.Command;
 import loderunner.data.Coord;
 import loderunner.data.GameState;
+import loderunner.data.Item;
 import loderunner.services.EditableScreenService;
 import loderunner.services.EngineService;
 import loderunner.services.EnvironnementService;
@@ -36,7 +37,7 @@ public class EngineDecorator implements EngineService{
 	}
 
 	@Override
-	public ArrayList<Coord> getTreasures() {
+	public ArrayList<Item> getTreasures() {
 		return delegate.getTreasures();
 	}
 
@@ -51,7 +52,7 @@ public class EngineDecorator implements EngineService{
 	}
 
 	@Override
-	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Coord> treasures) {
+	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Item> treasures) {
 		delegate.init(e, player, guards, treasures);
 		
 	}

@@ -1,6 +1,8 @@
 package loderunner.impl;
 
 import loderunner.services.CharacterService;
+import loderunner.data.Cell;
+import loderunner.errors.PostconditionError;
 import loderunner.impl.EnvironnementImpl;
 import loderunner.services.ScreenService;
 
@@ -33,7 +35,21 @@ public class CharacterImpl implements CharacterService{
 
 	@Override
 	public void goLeft() {
-		wdt -= 1;
+		if(wdt != 0) {
+			if(getEnvi().getCellNature(wdt-1, hgt) != Cell.MTL && getEnvi().getCellNature(wdt-1, hgt) != Cell.PLT) {
+				if((getEnvi().getCellNature(wdt-1, hgt) == Cell.LAD || getEnvi().getCellNature(wdt-1, hgt) == Cell.HDR)
+				   || 
+				   (getEnvi().getCellNature(wdt, hgt-1) == Cell.PLT || getEnvi().getCellNature(wdt, hgt-1) == Cell.MTL || getEnvi().getCellNature(wdt, hgt-1) == Cell.LAD)
+				   ||
+				   (getEnvi().getCellContent(wdt, hgt-1).getCharacter() != null)){
+					if(getEnvi().getCellContent(wdt-1, hgt).getCharacter() == null) {
+						if(getWdt() == wdt-1) wdt -= 1;
+					}
+				}
+					
+			}
+		}
+		
 	}
 
 	@Override

@@ -18,7 +18,7 @@ public class EngineImpl implements EngineService{
 	protected EnvironnementImpl envi;
 	protected PlayerImpl player;
 	protected ArrayList<GuardService> guards;
-	protected ArrayList<Coord> treasures;
+	protected ArrayList<Item> treasures;
 	protected GameState status;
 	protected ArrayList<Command> commands;
 	protected ListIterator<Command> lit;
@@ -41,7 +41,7 @@ public class EngineImpl implements EngineService{
 	}
 
 	@Override
-	public ArrayList<Coord> getTreasures() {
+	public ArrayList<Item> getTreasures() {
 		return treasures;
 	}
 
@@ -60,7 +60,7 @@ public class EngineImpl implements EngineService{
 	}
 	
 	@Override
-	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Coord> treasures) {
+	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Item> treasures) {
 		envi = new EnvironnementImpl();
 		envi.init(e);
 		
@@ -72,8 +72,11 @@ public class EngineImpl implements EngineService{
 			this.guards.add(new GuardService(co.getX(),co.getY()));
 		}*/
 		
-		this.treasures = (ArrayList<Coord>)treasures;
-		for(int i = 0;i<treasures.size();i++) envi.getCellContent(treasures.get(i).getX(), treasures.get(i).getY()).setItem(new Item(treasures.get(i).getX(), treasures.get(i).getY(), ItemType.Treasure));;
+		this.treasures = (ArrayList<Item>) treasures;
+		for(Item i : treasures) {
+			System.out.println("x : "+i.getCol()+",y : "+i.getHgt());
+			envi.getCellContent(i.getCol(), i.getHgt()).setItem(new Item(i.getCol(), i.getHgt(), ItemType.Treasure));;
+		}
 		
 		envi.getCellContent(player.getX(), player.getY()).setCharacter(this.player);
 		commands = new ArrayList<>();

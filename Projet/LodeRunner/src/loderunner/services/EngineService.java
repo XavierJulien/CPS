@@ -6,13 +6,14 @@ import java.util.List;
 import loderunner.data.Command;
 import loderunner.data.Coord;
 import loderunner.data.GameState;
+import loderunner.data.Item;
 
 public interface EngineService {
 	/* Observators */
 	public EnvironnementService getEnvi();
 	public PlayerService getPlayer();
 	public ArrayList<GuardService> getGuards();
-	public ArrayList<Coord> getTreasures();
+	public ArrayList<Item> getTreasures();
 	public GameState getStatus();
 	public Command getNextCommand();
 	
@@ -33,7 +34,7 @@ public interface EngineService {
 	public void init(EditableScreenService e,
 					 Coord player,
 					 List<Coord> guards,
-					 List<Coord> treasures);
+					 List<Item> treasures);
 	/* Invariant */
 	/**
 	 *                                          ??    pre : step() require c : CellContent \def getEnvi().getCellContent(getPlayer.getWdt(),getPlayer().getHgt())

@@ -32,10 +32,7 @@ public class EnvironnementImpl extends ScreenImpl implements EnvironnementServic
 	}
 	
 	public String cellcont(CellContent c) {
-		if (c.getCharacter() != null) {
-			if(c.getItem() != null) return "+";
-			return "&";
-		}
+		if (c.getCharacter() != null) return "&";
 		if (c.getCharacter() == null) {
 			if(c.getItem() == null) return "0";
 			return "@";

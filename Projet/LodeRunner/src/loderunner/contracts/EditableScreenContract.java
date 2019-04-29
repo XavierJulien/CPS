@@ -27,9 +27,9 @@ public class EditableScreenContract extends ScreenContract implements EditableSc
 					throw new InvariantError("Une case est Cell.HOL");
 			}
 		}
-		for(int i = 0;i<getWidth();i++) {
-			if(getCellNature(i, 0) != Cell.MTL) throw new InvariantError("Une case en (i,0) est différent de Cell.MTL");
-		}
+		/*for(int i = 0;i<getWidth();i++) { //vision défensive en avance lors du set de la premiere case a MTL
+			if(getCellNature(i, 0) != Cell.MTL) throw new InvariantError("Une case en ("+i+",0) est différent de Cell.MTL");
+		}*/
 	}
 	
 	@Override
@@ -66,8 +66,10 @@ public class EditableScreenContract extends ScreenContract implements EditableSc
 					if(getCellNature(i,j) != screen_capture[i][j]) 
 						throw new PostconditionError("setNature : Une autre case à été modifié");
 				}else {
-					if(getCellNature(i,j) != c) 
+					//System.out.println("x : "+x+",y : "+y+",i : "+i+", j : "+j);
+					if(delegate.getCellNature(x,y) != c) {
 						throw new PostconditionError("setNature : La case n'as pas été modifiée");
+					}
 				}
 			}
 		}
