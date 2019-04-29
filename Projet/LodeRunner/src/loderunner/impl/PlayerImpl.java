@@ -3,7 +3,6 @@ package loderunner.impl;
 
 import loderunner.data.Command;
 import loderunner.data.GameState;
-import loderunner.data.Item;
 import loderunner.services.EngineService;
 import loderunner.services.PlayerService;
 
@@ -22,7 +21,6 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 	
 	@Override
 	public void step() {
-		
 		getEnvi().getCellContent(engine.getPlayer().getWdt(), engine.getPlayer().getHgt()).setCharacter(null);
 		Command cmd = engine.getCommands().get(0);
 		engine.getCommands().remove(0);

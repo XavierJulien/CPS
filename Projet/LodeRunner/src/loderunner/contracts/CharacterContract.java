@@ -243,7 +243,7 @@ public class CharacterContract extends CharacterDecorator {
 					|| getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.LAD
 					|| getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.HOL) {
 				if (getEnvi().getCellContent(wdt_capture, hgt_capture-1).getCharacter() == null ) 
-					if (getHgt() == hgt_capture-1) throw new PostconditionError("doDown : le joueur n'est pas descendu alors qu'il devait");
+					if (getHgt() == hgt_capture-1) throw new PostconditionError("goDown : le joueur n'est pas descendu alors qu'il devait");
 			}
 		}
 	}

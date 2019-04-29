@@ -35,10 +35,10 @@ public class Main {
 		editScreenContract.setNature(2, 0, Cell.MTL);
 		editScreenContract.setNature(3, 0, Cell.MTL);
 		editScreenContract.setNature(4, 0, Cell.MTL);
-		editScreenContract.setNature(2, 1, Cell.HDR);
+		editScreenContract.setNature(2, 1, Cell.LAD);
 		editScreenContract.setNature(0, 2, Cell.PLT);
 		editScreenContract.setNature(1, 2, Cell.PLT);
-		editScreenContract.setNature(2, 2, Cell.HDR);
+		editScreenContract.setNature(2, 2, Cell.LAD);
 		editScreenContract.setNature(3, 2, Cell.PLT);
 		editScreenContract.setNature(4, 2, Cell.PLT);
 		EngineContract engineContract = new EngineContract(engine);
@@ -59,6 +59,9 @@ public class Main {
 			case "DIGL" : {engine.getCommands().add(Command.DIGL);break;}
 			}
 			engineContract.step();
+			if(engineContract.getTreasures().isEmpty()) {
+				break;
+			}
 			System.out.println("---------------");
 			System.out.println(engine.getEnvi().toString());
 		}
