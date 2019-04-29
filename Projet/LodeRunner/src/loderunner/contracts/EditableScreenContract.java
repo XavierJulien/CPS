@@ -65,9 +65,9 @@ public class EditableScreenContract extends ScreenContract implements EditableSc
 				if(i != x && j != y) {
 					if(getCellNature(i,j) != screen_capture[i][j]) 
 						throw new PostconditionError("setNature : Une autre case à été modifié");
-				}else {
-					//System.out.println("x : "+x+",y : "+y+",i : "+i+", j : "+j);
-					if(delegate.getCellNature(x,y) != c) {
+				}
+				if(i == x && j == y) {
+					if(delegate.getCellNature(i,j) != c) {
 						throw new PostconditionError("setNature : La case n'as pas été modifiée");
 					}
 				}

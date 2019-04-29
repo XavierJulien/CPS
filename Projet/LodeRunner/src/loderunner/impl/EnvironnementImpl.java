@@ -42,12 +42,12 @@ public class EnvironnementImpl extends ScreenImpl implements EnvironnementServic
 	
 	public String cellnat(Cell c) {
 		switch(c) {
-			case EMP : return "0";
-			case PLT : return "P";
-			case HOL : return "H";
-			case MTL : return "M";
-			case LAD : return "L";
-			case HDR : return "R";
+			case EMP : return " ";
+			case PLT : return "=";
+			case HOL : return "U";
+			case MTL : return "X";
+			case LAD : return "H";
+			case HDR : return "-";
 		}
 		return null;
 	}
@@ -56,11 +56,13 @@ public class EnvironnementImpl extends ScreenImpl implements EnvironnementServic
 		String s = "";
 		for(int i = height-1; i >= 0;i--) {
 			for(int j = 0;j < width;j++) {
-				s+=" "+cellnat(getCellNature(j, i))+" ";
+				if(getCellContent(j, i).getItem() != null) s +="@";
+				if(getCellContent(j, i).getCharacter() != null) {s +="&";}
+				else{s+=cellnat(getCellNature(j, i));}
 			}
 			s+= "\n";
 		}
-		s+="\n-----------------\n";
+		s+="\n\n";
 		for(int i = height-1; i >= 0;i--) {
 			for(int j = 0;j < width;j++) {
 				s+=" "+cellcont(getCellContent(j, i))+" ";

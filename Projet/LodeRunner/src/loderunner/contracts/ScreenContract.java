@@ -61,7 +61,7 @@ public class ScreenContract extends ScreenDecorator {
 		if(getWidth() != width) throw new PostconditionError("init : width est différent de getWidth()");
 		for(int i = 0;i<getWidth();i++) {
 			for(int j = 0;j<getHeight();j++) {
-				if(getCellNature(i,j) != Cell.EMP) 
+				if(getCellNature(i,j) != Cell.EMP)
 					throw new PostconditionError("init : Une case n'est pas EMP");
 			}
 		}
@@ -93,7 +93,8 @@ public class ScreenContract extends ScreenDecorator {
 				if(i != x && j != y) {
 					if(getCellNature(i,j) != screen_capture[i][j]) 
 						throw new PostconditionError("dig : Une autre case à été modifié");
-				}else {
+				}
+				if(i == x && j == y) {
 					if(getCellNature(i,j) != Cell.HOL) 
 						throw new PostconditionError("dig : La case n'as pas été modifiée");
 				}
@@ -126,7 +127,8 @@ public class ScreenContract extends ScreenDecorator {
 				if(i != x && j != y) {
 					if(getCellNature(i,j) != screen_capture[i][j]) 
 						throw new PostconditionError("fill : Une autre case à été modifié");
-				}else {
+				}
+				if(i == x && j == y) {
 					if(getCellNature(i,j) != Cell.PLT) 
 						throw new PostconditionError("fill : La case n'as pas été modifiée");
 				}

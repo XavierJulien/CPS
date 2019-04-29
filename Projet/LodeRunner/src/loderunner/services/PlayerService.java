@@ -1,5 +1,7 @@
 package loderunner.services;
 
+import loderunner.data.Coord;
+
 public interface PlayerService extends CharacterService{
 	
 	/* Observators */
@@ -12,6 +14,7 @@ public interface PlayerService extends CharacterService{
 	/*   EMPTY   */
 	
 	/* Operators */
+	public void init(EngineService e,Coord c);
 	/**
 	 * post :  	getEnvi().getCellNature(player.getWdt()@pre,player.getHgt()@pre) \not \in {LAD,HDR} &&
 	 * 			getEnvi().getCellNature(player.getWdt()@pre,player.getHgt()@pre-1) != EMP &&

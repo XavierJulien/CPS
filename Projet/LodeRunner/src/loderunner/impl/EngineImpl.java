@@ -11,12 +11,14 @@ import loderunner.data.Item;
 import loderunner.data.ItemType;
 import loderunner.services.EditableScreenService;
 import loderunner.services.EngineService;
+import loderunner.services.EnvironnementService;
 import loderunner.services.GuardService;
+import loderunner.services.PlayerService;
 
 public class EngineImpl implements EngineService{
 
-	protected EnvironnementImpl envi;
-	protected PlayerImpl player;
+	protected EnvironnementService envi;
+	protected PlayerService player;
 	protected ArrayList<GuardService> guards;
 	protected ArrayList<Item> treasures;
 	protected GameState status;
@@ -24,13 +26,13 @@ public class EngineImpl implements EngineService{
 	protected ListIterator<Command> lit;
 	
 	@Override
-	public EnvironnementImpl getEnvi() {
+	public EnvironnementService getEnvi() {
 		
 		return envi;
 	}
 
 	@Override
-	public PlayerImpl getPlayer() {
+	public PlayerService getPlayer() {
 		
 		return player;
 	}
@@ -65,16 +67,14 @@ public class EngineImpl implements EngineService{
 		envi.init(e);
 		
 		this.player = new PlayerImpl();
-		this.player.init(envi, player.getX(), player.getY());
-		this.player.setEngine(this);
-		
+		this.player.init(this,player);
+		envi.getCellContent(player.getX(), player.getY()).setCharacter(this.player);
 		/*for(Coord co : guards) {
 			this.guards.add(new GuardService(co.getX(),co.getY()));
 		}*/
 		
 		this.treasures = (ArrayList<Item>) treasures;
 		for(Item i : treasures) {
-			System.out.println("x : "+i.getCol()+",y : "+i.getHgt());
 			envi.getCellContent(i.getCol(), i.getHgt()).setItem(new Item(i.getCol(), i.getHgt(), ItemType.Treasure));;
 		}
 		
@@ -87,14 +87,26 @@ public class EngineImpl implements EngineService{
 	public void step() {
 		player.step();
 		//for(GuardService guard : guards) guard.step();
-		if(treasures.isEmpty()) {
-			System.out.println("WELLPLAYED");
+		if(envi.getCellContent(player.getWdt(), player.getHgt()).getItem() != null) {
+			envi.getCellContent(player.getWdt(), player.getHgt()).setItem(null);
+			for(int i = 0;i<treasures.size();i++) {
+				if(treasures.get(i).getCol() == player.getWdt() && treasures.get(i).getHgt() == player.getHgt()) {
+					treasures.remove(i);
+				}
+			}
 		}
+		if(treasures.isEmpty()) {
+			status = GameState.Win;
+		}
+		if(status == GameState.Win) System.out.println("WELLPLAYED");
+		if(status == GameState.Loss) System.out.println("YOU LOSE");
+		
 	}
 
-	
-	public ArrayList<Command> getCommands() {
-		return commands;
+	@Override
+	public void addCommand(Command c) {
+		commands.add(c);
+		
 	}
 
 }

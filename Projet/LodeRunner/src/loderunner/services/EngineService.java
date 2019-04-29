@@ -48,6 +48,7 @@ public interface EngineService {
 	 *  		\implies c.getItem() == ItemType.Treasure 
 	 */
 	/* Operators */
+	public void addCommand(Command c);
 	/**
 	 * post : \exists t : Treasure \in 
 	 * 				getEnvi().getCellContent(getPlayer().getX()@pre+1,getPlayer().getY()@pre).getItem() && 

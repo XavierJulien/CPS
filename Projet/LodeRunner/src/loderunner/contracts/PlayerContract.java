@@ -2,6 +2,7 @@ package loderunner.contracts;
 
 import loderunner.data.Cell;
 import loderunner.data.Command;
+import loderunner.data.Coord;
 import loderunner.errors.PostconditionError;
 import loderunner.services.EngineService;
 import loderunner.services.PlayerService;
@@ -85,6 +86,17 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 				
 			}
 		}
+	}
+
+	@Override
+	public void init(EngineService e, Coord c) {
+		//1.pre
+		//2.checkInvariants
+		//3.capture
+		//4.run
+		super.init(e.getEnvi(), c.getX(), c.getY());
+		//5.checkInvariants
+		//6.post
 	}
 
 	

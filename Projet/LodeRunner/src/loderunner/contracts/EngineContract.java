@@ -26,17 +26,6 @@ public class EngineContract extends EngineDecorator{
 		super(delegate);
 	}
 
-	/**
-	 *  c : CellContent \is getEnvi().getCellContent(getPlayer.getWdt(),getPlayer().getHgt()) 
-	 * 		\implies c.getCharacter() == getPlayer() &&
-	 *  \forall guard : Guard \in getGuards() 
-	 *  	c : CellContent \is getEnvi().getCellContent(guard.getWdt(),guard.getHgt())
-	 *  		\implies c.getCharacter() == guard &&
-	 *  \forall treasure : Treasure \in t 
-	 *		c : CellContent \is getEnvi().getCellContent(treasure.getX(),treasure.getY())
-	 *  		\implies c.getItem() == ItemType.Treasure 
-	 */
-	
 	public void checkInvariants() {
 		CellContent cell_check = getEnvi().getCellContent(getPlayer().getWdt(), getPlayer().getHgt());
 		if(cell_check.getCharacter() != getPlayer()) throw new InvariantError("checkInvariants : Le player aux position du player n'est pas le player");
@@ -99,20 +88,7 @@ public class EngineContract extends EngineDecorator{
 		//4.run
 		return super.getNextCommand();
 	}
-
-	/**
-	 * pre : init(e,p,g,t) require 
-	 * 	e.isPlayable() && 
-	 * 	e.getCellNature(p.getX(),p.getY()) == EMP &&
-	 *  \forall guard : Guard \in g 
-	 *  	e.getCellNature(guard.getX(),guard.getY()) == EMP &&
-	 *  \forall treasure : Treasure \in t 
-	 *  	e.getCellNature(treasure.getX(),treasure.getY()) == EMP &&
-	 *  	e.getCellNature(treasure.getX(),treasure.getY()-1) \in {PLT,MTL}
-	 *  	&& \forall t : Treasure \in t \without treasure
-	 *  		t.getX() != treasure.getX() || t.getY() != treasure.getY()
-	 *  
-	 */
+	
 	@Override
 	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Item> treasures) {
 		//1.pre
@@ -174,6 +150,23 @@ public class EngineContract extends EngineDecorator{
 		}
 	}
 
+	@Override
+	public void addCommand(Command c) {
+		//1.pre
+		//none
+		//2.checkInvariants
+		checkInvariants();
+		//3.capture
+		//peut etre faire getCommands.size()
+		//4.run
+		super.addCommand(c);
+		//5.checkInvariants
+		checkInvariants();
+		//6.post
+		//peut etre verifier que ya un nouvel ajout dans la liste de commandes avec la capture
+			
+	}
+	
 	@Override
 	public void step() {
 		//1.pre

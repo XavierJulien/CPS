@@ -62,4 +62,9 @@ public class EngineDecorator implements EngineService{
 		delegate.step();
 	}
 
+	@Override
+	public void addCommand(Command c) {
+		delegate.addCommand(c);
+	}
+
 }
