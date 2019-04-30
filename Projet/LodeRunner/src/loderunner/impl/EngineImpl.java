@@ -2,8 +2,8 @@ package loderunner.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
+import loderunner.contracts.CharacterContract;
 import loderunner.contracts.EnvironnementContract;
 import loderunner.contracts.PlayerContract;
 import loderunner.data.Command;
@@ -25,7 +25,6 @@ public class EngineImpl implements EngineService{
 	protected ArrayList<Item> treasures;
 	protected GameState status;
 	protected ArrayList<Command> commands;
-	protected ListIterator<Command> lit;
 	
 	@Override
 	public EnvironnementService getEnvi() {
@@ -59,12 +58,10 @@ public class EngineImpl implements EngineService{
 		return commands.remove(0);
 	}
 
-	public ListIterator<Command> getLI(){
-		return lit;
-	}
 	
 	@Override
 	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Item> treasures) {
+		envi = new EnvironnementImpl();
 		envi = new EnvironnementContract(new EnvironnementImpl());
 		envi.init(e);
 		
@@ -82,7 +79,6 @@ public class EngineImpl implements EngineService{
 		
 		envi.getCellContent(player.getX(), player.getY()).setCharacter(this.player);
 		commands = new ArrayList<>();
-		//lit = commands.listIterator();
 	}
 
 	@Override
@@ -108,7 +104,6 @@ public class EngineImpl implements EngineService{
 	@Override
 	public void addCommand(Command c) {
 		commands.add(c);
-		
 	}
 
 }

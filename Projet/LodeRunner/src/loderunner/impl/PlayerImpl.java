@@ -45,6 +45,8 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 			case DIGR : 
 				super.getEnvi().dig(super.getWdt()+1, super.getHgt()-1);
 				break;	
+			case NEUTRAL :
+				break;
 		}
 		getEnvi().getCellContent(engine.getPlayer().getWdt(), engine.getPlayer().getHgt()).setCharacter(this);
 	}
@@ -52,6 +54,13 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 	@Override
 	public String toString() {
 		return "["+engine.getPlayer().getWdt()+","+engine.getPlayer().getHgt()+"]";
+	}
+
+	@Override
+	public PlayerService clonePlayer() {
+		PlayerImpl p = new PlayerImpl();
+		p.init(this.engine, new Coord(this.getWdt(), this.getHgt()));
+		return p;
 	}
 
 

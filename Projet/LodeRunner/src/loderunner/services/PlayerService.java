@@ -36,4 +36,6 @@ public interface PlayerService extends CharacterService{
 	 * 		    \implies getEnvi().getCellNature(player.getWdt()@pre+1,player.getHgt()@pre-1) == HOL
 	 */
 	public void step();
+	
+	public PlayerService clonePlayer();
 }

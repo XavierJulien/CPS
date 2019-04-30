@@ -35,7 +35,7 @@ public class EngineContract extends EngineDecorator{
 	
 	public void checkInvariants() {
 		CellContent cell_check = getEnvi().getCellContent(getPlayer().getWdt(), getPlayer().getHgt());
-		if(cell_check.getCharacter() != getPlayer()) throw new InvariantError("checkInvariants : Le player aux position du player n'est pas le player");
+		if(!cell_check.getCharacter().equals(getPlayer())) throw new InvariantError("checkInvariants : Le player aux position du player n'est pas le player");
 		/*for(GuardService g : getGuards()) {
 			cell_check = getEnvi().getCellContent(g.getWdt(), g.getHgt());
 			if(cell_check.getCharacter() != g) throw new InvariantError("checkInvariants : Le guard aux position du guard n'est pas le guard");

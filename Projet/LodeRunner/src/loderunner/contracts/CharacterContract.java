@@ -140,6 +140,7 @@ public class CharacterContract extends CharacterDecorator {
 				}
 			}
 		}
+		System.out.println("fin goLeft");
 	}
 
 	@Override

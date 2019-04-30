@@ -29,4 +29,5 @@ public interface EnvironnementService extends ScreenService{
 	 * 		\exists t : Treasure \in getCellContent(x,y)
 	 * 			\implies getCellNature(x,y) = EMP && getCellNature(x,y-1) \in {MTL,PLT}
 	 */
+	public String toString();
 }

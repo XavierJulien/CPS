@@ -4,6 +4,7 @@ import loderunner.data.Cell;
 import loderunner.data.Command;
 import loderunner.data.Coord;
 import loderunner.errors.PostconditionError;
+import loderunner.main.Creator;
 import loderunner.services.EngineService;
 import loderunner.services.PlayerService;
 
@@ -41,11 +42,17 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		//3.capture
 		int hgt_capture = getHgt();
 		int wdt_capture = getWdt();
+		Command command_capture = getEngine().getNextCommand();
+		getEngine().addCommand(command_capture);
+		getEngine().addCommand(command_capture);
+		PlayerContract clone = Creator.createPlayerContract(delegate.clonePlayer());
+		clone.step();
 		//4.run
 		delegate.step();
 		//5.checkInvariants
 		checkInvariants();
 		//6.post
+		if(clone.getHgt() != getHgt() || clone.getWdt() != getWdt()) throw new PostconditionError("Player Step : le joueur n'as pas la bonne position");
 		if (getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.LAD 
 				&& getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.HDR) {
 			if (getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.MTL && getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.PLT) {
@@ -54,7 +61,7 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 				}
 			}
 		}
-		if (getEngine().getNextCommand() == Command.DIGL) {
+		if (command_capture == Command.DIGL) {
 			if (getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.PLT
 					|| getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL
 					|| getEnvi().getCellContent(wdt_capture, hgt_capture-1) != null ) {
@@ -70,7 +77,7 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 				
 			}
 		}
-		if (getEngine().getNextCommand() == Command.DIGR) {
+		if (command_capture == Command.DIGR) {
 			if (getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.PLT
 					|| getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL
 					|| getEnvi().getCellContent(wdt_capture, hgt_capture-1) != null ) {
@@ -86,6 +93,7 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 				
 			}
 		}
+		System.out.println("fin step player");
 	}
 
 	@Override
@@ -100,5 +108,9 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		//6.post
 	}
 
+	@Override
+	public PlayerService clonePlayer() {
+		return new PlayerContract(delegate);
+	}
 	
 }

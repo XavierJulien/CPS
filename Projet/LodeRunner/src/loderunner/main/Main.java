@@ -72,7 +72,7 @@ public class Main implements KeyListener{
 		Listener l = new Listener();
 		l.start();*/
 		while(true) {
-			System.out.println("Veuillez saisir un d�placement(UP,DOWN,LEFT,RIGHT) : ");
+			System.out.println("Veuillez saisir un déplacement(UP,DOWN,LEFT,RIGHT) : ");
 			String s = sc.nextLine();
 			if(s.equals("STOP")) break;
 			switch (s) {
