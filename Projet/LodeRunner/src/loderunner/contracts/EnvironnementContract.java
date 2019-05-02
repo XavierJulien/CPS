@@ -97,25 +97,7 @@ public class EnvironnementContract extends ScreenContract implements Environneme
 	
 	@Override
 	public String toString() {
-		String s = "";
-		for(int i = getHeight()-1; i >= 0;i--) {
-			for(int j = 0;j < getWidth();j++) {
-				if(getCellContent(j, i).getItem() != null) s +="@";
-				else{
-					if(getCellContent(j, i).getCharacter() != null) {s +="&";}
-					else{s+=cellnat(getCellNature(j, i));}
-				}
-			}
-			s+= "\n";
-		}
-		s+="\n\n";
-		for(int i = getHeight()-1; i >= 0;i--) {
-			for(int j = 0;j < getWidth();j++) {
-				s+=" "+cellcont(getCellContent(j, i))+" ";
-			}
-			s+= "\n";
-		}
-		return s;
+		return delegate.toString();
 	}
 
 }

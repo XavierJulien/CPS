@@ -6,6 +6,7 @@ import loderunner.contracts.EngineContract2;
 import loderunner.data.Cell;
 import loderunner.data.Command;
 import loderunner.data.Coord;
+import loderunner.data.Hole;
 import loderunner.services.EngineService;
 import loderunner.services.PlayerService;
 
@@ -28,12 +29,13 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 	public void step() {
 		getEnvi().getCellContent(engine.getPlayer().getWdt(), engine.getPlayer().getHgt()).setCharacter(null);
 		Command cmd = engine.getNextCommand();
-		if(engine.getEnvi().getCellNature(getWdt(), getHgt()) != Cell.HDR) {
+		if(engine.getEnvi().getCellNature(engine.getPlayer().getWdt(), engine.getPlayer().getHgt()) != Cell.HDR) {
 			if(engine.getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.HOL || engine.getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.EMP) {
-				super.goDown();return;
+				super.goDown();
+				return;
 			}
 		}
-		if(cmd == null) return;
+		if(cmd == null) return;//neutral 
 		switch(cmd) {
 			case UP : 
 				super.goUp();
@@ -49,14 +51,17 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 				break;
 			case DIGL :
 				super.getEnvi().dig(super.getWdt()-1, super.getHgt()-1);
+				engine.getHoles().add(new Hole(super.getWdt()-1, super.getHgt()-1,0));
 				break;
 			case DIGR : 
 				super.getEnvi().dig(super.getWdt()+1, super.getHgt()-1);
+				engine.getHoles().add(new Hole(super.getWdt()+1, super.getHgt()-1,0));
 				break;	
 			case NEUTRAL :
 				break;
 		}
 		getEnvi().getCellContent(engine.getPlayer().getWdt(), engine.getPlayer().getHgt()).setCharacter(this);
+		
 	}
 	
 	@Override

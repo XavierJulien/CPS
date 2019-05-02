@@ -8,6 +8,7 @@ import loderunner.contracts.PlayerContract;
 import loderunner.data.Command;
 import loderunner.data.Coord;
 import loderunner.data.GameState;
+import loderunner.data.Hole;
 import loderunner.data.Item;
 import loderunner.data.ItemType;
 import loderunner.services.EditableScreenService;
@@ -24,6 +25,8 @@ public class EngineImpl implements EngineService{
 	protected ArrayList<Item> treasures;
 	protected GameState status;
 	protected ArrayList<Command> commands;
+	protected ArrayList<Hole> holes;
+	protected int score;
 	
 	@Override
 	public EnvironnementService getEnvi() {
@@ -57,12 +60,23 @@ public class EngineImpl implements EngineService{
 		return commands.remove(0);
 	}
 
+	@Override
+	public ArrayList<Hole> getHoles() {
+		return holes;
+	}
+	
+
+	@Override
+	public int getScore() {
+		return score;
+	}
 	
 	@Override
 	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Item> treasures) {
 		envi = new EnvironnementContract(new EnvironnementImpl());
 		envi.init(e);
 		
+		this.status = GameState.Playing;
 		this.player = new PlayerContract(new PlayerImpl());
 		this.player.init(this,player);
 		envi.getCellContent(player.getX(), player.getY()).setCharacter(this.player);
@@ -77,26 +91,43 @@ public class EngineImpl implements EngineService{
 		
 		envi.getCellContent(player.getX(), player.getY()).setCharacter(this.player);
 		commands = new ArrayList<>();
+		holes = new ArrayList<>();
+		score = 0;
 	}
 
 	@Override
 	public void step() {
-		player.step();
-		//for(GuardService guard : guards) guard.step();
-		if(envi.getCellContent(player.getWdt(), player.getHgt()).getItem() != null) {
-			envi.getCellContent(player.getWdt(), player.getHgt()).setItem(null);
-			for(int i = 0;i<treasures.size();i++) {
-				if(treasures.get(i).getCol() == player.getWdt() && treasures.get(i).getHgt() == player.getHgt()) {
-					treasures.remove(i);
+		//step des trous
+		for(int i = 0;i<holes.size();i++) {
+			Hole h = holes.get(i);
+			h.setT(h.getT()+1);
+			if(h.getT() == 15) {
+				holes.remove(h);
+				if(envi.getCellContent(h.getX(), h.getY()).getCharacter() != null) {
+					status = GameState.Loss;
+				}
+				//pour les gardes
+				envi.fill(h.getX(), h.getY());
+			}
+		}
+		if(status == GameState.Playing) {
+			//step du player
+			player.step();
+			//step du guard
+			//for(GuardService guard : guards) guard.step();
+			if(envi.getCellContent(player.getWdt(), player.getHgt()).getItem() != null) {
+				envi.getCellContent(player.getWdt(), player.getHgt()).setItem(null);
+				for(int i = 0;i<treasures.size();i++) {
+					if(treasures.get(i).getCol() == player.getWdt() && treasures.get(i).getHgt() == player.getHgt()) {
+						treasures.remove(i);
+						score +=1;
+					}
 				}
 			}
 		}
 		if(treasures.isEmpty()) {
 			status = GameState.Win;
 		}
-		if(status == GameState.Win) System.out.println("WELLPLAYED");
-		if(status == GameState.Loss) System.out.println("YOU LOSE");
-		
 	}
 
 	@Override

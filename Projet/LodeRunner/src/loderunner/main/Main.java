@@ -1,51 +1,49 @@
 package loderunner.main;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import loderunner.contracts.EditableScreenContract;
 import loderunner.contracts.EngineContract;
 import loderunner.data.Command;
-import loderunner.data.Item;
-import loderunner.data.ItemType;
+import loderunner.data.GameState;
 import loderunner.data.Map;
 import loderunner.impl.EditableScreenImpl;
 import loderunner.impl.EngineImpl;
 
-public class Main implements KeyListener{
+public class Main{
 
 	public static void main(String[] args) {
-
-		//EDITOR
-		EditableScreenImpl edit = new EditableScreenImpl();
 		
-		//TREASURES
-		ArrayList<Item> t = new ArrayList<>();
-		t.add(new Item(9, 1,ItemType.Treasure));
+		//Lives
+		int lives = 3;
 		
-		//ENGINE
-		EngineImpl engine = new EngineImpl();
-		
-		//MAP
-		EditableScreenContract editScreenContract;
-		MapBuilder m = new MapBuilder(edit);
-		//RUN
 		ArrayList<String> filenames = new ArrayList<String>();
-		
 		for(int i = 0;i<2;i++) {
 			filenames.add("src/loderunner/maps/map"+i+".txt");//changer le nombre de clés
 		}
 		Scanner sc = new Scanner(System.in);
-		for(String filename : filenames) {
-			Map map = m.buildMap(filename);
+		for(int i = 0;i<filenames.size();i++) {
+			//EDITOR
+			EditableScreenImpl edit = new EditableScreenImpl();
+			
+			//ENGINE
+			EngineImpl engine = new EngineImpl();
+			
+			//MAP
+			EditableScreenContract editScreenContract;
+			MapBuilder m = new MapBuilder(edit);
+			Map map = m.buildMap(filenames.get(i));
 			editScreenContract = map.getEdit();
 			EngineContract engineContract = new EngineContract(engine);
 			engineContract.init(editScreenContract, map.getPlayer(), null, map.getTreasures());
-			System.out.println("---------------");
-			System.out.println(engine.getEnvi());
+			System.out.println("-------MAP N°"+i+"--------");
+			System.out.println(engineContract.getEnvi().toString());
+			System.out.println("---------------------------");
+			System.out.println("---LIVES : "+lives+"---SCORE : "+engineContract.getScore()+"---");
 			while(true) {
+				if(engineContract.getStatus() == GameState.Win) {System.out.println("--------WELLPLAYED--------");break;}
+				if(engineContract.getStatus() == GameState.Loss){System.out.println("--------YOU LOSE--------");break;}
 				System.out.println("Veuillez saisir un déplacement(UP,DOWN,LEFT,RIGHT) : ");
 				String s = sc.nextLine();
 				if(s.equals("STOP")) break;
@@ -59,34 +57,31 @@ public class Main implements KeyListener{
 				default : {engineContract.addCommand(Command.NEUTRAL);break;}
 				}
 				engineContract.step();
-				if(engineContract.getTreasures().isEmpty()) {
-					System.out.println("---------------");
-					System.out.println(engine.getEnvi().toString());
+				if(engineContract.getStatus() == GameState.Win) {
+					System.out.println(engineContract.getEnvi().toString());
+					System.out.println("---------------------------");
+					System.out.println("---LIVES : "+lives+"---SCORE : "+engineContract.getScore()+"---");
+					System.out.println("\n---------WELLPLAYED--------");
 					break;
+				}else {
+					System.out.println("-------PLAYING--------");
+					System.out.println(engineContract.getEnvi().toString());
+					System.out.println("---------------------------");
+					System.out.println("---LIVES : "+lives+"---SCORE : "+engineContract.getScore()+"---");	
 				}
-				System.out.println("---------------");
-				System.out.println(engine.getEnvi().toString());
+			}
+			if(engineContract.getStatus() == GameState.Loss){
+				if(lives == 0) {
+					System.out.println("--------YOU LOOSE--------");
+					break;
+				}else {
+					System.out.println("--------RETRY--------");
+					i=i-1;
+					lives-=1;
+				}
 			}
 		}
 		sc.close();
 		System.out.println("--------END-------");
 	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

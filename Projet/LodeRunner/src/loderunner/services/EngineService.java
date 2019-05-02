@@ -6,6 +6,7 @@ import java.util.List;
 import loderunner.data.Command;
 import loderunner.data.Coord;
 import loderunner.data.GameState;
+import loderunner.data.Hole;
 import loderunner.data.Item;
 
 public interface EngineService {
@@ -16,6 +17,8 @@ public interface EngineService {
 	public ArrayList<Item> getTreasures();
 	public GameState getStatus();
 	public Command getNextCommand();
+	public ArrayList<Hole> getHoles();
+	public int getScore();
 	
 	/* Constructors */
 	/**

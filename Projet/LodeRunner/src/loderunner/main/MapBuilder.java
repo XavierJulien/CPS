@@ -33,9 +33,7 @@ public class MapBuilder {
 			String line = br.readLine();
 			String[] pos = line.split(" ");
 			width = Integer.parseInt(pos[0]);
-			System.out.println(width);
 			height = Integer.parseInt(pos[1]);
-			System.out.println(height);
 			edit.init(width, height);
 			for(int i = height-1;i>=0;i--) {
 				line = br.readLine();

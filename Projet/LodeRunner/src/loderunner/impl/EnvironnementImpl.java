@@ -28,7 +28,6 @@ public class EnvironnementImpl extends ScreenImpl implements EnvironnementServic
 				super.screen[j][i] = e.getCellNature(j, i);
 				screenContent[j][i] = new CellContent();
 			}
-			System.out.println();
 		}
 	}
 	
@@ -58,18 +57,19 @@ public class EnvironnementImpl extends ScreenImpl implements EnvironnementServic
 		for(int i = height-1; i >= 0;i--) {
 			for(int j = 0;j < width;j++) {
 				if(getCellContent(j, i).getItem() != null) s +="@";
-				if(getCellContent(j, i).getCharacter() != null) {s +="&";}
-				else{s+=cellnat(getCellNature(j, i));}
+				else{
+					if(getCellContent(j, i).getCharacter() != null) {s +="&";}
+					else{s+=cellnat(getCellNature(j, i));}
+				}
 			}
 			s+= "\n";
 		}
-		s+="\n\n";
-		for(int i = height-1; i >= 0;i--) {
+		/*for(int i = height-1; i >= 0;i--) {
 			for(int j = 0;j < width;j++) {
 				s+=" "+cellcont(getCellContent(j, i))+" ";
 			}
 			s+= "\n";
-		}
+		}*/
 		return s;
 	}
 }

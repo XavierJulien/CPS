@@ -3,6 +3,7 @@ package loderunner.contracts;
 import loderunner.data.Cell;
 import loderunner.data.Command;
 import loderunner.data.Coord;
+import loderunner.data.Hole;
 import loderunner.errors.PostconditionError;
 import loderunner.main.Creator;
 import loderunner.services.CharacterService;
@@ -40,12 +41,13 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		//none
 		//2.checkInvariants
 		checkInvariants();
+		
 		//3.capture
 		Cell digl_capture = null,digr_capture = null;
 		int hgt_capture = getHgt();
 		int wdt_capture = getWdt();
 		Command command_capture = getEngine().getNextCommand();
-		if(getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.EMP || getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.HOL)command_capture = Command.DOWN;
+		if(getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.HDR && getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.LAD && getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.EMP || getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.HOL)command_capture = Command.DOWN;
 		getEngine().addCommand(command_capture);
 		PlayerContract clone;
 		if(getEngine().getEnvi().getCellNature(getWdt(), getHgt()) == Cell.EMP) {
@@ -55,22 +57,25 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		}
 		if(getEngine().getPlayer().getWdt() >= 1) digl_capture = getEngine().getEnvi().getCellNature(wdt_capture-1, hgt_capture-1);
 		if(getEngine().getPlayer().getWdt() <= getEngine().getEnvi().getWidth()-2) digr_capture = getEngine().getEnvi().getCellNature(wdt_capture+1, hgt_capture-1);
+		
+		//4.run
 		switch(command_capture) {
 			case UP : {clone.goUp();break;}
 			case DOWN : {clone.goDown();break;}
 			case RIGHT : {clone.goRight();break;}
 			case LEFT : {clone.goLeft();break;}
 			case NEUTRAL : break;
-			case DIGL : {clone.getEnvi().dig(clone.getWdt()-1, clone.getHgt()-1);break;}
-			case DIGR : {clone.getEnvi().dig(clone.getWdt()+1, clone.getHgt()-1);break;}
+			case DIGL : {clone.getEnvi().dig(clone.getWdt()-1, clone.getHgt()-1);clone.getEngine().getHoles().add(new Hole(clone.getWdt()-1, clone.getHgt()-1,0));break;}
+			case DIGR : {clone.getEnvi().dig(clone.getWdt()+1, clone.getHgt()-1);clone.getEngine().getHoles().add(new Hole(clone.getWdt()+1, clone.getHgt()-1,0));break;}
 		}
-		//4.run
 		CharacterService c = getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).getCharacter();
 		getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(null);
 		delegate.step();
 		getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(c);
+		
 		//5.checkInvariants
 		checkInvariants();
+		
 		//6.post
 		
 		

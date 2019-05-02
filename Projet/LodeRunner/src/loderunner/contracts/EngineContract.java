@@ -9,6 +9,7 @@ import loderunner.data.CellContent;
 import loderunner.data.Command;
 import loderunner.data.Coord;
 import loderunner.data.GameState;
+import loderunner.data.Hole;
 import loderunner.data.ItemType;
 import loderunner.decorators.EngineDecorator;
 import loderunner.errors.InvariantError;
@@ -94,6 +95,15 @@ public class EngineContract extends EngineDecorator{
 		//none
 		//4.run
 		return super.getNextCommand();
+	}
+	
+	@Override
+	public ArrayList<Hole> getHoles() {
+		//1.pre
+		//2.checkInvariants
+		checkInvariants();
+		//4.run
+		return super.getHoles();
 	}
 	
 	@Override
@@ -215,4 +225,5 @@ public class EngineContract extends EngineDecorator{
 			}
 		}*/
 	}
+	
 }
