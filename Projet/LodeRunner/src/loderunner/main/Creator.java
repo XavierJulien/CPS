@@ -3,6 +3,7 @@ package loderunner.main;
 import loderunner.contracts.CharacterContract;
 import loderunner.contracts.EditableScreenContract;
 import loderunner.contracts.EngineContract;
+import loderunner.contracts.EngineContract2;
 import loderunner.contracts.EnvironnementContract;
 import loderunner.contracts.GuardContract;
 import loderunner.contracts.PlayerContract;
@@ -37,6 +38,9 @@ public class Creator {
 	}
 	public static EngineContract createEngineContract(EngineService s) {
 		return new EngineContract(s);
+	}
+	public static EngineContract2 createEngineContract2(EngineService s) {
+		return new EngineContract2(s);
 	}
 	
 }

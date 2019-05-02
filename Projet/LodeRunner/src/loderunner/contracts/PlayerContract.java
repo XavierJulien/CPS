@@ -5,6 +5,7 @@ import loderunner.data.Command;
 import loderunner.data.Coord;
 import loderunner.errors.PostconditionError;
 import loderunner.main.Creator;
+import loderunner.services.CharacterService;
 import loderunner.services.EngineService;
 import loderunner.services.PlayerService;
 
@@ -40,28 +41,50 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		//2.checkInvariants
 		checkInvariants();
 		//3.capture
+		Cell digl_capture = null,digr_capture = null;
 		int hgt_capture = getHgt();
 		int wdt_capture = getWdt();
 		Command command_capture = getEngine().getNextCommand();
+		if(getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.EMP || getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.HOL)command_capture = Command.DOWN;
 		getEngine().addCommand(command_capture);
-		getEngine().addCommand(command_capture);
-		PlayerContract clone = Creator.createPlayerContract(delegate.clonePlayer());
-		clone.step();
+		PlayerContract clone;
+		if(getEngine().getEnvi().getCellNature(getWdt(), getHgt()) == Cell.EMP) {
+			clone = Creator.createPlayerContract(delegate.clonePlayer());			
+		}else {
+			clone = Creator.createPlayerContract(delegate.clonePlayer2());
+		}
+		if(getEngine().getPlayer().getWdt() >= 1) digl_capture = getEngine().getEnvi().getCellNature(wdt_capture-1, hgt_capture-1);
+		if(getEngine().getPlayer().getWdt() <= getEngine().getEnvi().getWidth()-2) digr_capture = getEngine().getEnvi().getCellNature(wdt_capture+1, hgt_capture-1);
+		switch(command_capture) {
+			case UP : {clone.goUp();break;}
+			case DOWN : {clone.goDown();break;}
+			case RIGHT : {clone.goRight();break;}
+			case LEFT : {clone.goLeft();break;}
+			case NEUTRAL : break;
+			case DIGL : {clone.getEnvi().dig(clone.getWdt()-1, clone.getHgt()-1);break;}
+			case DIGR : {clone.getEnvi().dig(clone.getWdt()+1, clone.getHgt()-1);break;}
+		}
 		//4.run
+		CharacterService c = getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).getCharacter();
+		getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(null);
 		delegate.step();
+		getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(c);
 		//5.checkInvariants
 		checkInvariants();
 		//6.post
+		
+		
 		if(clone.getHgt() != getHgt() || clone.getWdt() != getWdt()) throw new PostconditionError("Player Step : le joueur n'as pas la bonne position");
 		if (getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.LAD 
 				&& getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.HDR) {
-			if (getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.MTL && getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.PLT) {
+			if (getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.MTL && getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.PLT && getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.LAD) {
 				if (getEnvi().getCellContent(wdt_capture, hgt_capture-1).getCharacter() == null) {
 					if (getHgt() != hgt_capture-1) throw new PostconditionError("Player step : le joueur devrait être en chute libre");
 				}
 			}
 		}
 		if (command_capture == Command.DIGL) {
+			if(digl_capture == Cell.PLT && clone.getEngine().getEnvi().getCellNature(wdt_capture-1, hgt_capture-1) != Cell.HOL) throw new PostconditionError("player step : une case aurait du etre creuser a gauche coté contract");
 			if (getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.PLT
 					|| getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL
 					|| getEnvi().getCellContent(wdt_capture, hgt_capture-1) != null ) {
@@ -78,6 +101,7 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 			}
 		}
 		if (command_capture == Command.DIGR) {
+			if(digr_capture == Cell.PLT && clone.getEngine().getEnvi().getCellNature(wdt_capture+1, hgt_capture-1) != Cell.HOL) throw new PostconditionError("player step : une case aurait du etre creuser a droite coté contract");
 			if (getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.PLT
 					|| getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL
 					|| getEnvi().getCellContent(wdt_capture, hgt_capture-1) != null ) {
@@ -93,7 +117,6 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 				
 			}
 		}
-		System.out.println("fin step player");
 	}
 
 	@Override
@@ -110,6 +133,11 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 
 	@Override
 	public PlayerService clonePlayer() {
+		return new PlayerContract(delegate);
+	}
+
+	@Override
+	public PlayerService clonePlayer2() {
 		return new PlayerContract(delegate);
 	}
 	

@@ -3,6 +3,7 @@ package loderunner.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import loderunner.contracts.CharacterContract;
 import loderunner.contracts.EnvironnementContract;
 import loderunner.contracts.PlayerContract;
 import loderunner.data.Command;
@@ -16,7 +17,7 @@ import loderunner.services.EnvironnementService;
 import loderunner.services.GuardService;
 import loderunner.services.PlayerService;
 
-public class EngineImpl implements EngineService{
+public class EngineImpl2 implements EngineService{
 
 	protected EnvironnementService envi;
 	protected PlayerService player;
@@ -60,6 +61,7 @@ public class EngineImpl implements EngineService{
 	
 	@Override
 	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Item> treasures) {
+		envi = new EnvironnementImpl();
 		envi = new EnvironnementContract(new EnvironnementImpl());
 		envi.init(e);
 		

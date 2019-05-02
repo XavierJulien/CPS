@@ -19,15 +19,16 @@ public class EnvironnementImpl extends ScreenImpl implements EnvironnementServic
 
 	@Override
 	public void init(EditableScreenService e) {
-		super.init(e.getHeight(), e.getWidth());
+		super.init(e.getWidth(), e.getHeight());
 		this.height = super.getHeight();
 		this.width = super.getWidth();
 		screenContent = new CellContent[width][height];
-		for(int i = 0;i<width;i++) {
-			for(int j = 0;j<height;j++) {
-				super.screen[i][j] = e.getCellNature(i, j);
-				screenContent[i][j] = new CellContent();
+		for(int i = height-1;i>=0;i--) {
+			for(int j = 0;j<width;j++) {
+				super.screen[j][i] = e.getCellNature(j, i);
+				screenContent[j][i] = new CellContent();
 			}
+			System.out.println();
 		}
 	}
 	

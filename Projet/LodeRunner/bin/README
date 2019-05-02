@@ -1,0 +1,8 @@
+Du coup il reste a faire : 
+-implémenter guard Service/Decorator/Contract
+-décommenter les différentes postconditions dans engine/playerContract
+-voir comment accéder aux commandes de mouvement du player dans les contracts car on as que nextcommand ( peut etre rajouter une méthode addCommand ?)
+-Régler la spec de chaque service en particulier des step et goXXX 
+-Implémenter une interface graphique
+-Ajouter des extensions originales
+-Faire le rapport

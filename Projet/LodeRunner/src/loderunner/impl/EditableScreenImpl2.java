@@ -3,7 +3,7 @@ package loderunner.impl;
 import loderunner.data.Cell;
 import loderunner.services.EditableScreenService;
 
-public class EditableScreenImpl extends ScreenImpl implements EditableScreenService {
+public class EditableScreenImpl2 extends ScreenImpl implements EditableScreenService {
 
 	
 	@Override
@@ -12,12 +12,12 @@ public class EditableScreenImpl extends ScreenImpl implements EditableScreenServ
 			if(super.getCellNature(i, 0)!=Cell.MTL) {
 				 return false;
 			}
-			/*for(int j = 1;j<super.getHeight();j++) {
+			for(int j = 1;j<super.getHeight();j++) {
 				if(super.getCellNature(i, j)==Cell.HOL) {
 					 System.out.println(super.getCellNature(i, 0));
 					 return false;
 				}
-			}*/
+			}
 		}
 		return true;
 	}

@@ -70,7 +70,6 @@ public class ScreenContract extends ScreenDecorator {
 	@Override
 	public void dig(int x, int y) {
 		//1.pre
-		if(getCellNature(x, y) != Cell.PLT) throw new PreconditionError("dig : La case n'est pas une Cell.PLT");
 		//2.checkInvariants
 		//none
 		//3.capture
@@ -95,8 +94,10 @@ public class ScreenContract extends ScreenDecorator {
 						throw new PostconditionError("dig : Une autre case à été modifié");
 				}
 				if(i == x && j == y) {
-					if(getCellNature(i,j) != Cell.HOL) 
-						throw new PostconditionError("dig : La case n'as pas été modifiée");
+					if(screen_capture[i][j] == Cell.PLT) {
+						if(getCellNature(i,j) != Cell.HOL) 
+							throw new PostconditionError("dig : La case n'as pas été modifiée");
+					}
 				}
 			}
 		}
@@ -105,7 +106,6 @@ public class ScreenContract extends ScreenDecorator {
 	@Override
 	public void fill(int x, int y) {
 		//1.pre
-		if(getCellNature(x, y) != Cell.HOL) throw new PreconditionError("fill : La case n'est pas une Cell.HOL");
 		//2.checkInvariants
 		//none
 		//3.capture
