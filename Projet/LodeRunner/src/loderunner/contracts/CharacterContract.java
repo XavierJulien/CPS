@@ -16,14 +16,11 @@ public class CharacterContract extends CharacterDecorator {
 	}
 	
 	public void checkInvariants() {
-		if(getEnvi().getCellNature(getWdt(), getHgt()) == Cell.EMP || 
-		   getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HOL ||
-		   getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD ||
-		   getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HDR){
+		if(getEnvi().getCellNature(getWdt(), getHgt()) != Cell.EMP && 
+		   getEnvi().getCellNature(getWdt(), getHgt()) != Cell.HOL &&
+		   getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD &&
+		   getEnvi().getCellNature(getWdt(), getHgt()) != Cell.HDR){
 			throw new InvariantError("le joueur n'est pas dans une case valide");
-		}
-		if(getEnvi().getCellContent(getWdt(), getHgt()).getCharacter() != super.delegate) {
-			throw new InvariantError("le joueur dans la case de notre joueur n'est pas lui-même");
 		}
 	}
 	

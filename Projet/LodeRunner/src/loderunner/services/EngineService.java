@@ -19,6 +19,7 @@ public interface EngineService {
 	public Command getNextCommand();
 	public ArrayList<Hole> getHoles();
 	public int getScore();
+	public ArrayList<Coord> getGuardsCoord();
 	
 	/* Constructors */
 	/**

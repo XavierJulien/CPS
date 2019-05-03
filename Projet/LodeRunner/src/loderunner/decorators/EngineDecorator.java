@@ -63,6 +63,11 @@ public class EngineDecorator implements EngineService{
 	}
 	
 	@Override
+	public ArrayList<Coord> getGuardsCoord() {
+		return delegate.getGuardsCoord();
+	}
+	
+	@Override
 	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Item> treasures) {
 		delegate.init(e, player, guards, treasures);
 		

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import loderunner.contracts.EnvironnementContract;
+import loderunner.contracts.GuardContract;
 import loderunner.contracts.PlayerContract;
 import loderunner.data.Command;
 import loderunner.data.Coord;
@@ -65,6 +66,13 @@ public class EngineImpl implements EngineService{
 		return holes;
 	}
 	
+	public ArrayList<Coord> getGuardsCoord(){
+		ArrayList<Coord> res = new ArrayList<>();
+		for(GuardService g: guards) {
+			res.add(new Coord(g.getWdt(),g.getHgt()));
+		}
+		return res;
+	}
 
 	@Override
 	public int getScore() {
@@ -76,20 +84,23 @@ public class EngineImpl implements EngineService{
 		envi = new EnvironnementContract(new EnvironnementImpl());
 		envi.init(e);
 		
+		this.guards = new ArrayList<>();
 		this.status = GameState.Playing;
 		this.player = new PlayerContract(new PlayerImpl());
-		this.player.init(this,player);
 		envi.getCellContent(player.getX(), player.getY()).setCharacter(this.player);
+		this.player.init(this,player);
 		/*for(Coord co : guards) {
-			this.guards.add(new GuardService(co.getX(),co.getY()));
+			GuardContract guard = new GuardContract(new GuardImpl(-1));
+			guard.init(this, co.getX(), co.getY(), getPlayer());
+			envi.getCellContent(co.getX(), co.getY()).setCharacter(guard);			
+			this.guards.add(guard);
+			System.out.println("guard     "+guard);
 		}*/
 		
 		this.treasures = (ArrayList<Item>) treasures;
 		for(Item i : treasures) {
 			envi.getCellContent(i.getCol(), i.getHgt()).setItem(new Item(i.getCol(), i.getHgt(), ItemType.Treasure));;
 		}
-		
-		envi.getCellContent(player.getX(), player.getY()).setCharacter(this.player);
 		commands = new ArrayList<>();
 		holes = new ArrayList<>();
 		score = 0;
@@ -112,9 +123,10 @@ public class EngineImpl implements EngineService{
 		}
 		if(status == GameState.Playing) {
 			//step du player
+			System.out.println("player    "+player);
 			player.step();
 			//step du guard
-			//for(GuardService guard : guards) guard.step();
+			for(GuardService guard : guards) guard.step();
 			if(envi.getCellContent(player.getWdt(), player.getHgt()).getItem() != null) {
 				envi.getCellContent(player.getWdt(), player.getHgt()).setItem(null);
 				for(int i = 0;i<treasures.size();i++) {

@@ -6,6 +6,7 @@ import loderunner.impl.ScreenImpl;
 import loderunner.services.ScreenService;
 
 public class ScreenTest {
+	@SuppressWarnings("unused")
 	private ScreenService screen;
 	
 	public ScreenTest() {

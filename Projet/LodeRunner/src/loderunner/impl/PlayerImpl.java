@@ -81,7 +81,7 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 				edit.setNature(i, j, engine.getEnvi().getCellNature(i, j));
 			}
 		}
-		engContract.init(edit, new Coord(getWdt(), getHgt()), null, getEngine().getTreasures());
+		engContract.init(edit, new Coord(getWdt(), getHgt()), engine.getGuardsCoord(), getEngine().getTreasures());
 		p.init(engContract, new Coord(this.getWdt(), this.getHgt()));
 		return p;
 	}
@@ -98,7 +98,7 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 				edit.setNature(i, j, engine.getEnvi().getCellNature(i, j));
 			}
 		}
-		engContract.init(edit, new Coord(getWdt(), getHgt()), null, getEngine().getTreasures());
+		engContract.init(edit, new Coord(getWdt(), getHgt()), engine.getGuardsCoord(), getEngine().getTreasures());
 		p.init(engContract, new Coord(this.getWdt(), this.getHgt()));
 		return p;
 	}

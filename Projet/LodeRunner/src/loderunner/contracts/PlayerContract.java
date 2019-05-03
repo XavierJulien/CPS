@@ -4,6 +4,7 @@ import loderunner.data.Cell;
 import loderunner.data.Command;
 import loderunner.data.Coord;
 import loderunner.data.Hole;
+import loderunner.errors.InvariantError;
 import loderunner.errors.PostconditionError;
 import loderunner.main.Creator;
 import loderunner.services.CharacterService;
@@ -25,7 +26,13 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 	}*/
 
 	public void checkInvariants() {
-		//empty ?
+		super.checkInvariants();
+		if(getEnvi().getCellContent(getWdt(), getHgt()).getCharacter() != null) {
+			System.out.println("dede:"+this);
+			System.out.println("sese:"+getEnvi().getCellContent(getWdt(), getHgt()).getCharacter());
+			if(!getEnvi().getCellContent(getWdt(), getHgt()).getCharacter().equals(this))
+				throw new InvariantError("le joueur dans la case de notre joueur n'est pas lui-même");
+		}
 	}
 	@Override
 	public EngineService getEngine() {
@@ -59,6 +66,8 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		if(getEngine().getPlayer().getWdt() <= getEngine().getEnvi().getWidth()-2) digr_capture = getEngine().getEnvi().getCellNature(wdt_capture+1, hgt_capture-1);
 		
 		//4.run
+		System.out.println("clone    "+clone);
+		System.out.println("clone delegate"+clone.delegate);
 		switch(command_capture) {
 			case UP : {clone.goUp();break;}
 			case DOWN : {clone.goDown();break;}
@@ -133,6 +142,7 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		delegate.init(e, c);
 		//super.init(e.getEnvi(), c.getX(), c.getY());
 		//5.checkInvariants
+		checkInvariants();
 		//6.post
 	}
 

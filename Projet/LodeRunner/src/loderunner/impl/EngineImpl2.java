@@ -70,6 +70,14 @@ public class EngineImpl2 implements EngineService{
 		return score;
 	}
 	
+	public ArrayList<Coord> getGuardsCoord(){
+		ArrayList<Coord> res = new ArrayList<>();
+		for(GuardService g: guards) {
+			res.add(new Coord(g.getWdt(),g.getHgt()));
+		}
+		return res;
+	}
+	
 	@Override
 	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Item> treasures) {
 		envi = new EnvironnementImpl();

@@ -1,5 +1,7 @@
 package loderunner.impl;
 
+import loderunner.contracts.GuardContract;
+import loderunner.contracts.PlayerContract;
 import loderunner.data.Cell;
 import loderunner.data.CellContent;
 import loderunner.services.EditableScreenService;
@@ -32,12 +34,14 @@ public class EnvironnementImpl extends ScreenImpl implements EnvironnementServic
 	}
 	
 	public String cellcont(CellContent c) {
-		if (c.getCharacter() != null) return "&";
-		if (c.getCharacter() == null) {
-			if(c.getItem() == null) return "0";
+		if (c.getCharacter() != null) {
+			if(c.getCharacter() instanceof GuardContract) return "G";
+			if(c.getCharacter() instanceof PlayerContract) return "&";
+		}
+		if (c.getItem() != null) {
 			return "@";
 		}
-		return null;
+		return "";
 	}
 	
 	public String cellnat(Cell c) {

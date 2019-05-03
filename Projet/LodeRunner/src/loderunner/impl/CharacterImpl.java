@@ -26,6 +26,12 @@ public class CharacterImpl implements CharacterService{
 		return wdt;
 	}
 
+	public void setWdt(int wdt) {
+		this.wdt = wdt;
+	}
+	public void setHgt(int hgt) {
+		this.hgt = hgt;
+	}
 	@Override
 	public void init(ScreenService s, int x, int y) {
 		envi = (EnvironnementContract)s;
