@@ -21,6 +21,7 @@ public class MapBuilder {
 	private int height,width;
 	ArrayList<Item> treasures = new ArrayList<>();
 	Coord player;
+	ArrayList<Coord> guards = new ArrayList<>();
 	
 	public MapBuilder(EditableScreenService delegate) {
 		this.edit = new EditableScreenContract(delegate);
@@ -59,6 +60,12 @@ public class MapBuilder {
 				String[] Coord_split = t.split(",");
 				treasures.add(new Item(Integer.parseInt(Coord_split[0]),Integer.parseInt(Coord_split[1]),ItemType.Treasure));
 			}
+			line = br.readLine();
+			String[] guards_split= line.split(";");
+			for(String t : guards_split) {
+				String[] Coord_split = t.split(",");
+				guards.add(new Coord(Integer.parseInt(Coord_split[0]),Integer.parseInt(Coord_split[1])));
+			}
 			br.close();
 			fr.close();
 		} catch (FileNotFoundException e) {
@@ -67,6 +74,6 @@ public class MapBuilder {
 			e.printStackTrace();
 		}
 
-		return new Map(edit,player,treasures);
+		return new Map(edit,player,treasures,guards);
 	}
 }

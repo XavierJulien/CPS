@@ -63,10 +63,10 @@ public class CharacterContractClone extends CharacterDecorator {
 		if(getHgt() != y || getWdt() != x) {
 			throw new PostconditionError("init : le personnage à mal été initialisé au niveau de sa position");
 		}
-		if(getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
+		/*if(getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
 		   getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT) {
 			throw new PostconditionError("init : le personnage devrait se situé sur une Cell.MTL ou Cell.PLT à l'initialisation");
-		}
+		}*/
 	}
 
 	@Override

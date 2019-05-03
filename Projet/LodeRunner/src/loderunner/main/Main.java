@@ -6,7 +6,6 @@ import java.util.Scanner;
 import loderunner.contracts.EditableScreenContract;
 import loderunner.contracts.EngineContract;
 import loderunner.data.Command;
-import loderunner.data.Coord;
 import loderunner.data.GameState;
 import loderunner.data.Map;
 import loderunner.impl.EditableScreenImpl;
@@ -20,7 +19,7 @@ public class Main{
 		int lives = 3;
 		
 		ArrayList<String> filenames = new ArrayList<String>();
-		for(int i = 1;i<4;i++) {
+		for(int i = 0;i<4;i++) {
 			filenames.add("src/loderunner/maps/map"+i+".txt");//changer le nombre de clés
 		}
 		Scanner sc = new Scanner(System.in);
@@ -31,15 +30,13 @@ public class Main{
 			//ENGINE
 			EngineImpl engine = new EngineImpl();
 			
-			ArrayList<Coord> guards = new ArrayList<>();
-			guards.add(new Coord(6,2));
 			//MAP
 			EditableScreenContract editScreenContract;
 			MapBuilder m = new MapBuilder(edit);
 			Map map = m.buildMap(filenames.get(i));
 			editScreenContract = map.getEdit();
 			EngineContract engineContract = new EngineContract(engine);
-			engineContract.init(editScreenContract, map.getPlayer(), guards, map.getTreasures());
+			engineContract.init(editScreenContract, map.getPlayer(), map.getGuards(), map.getTreasures());
 			System.out.println("-------MAP N°"+i+"--------");
 			System.out.println(engineContract.getEnvi().toString());
 			System.out.println("---------------------------");

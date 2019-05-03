@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import loderunner.contracts.EnvironnementContract;
-import loderunner.contracts.PlayerContract;
+import loderunner.contracts.GuardContract;
 import loderunner.contracts.PlayerContractClone;
 import loderunner.data.Command;
 import loderunner.data.Coord;
@@ -76,6 +76,7 @@ public class EngineImplClone implements EngineService{
 		for(GuardService g: guards) {
 			res.add(new Coord(g.getWdt(),g.getHgt()));
 		}
+		System.out.println(res.size());
 		return res;
 	}
 	
@@ -88,9 +89,12 @@ public class EngineImplClone implements EngineService{
 		this.player = new PlayerContractClone(new PlayerImpl());
 		this.player.init(this,player);
 		envi.getCellContent(player.getX(), player.getY()).setCharacter(this.player);
-		/*for(Coord co : guards) {
-			this.guards.add(new GuardService(co.getX(),co.getY()));
-		}*/
+		this.guards = new ArrayList<>();
+		for(Coord co : guards) {
+			GuardContract guard = new GuardContract(new GuardImpl(-1));
+			guard.init(this, co.getX(), co.getY(), getPlayer());
+			this.guards.add(guard);
+		}
 		
 		this.treasures = (ArrayList<Item>) treasures;
 		for(Item i : treasures) {
@@ -120,7 +124,7 @@ public class EngineImplClone implements EngineService{
 				}
 				//step du player
 		player.step();
-		//for(GuardService guard : guards) guard.step();
+		for(GuardService guard : guards) guard.step();
 		if(envi.getCellContent(player.getWdt(), player.getHgt()).getItem() != null) {
 			envi.getCellContent(player.getWdt(), player.getHgt()).setItem(null);
 			for(int i = 0;i<treasures.size();i++) {

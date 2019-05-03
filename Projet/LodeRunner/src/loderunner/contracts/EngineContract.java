@@ -39,7 +39,7 @@ public class EngineContract extends EngineDecorator{
 		if(!cell_check.getCharacter().equals(getPlayer())) throw new InvariantError("checkInvariants : Le player aux position du player n'est pas le player");
 		for(GuardService g : getGuards()) {
 			cell_check = getEnvi().getCellContent(g.getWdt(), g.getHgt());
-			if(cell_check.getCharacter() != g) throw new InvariantError("checkInvariants : Le guard aux position du guard n'est pas le guard");
+			if(cell_check.getGuard() != g) throw new InvariantError("checkInvariants : Le guard aux position du guard n'est pas le guard");
 			
 		}
 		for(Item t : getTreasures()) {
@@ -139,7 +139,7 @@ public class EngineContract extends EngineDecorator{
 				}
 				for(GuardService g : getGuards()) {
 					if(i == g.getWdt() && j == g.getHgt()) {
-						if(getEnvi().getCellContent(i, j) != g) throw new PostconditionError("init : un guard à mal été initialisé");	
+						if(!getEnvi().getCellContent(i, j).getGuard().equals(g)) throw new PostconditionError("init : un guard à mal été initialisé");	
 					}
 				}
 				for(Item treasure : getTreasures()) {
@@ -225,11 +225,13 @@ public class EngineContract extends EngineDecorator{
 				if(treasure.getCol() == getPlayer().getWdt() && treasure.getHgt() == getPlayer().getHgt()) throw new PostconditionError("un trésor aurait du disparaître");
 			}
 		}
-		for(GuardService g : getGuards()) {
-			if(g.getWdt()-getPlayer().getWdt() == 1 || g.getWdt()-getPlayer().getWdt() == -1) {
+		//verifier que les tresors ne disparaissent pas ceux qui ne doivent pas 
+		/*for(GuardService g : getGuards()) {
+			if(g.getWdt()-getPlayer().getWdt() == -1 || g.getHgt()-getPlayer().getHgt() == -1 || 
+			   g.getWdt()-getPlayer().getWdt() == 1 || g.getHgt()-getPlayer().getHgt() == 1) {
 				if(getStatus() != GameState.Loss) throw new PostconditionError("le player aurait du mourir");
 			}
-		}
+		}*/
 	}
 	
 }

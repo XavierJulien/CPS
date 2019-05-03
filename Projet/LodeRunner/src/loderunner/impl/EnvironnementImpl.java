@@ -1,7 +1,5 @@
 package loderunner.impl;
 
-import loderunner.contracts.GuardContract;
-import loderunner.contracts.PlayerContract;
 import loderunner.data.Cell;
 import loderunner.data.CellContent;
 import loderunner.services.EditableScreenService;
@@ -34,13 +32,9 @@ public class EnvironnementImpl extends ScreenImpl implements EnvironnementServic
 	}
 	
 	public String cellcont(CellContent c) {
-		if (c.getCharacter() != null) {
-			if(c.getCharacter() instanceof GuardContract) return "G";
-			if(c.getCharacter() instanceof PlayerContract) return "&";
-		}
-		if (c.getItem() != null) {
-			return "@";
-		}
+		if (c.getGuard() != null) return "G";
+		if (c.getCharacter() != null) return "&";
+		if (c.getItem() != null) return "@";
 		return "";
 	}
 	
@@ -60,10 +54,14 @@ public class EnvironnementImpl extends ScreenImpl implements EnvironnementServic
 		String s = "";
 		for(int i = height-1; i >= 0;i--) {
 			for(int j = 0;j < width;j++) {
-				if(getCellContent(j, i).getItem() != null) s +="@";
+				if(getCellContent(j, i).getItem() != null) s +=cellcont(getCellContent(j, i));
 				else{
-					if(getCellContent(j, i).getCharacter() != null) {s +="&";}
-					else{s+=cellnat(getCellNature(j, i));}
+					if(getCellContent(j, i).getGuard() != null) {
+						s +=cellcont(getCellContent(j, i));
+					}else {
+						if(getCellContent(j, i).getCharacter() != null) {s +=cellcont(getCellContent(j, i));}
+						else{s+=cellnat(getCellNature(j, i));}
+					}
 				}
 			}
 			s+= "\n";

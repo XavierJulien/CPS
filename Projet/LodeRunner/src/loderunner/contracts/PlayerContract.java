@@ -52,7 +52,7 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		Cell digl_capture = null, digr_capture = null;
 		int hgt_capture = getHgt(),wdt_capture = getWdt();
 		PlayerContract capture_self = this;
-		PlayerContract clone;
+		PlayerContractClone clone;
 		Command command_capture = getEngine().getNextCommand();
 		if(getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.HDR && 
 		   getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.LAD && 
@@ -60,12 +60,15 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 			command_capture = Command.DOWN;
 		}
 		if(getEngine().getEnvi().getCellNature(getWdt(), getHgt()) == Cell.EMP) {
-			clone = Creator.createPlayerContract(delegate.clonePlayer());
-			System.out.println(clone.getEnvi());
+			System.out.println("clone normal");
+			clone = Creator.createPlayerContractClone(delegate.clonePlayer());
+			clone.init(getEngine(), new Coord(getEngine().getPlayer().getWdt(),getEngine().getPlayer().getHgt()));
 			clone.getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(clone);
 			
 			}else {
-			clone = Creator.createPlayerContract(delegate.clonePlayer2());
+			System.out.println("clone lad");
+			clone = Creator.createPlayerContractClone(delegate.clonePlayer2());
+			clone.init(getEngine(), new Coord(getEngine().getPlayer().getWdt(),getEngine().getPlayer().getHgt()));
 			clone.getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(clone);
 			}
 		if(getEngine().getPlayer().getWdt() >= 1) {
@@ -77,7 +80,6 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		
 		//4.run
 		getEngine().addCommand(command_capture);
-		System.out.println("efefefzef"+getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).getCharacter());
 		if(getEngine().getEnvi().getCellNature(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()) != Cell.HDR &&
 		  (getEngine().getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.HOL || 
 		   getEngine().getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.EMP || 

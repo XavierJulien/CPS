@@ -119,7 +119,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 	
 	@Override
 	public void step() {
-		getEnvi().getCellContent(getWdt(), getHgt()).setCharacter(null);
+		getEngine().getEnvi().getCellContent(getWdt(), getHgt()).setGuard(null);
 		if (willFall()) {
 			goDown();
 		}else{
@@ -154,7 +154,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			}
 		}
 		}}}}
-		getEnvi().getCellContent(getWdt(), getHgt()).setCharacter(this);
+		getEngine().getEnvi().getCellContent(getWdt(), getHgt()).setGuard(this);
 	}
 	
 

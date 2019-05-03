@@ -11,7 +11,7 @@ import loderunner.main.Creator;
 import loderunner.services.EngineService;
 import loderunner.services.PlayerService;
 
-public class PlayerContractClone extends CharacterContract implements PlayerService{
+public class PlayerContractClone extends CharacterContractClone implements PlayerService{
 
 	private final PlayerService delegate;
 	
