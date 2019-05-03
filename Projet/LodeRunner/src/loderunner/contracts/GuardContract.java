@@ -2,6 +2,7 @@ package loderunner.contracts;
 
 import loderunner.data.Cell;
 import loderunner.data.Command;
+import loderunner.data.Item;
 import loderunner.errors.InvariantError;
 import loderunner.errors.PostconditionError;
 import loderunner.errors.PreconditionError;
@@ -64,10 +65,15 @@ public class GuardContract extends CharacterContract implements GuardService {
 		 * 			implies getBehaviour() == DOWN 
 		 **/
 		if (getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD) {
+			System.out.println("in ladder");
+			System.out.println(getWdt());
+			System.out.println(getHgt());
 			if (getHgt() > getTarget().getHgt()) {
+				System.out.println("hauteur plus grande");
 				if ((getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL
 					 && getEnvi().getCellContent(getWdt(), getHgt()-1).getCharacter() == null) 
 					|| Math.abs(getTarget().getHgt()-getHgt()) < Math.abs(getTarget().getWdt()-getWdt())) {
+					System.out.println(getEnvi().getCellNature(getWdt(), getHgt()-1));//souci car on as ici une PLT
 					if (getBehaviour() != Command.DOWN)
 						throw new InvariantError("Le behaviour ne renvoie pas DOWN alors qu'il devrait");
 				}
@@ -207,7 +213,9 @@ public class GuardContract extends CharacterContract implements GuardService {
 
 	@Override
 	public Command getBehaviour() {
-		return delegate.getBehaviour();
+		Command behaviour =  delegate.getBehaviour();
+		System.out.println("guard : "+this+", action "+behaviour);
+		return behaviour;
 	}
 
 	@Override
@@ -296,6 +304,7 @@ public class GuardContract extends CharacterContract implements GuardService {
 		//inv
 		checkInvariants();
 		//captures
+		GuardContract capture_self = this;
 		EngineService engine_atpre = getEngine();
 		PlayerService target_atpre = getTarget();
 		GuardService guard_atpre = new GuardImpl(getId());
@@ -303,7 +312,11 @@ public class GuardContract extends CharacterContract implements GuardService {
 		int time_atpre = getTimeInHole();
 
 		//appel
+		
+		getEngine().getEnvi().getCellContent(getWdt(), getHgt()).setGuard(null);
 		delegate.step();
+		getEngine().getEnvi().getCellContent(getWdt(), getHgt()).setGuard(capture_self);
+
 		
 		//inv
 		checkInvariants();
@@ -343,6 +356,16 @@ public class GuardContract extends CharacterContract implements GuardService {
 				throw new PostconditionError("step de Guard : willclimbneutral pb timeInHole");
 		}
 		
+	}
+
+	@Override
+	public boolean hasItem() {
+		return delegate.hasItem();
+	}
+
+	@Override
+	public void setTreasure(Item treasure) {
+		delegate.setTreasure(treasure);
 	}
 
 }

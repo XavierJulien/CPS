@@ -93,7 +93,7 @@ public class EngineImpl implements EngineService{
 		for(Coord co : guards) {
 			GuardContract guard = new GuardContract(new GuardImpl(-1));
 			guard.init(this, co.getX(), co.getY(), getPlayer());
-			envi.getCellContent(co.getX(), co.getY()).setGuard(guard);			
+			envi.getCellContent(co.getX(), co.getY()).setGuard(guard);		
 			this.guards.add(guard);
 		}
 		this.treasures = (ArrayList<Item>) treasures;
@@ -134,8 +134,21 @@ public class EngineImpl implements EngineService{
 					}
 				}
 			}
+			for(int i = 0;i<treasures.size();i++) {
+				for(GuardService g : guards) {
+					if(treasures.get(i).getCol() == g.getWdt() && treasures.get(i).getHgt() == g.getHgt() && !g.hasItem()) {
+						System.out.println("remove de "+treasures.get(i));
+						g.setTreasure(treasures.remove(i));
+					}
+				}
+			}	
 		}
 		if(treasures.isEmpty()) {
+			for(GuardService g : guards) {
+				if(g.hasItem()) {
+					return;
+				}
+			}
 			status = GameState.Win;
 		}
 	}

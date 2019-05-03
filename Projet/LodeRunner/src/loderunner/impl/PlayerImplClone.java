@@ -1,7 +1,6 @@
 package loderunner.impl;
 
 
-import loderunner.contracts.EngineContract;
 import loderunner.contracts.EngineContractClone;
 import loderunner.data.Cell;
 import loderunner.data.Command;
@@ -72,9 +71,9 @@ public class PlayerImplClone extends CharacterImpl implements PlayerService{
 
 	@Override
 	public PlayerService clonePlayer() {
-		PlayerImpl p = new PlayerImpl();
-		EngineImpl eng = new EngineImpl();
-		EngineContract engContract = new EngineContract(eng);
+		PlayerImplClone p = new PlayerImplClone();
+		EngineImplClone eng = new EngineImplClone();
+		EngineContractClone engContract = new EngineContractClone(eng);
 		EditableScreenImpl edit = new EditableScreenImpl();
 		edit.init(getEngine().getEnvi().getWidth(), getEngine().getEnvi().getHeight());
 		for(int i  = 0;i<edit.getWidth();i++) {
@@ -90,7 +89,7 @@ public class PlayerImplClone extends CharacterImpl implements PlayerService{
 	@Override
 	public PlayerService clonePlayer2() {
 		PlayerImplClone p = new PlayerImplClone();
-		EngineImpl eng = new EngineImpl();
+		EngineImplClone eng = new EngineImplClone();
 		EngineContractClone engContract = new EngineContractClone(eng);
 		EditableScreenImplClone edit = new EditableScreenImplClone();
 		edit.init(getEngine().getEnvi().getWidth(), getEngine().getEnvi().getHeight());
@@ -99,9 +98,9 @@ public class PlayerImplClone extends CharacterImpl implements PlayerService{
 				edit.setNature(i, j, getEngine().getEnvi().getCellNature(i, j));
 			}
 		}
-		
-		engContract.init(edit, new Coord(getWdt(), getHgt()), engine.getGuardsCoord(), getEngine().getTreasures());
+		engContract.init(edit, new Coord(getWdt(), getHgt()), getEngine().getGuardsCoord(), getEngine().getTreasures());
 		p.init(engContract, new Coord(this.getWdt(), this.getHgt()));
+		System.out.println("player clone 1 :"+p.getWdt()+","+p.getHgt());
 		return p;
 	}
 

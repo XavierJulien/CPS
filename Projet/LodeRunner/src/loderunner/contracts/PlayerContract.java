@@ -19,20 +19,16 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		super(delegate);
 		this.delegate = delegate;
 	}
-	
-	/*@Override
-	protected PlayerService getDelegate() {
-		return (PlayerService) super.getDelegate();
-	}*/
 
 	public void checkInvariants() {
 		super.checkInvariants();
 		if(getEnvi().getCellContent(getWdt(), getHgt()).getCharacter() != null) {
 			if(!getEnvi().getCellContent(getWdt(), getHgt()).getCharacter().equals(this)) {
-				throw new InvariantError("le joueur dans la case de notre joueur n'est pas lui-même");				
+				throw new InvariantError("le joueur dans la case de notre joueur n'est pas lui-m�me");				
 			}
 		}
 	}
+	
 	@Override
 	public EngineService getEngine() {
 		//1.pre
@@ -47,27 +43,25 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		//none
 		//2.checkInvariants
 		checkInvariants();
-		
 		//3.capture
 		Cell digl_capture = null, digr_capture = null;
 		int hgt_capture = getHgt(),wdt_capture = getWdt();
 		PlayerContract capture_self = this;
-		PlayerContractClone clone;
 		Command command_capture = getEngine().getNextCommand();
 		if(getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.HDR && 
 		   getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.LAD && 
 		  (getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.EMP || getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.HOL)) {
 			command_capture = Command.DOWN;
 		}
+		PlayerContractClone clone;
 		if(getEngine().getEnvi().getCellNature(getWdt(), getHgt()) == Cell.EMP) {
-			System.out.println("clone normal");
 			clone = Creator.createPlayerContractClone(delegate.clonePlayer());
+			clone.getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(null);
 			clone.init(getEngine(), new Coord(getEngine().getPlayer().getWdt(),getEngine().getPlayer().getHgt()));
 			clone.getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(clone);
-			
 			}else {
-			System.out.println("clone lad");
 			clone = Creator.createPlayerContractClone(delegate.clonePlayer2());
+			clone.getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(null);
 			clone.init(getEngine(), new Coord(getEngine().getPlayer().getWdt(),getEngine().getPlayer().getHgt()));
 			clone.getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(clone);
 			}
@@ -158,8 +152,6 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		//1.pre
 		if(e == null || c == null) throw new PostconditionError("init player : un des paramètres est null");
 		if(c.getX() >= e.getEnvi().getWidth() || c.getX() < 0 || c.getY() >= e.getEnvi().getHeight() || c.getY() < 0) {
-			System.out.println(e.getEnvi().getHeight()+","+e.getEnvi().getWidth());
-			System.out.println(c.getX()+","+c.getY());
 			throw new PreconditionError("init player : une coordonnée est mauvaise");
 		}
 		//2.checkInvariants

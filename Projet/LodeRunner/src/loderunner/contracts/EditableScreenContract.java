@@ -15,11 +15,6 @@ public class EditableScreenContract extends ScreenContract implements EditableSc
 		this.delegate = delegate;
 	}
 	
-	/*@Override
-	protected EditableScreenService getDelegate() {
-		return (EditableScreenService) super.getDelegate();
-	}*/
-	
 	public void checkInvariants() {
 		for(int i = 0;i<getWidth();i++) {
 			for(int j = 0;j<getHeight();j++) {

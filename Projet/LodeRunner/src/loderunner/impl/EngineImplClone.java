@@ -86,7 +86,7 @@ public class EngineImplClone implements EngineService{
 		envi = new EnvironnementContract(new EnvironnementImpl());
 		envi.init(e);
 		
-		this.player = new PlayerContractClone(new PlayerImpl());
+		this.player = new PlayerContractClone(new PlayerImplClone());
 		this.player.init(this,player);
 		envi.getCellContent(player.getX(), player.getY()).setCharacter(this.player);
 		this.guards = new ArrayList<>();
@@ -94,14 +94,12 @@ public class EngineImplClone implements EngineService{
 			GuardContract guard = new GuardContract(new GuardImpl(-1));
 			guard.init(this, co.getX(), co.getY(), getPlayer());
 			this.guards.add(guard);
+			envi.getCellContent(co.getX(), co.getY()).setGuard(guard);
 		}
-		
 		this.treasures = (ArrayList<Item>) treasures;
 		for(Item i : treasures) {
 			envi.getCellContent(i.getCol(), i.getHgt()).setItem(new Item(i.getCol(), i.getHgt(), ItemType.Treasure));;
 		}
-		
-		envi.getCellContent(player.getX(), player.getY()).setCharacter(this.player);
 		commands = new ArrayList<>();
 		holes = new ArrayList<>();
 		score = 0;

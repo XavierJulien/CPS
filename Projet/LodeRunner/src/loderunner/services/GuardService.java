@@ -2,6 +2,7 @@ package loderunner.services;
 
 import loderunner.data.Cell;
 import loderunner.data.Command;
+import loderunner.data.Item;
 
 public interface GuardService extends CharacterService {
 
@@ -13,6 +14,8 @@ public interface GuardService extends CharacterService {
 	public Command getBehaviour();
 	public int getTimeInHole();
 	public EngineService getEngine();
+	public boolean hasItem();
+	public void setTreasure(Item treasure);
 	
 	/* Constructor */
 	/**

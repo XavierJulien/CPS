@@ -30,21 +30,25 @@ public class EngineContract extends EngineDecorator{
 		this.delegate = delegate;
 	}
 
-	/*protected EngineService getDelegate() {
-		return (EngineService) super.delegate;
-	}*/
-	
 	public void checkInvariants() {
 		CellContent cell_check = getEnvi().getCellContent(getPlayer().getWdt(), getPlayer().getHgt());
 		if(!cell_check.getCharacter().equals(getPlayer())) throw new InvariantError("checkInvariants : Le player aux position du player n'est pas le player");
 		for(GuardService g : getGuards()) {
 			cell_check = getEnvi().getCellContent(g.getWdt(), g.getHgt());
-			if(cell_check.getGuard() != g) throw new InvariantError("checkInvariants : Le guard aux position du guard n'est pas le guard");
+			if(!cell_check.getGuard().equals(g)) throw new InvariantError("checkInvariants : Le guard aux position du guard n'est pas le guard");
+			for(Item t : getTreasures()) {
+				cell_check = getEnvi().getCellContent(t.getCol(), t.getHgt());
+				if(cell_check.getItem() != null && t.getCol() == g.getWdt() && t.getHgt() == g.getHgt()) throw new InvariantError("checkInvariants : il ne devrait plus y avoir de trésor à cette case : ["+g.getWdt()+","+g.getHgt()+"]");
+				
+			}
 			
 		}
 		for(Item t : getTreasures()) {
 			cell_check = getEnvi().getCellContent(t.getCol(), t.getHgt());
-			if(cell_check.getItem().getNature() != ItemType.Treasure) throw new InvariantError("checkInvariants : Il devrait y avoir un trÃ©sor en ("+t.getCol()+","+t.getHgt()+")");
+			for(GuardService g : getGuards()) {
+				if(cell_check.getItem() == null && (t.getCol() != g.getWdt() || t.getHgt() != g.getHgt())) throw new InvariantError("checkInvariants : il devrait y avoir un trésor à cette case : ["+t.getCol()+","+t.getHgt()+"]");
+				
+			}
 			
 		}
 	}

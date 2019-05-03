@@ -4,6 +4,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import loderunner.data.Cell;
 import loderunner.data.Command;
+import loderunner.data.Item;
+import loderunner.errors.PreconditionError;
 import loderunner.services.EngineService;
 import loderunner.services.GuardService;
 import loderunner.services.PlayerService;
@@ -15,6 +17,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 	private PlayerService target;
 	private int timeInHole = 0;
 	private EngineService engine;
+	private Item treasure = null;
 	
 	public GuardImpl(int id) {
 		if (id==-1) {			
@@ -39,6 +42,21 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		return engine;
 	}
 
+	@Override
+	public boolean hasItem() {
+		if(treasure != null) return true;
+		return false;
+	}
+	
+	@Override
+	public void setTreasure(Item treasure) {
+		//1.pre 
+		if(treasure == null) throw new PreconditionError("setTreasure : trésor à null");
+		//2.run
+		this.treasure = treasure;
+	}
+	
+	
 	@Override
 	public Command getBehaviour() {
 		Cell nat = getEnvi().getCellNature(getWdt(), getHgt());
@@ -122,6 +140,12 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		getEngine().getEnvi().getCellContent(getWdt(), getHgt()).setGuard(null);
 		if (willFall()) {
 			goDown();
+			if(getEngine().getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.HOL) {
+				if(treasure != null) {
+					getEngine().getEnvi().getCellContent(getWdt(), getHgt()+1).setItem(treasure);
+					treasure = null;
+				}
+			}
 		}else{
 		if (willWaitInHole()) {
 			timeInHole+=timeEpsilon;
@@ -139,23 +163,42 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			switch (behaviour) {
 				case LEFT:
 					goLeft();
+					if(treasure != null) {
+						treasure.setCol(this.getWdt()-1);
+						treasure.setHgt(this.getHgt());
+						System.out.println("goleft");
+					}
 					break;
 				case RIGHT:
 					goRight();
+					if(treasure != null) {
+						treasure.setCol(this.getWdt()+1);
+						treasure.setHgt(this.getHgt());
+						System.out.println("goright");
+					}
 					break;
 				case DOWN : 
 					goDown();
+					if(treasure != null) {
+						treasure.setCol(this.getWdt());
+						treasure.setHgt(this.getHgt()-1);
+						System.out.println("goup");
+					}
 					break;
 				case UP:
 					goUp();
+					if(treasure != null) {
+						treasure.setCol(this.getWdt()+1);
+						treasure.setHgt(this.getHgt());
+						System.out.println("godown");
+					}
 					break;
 				default:
 					break;
-			}
-		}
-		}}}}
-		getEngine().getEnvi().getCellContent(getWdt(), getHgt()).setGuard(this);
+			}}}}}}
+		getEngine().getEnvi().getCellContent(getWdt(), getHgt()).setGuard(this);	
 	}
-	
+
+
 
 }

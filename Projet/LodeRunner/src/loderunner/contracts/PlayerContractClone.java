@@ -20,19 +20,15 @@ public class PlayerContractClone extends CharacterContractClone implements Playe
 		this.delegate = delegate;
 	}
 	
-	/*@Override
-	protected PlayerService getDelegate() {
-		return (PlayerService) super.getDelegate();
-	}*/
-
 	public void checkInvariants() {
 		super.checkInvariants();
 		if(getEnvi().getCellContent(getWdt(), getHgt()).getCharacter() != null) {
 			if(!getEnvi().getCellContent(getWdt(), getHgt()).getCharacter().equals(this)) {
-				throw new InvariantError("le joueur dans la case de notre joueur n'est pas lui-mÃªme");				
+				throw new InvariantError("le joueur dans la case de notre joueur n'est pas lui-même");				
 			}
 		}
 	}
+	
 	@Override
 	public EngineService getEngine() {
 		//1.pre

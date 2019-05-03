@@ -57,15 +57,16 @@ public class CharacterContractClone extends CharacterDecorator {
 		//none
 		//4.run
 		super.init(s, x, y);
+		this.getEnvi().getCellContent(x, y).setCharacter(this);
 		//5.checkInvariants
 		checkInvariants();
 		//6.post
 		if(getHgt() != y || getWdt() != x) {
-			throw new PostconditionError("init : le personnage Ã  mal Ã©tÃ© initialisÃ© au niveau de sa position");
+			throw new PostconditionError("init : le personnage à  mal été initialisé au niveau de sa position");
 		}
 		/*if(getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
 		   getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT) {
-			throw new PostconditionError("init : le personnage devrait se situÃ© sur une Cell.MTL ou Cell.PLT Ã  l'initialisation");
+			throw new PostconditionError("init : le personnage devrait se situé sur une Cell.MTL ou Cell.PLT à  l'initialisation");
 		}*/
 	}
 
@@ -83,14 +84,14 @@ public class CharacterContractClone extends CharacterDecorator {
 		//5.checkInvariants
 		checkInvariants();
 		//6.post
-		if(getHgt() != hgt_capture) throw new PostconditionError("goLeft : la hauteur du personnage Ã  changÃ©");
+		if(getHgt() != hgt_capture) throw new PostconditionError("goLeft : la hauteur du personnage à  changé");
 		if(wdt_capture == 0 ) {
-			if(getWdt() != wdt_capture) throw new PostconditionError("goLeft : le personnage Ã  franchi la gauche de l'Ã©cran");
+			if(getWdt() != wdt_capture) throw new PostconditionError("goLeft : le personnage à  franchi la gauche de l'écran");
 			return;
 		}
 		if(getEnvi().getCellNature(wdt_capture-1, hgt_capture) == Cell.MTL || 
 		   getEnvi().getCellNature(wdt_capture-1, hgt_capture) == Cell.PLT) {
-			if(getWdt() != wdt_capture) throw new PostconditionError("goLeft : le personnage Ã  franchi un mur");
+			if(getWdt() != wdt_capture) throw new PostconditionError("goLeft : le personnage à  franchi un mur");
 		}
 		if(getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.LAD && 
 		   getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.HDR) {
@@ -98,12 +99,12 @@ public class CharacterContractClone extends CharacterDecorator {
 			   getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.MTL && 
 			   getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.LAD) {
 				if(getEnvi().getCellContent(wdt_capture, hgt_capture-1).getCharacter() == null) {
-					if(getWdt() != wdt_capture) throw new PostconditionError("goLeft : le personnage n'Ã©tait pas censÃ© se dÃ©placer");
+					if(getWdt() != wdt_capture) throw new PostconditionError("goLeft : le personnage n'était pas censé se déplacer");
 				}
 			}
 		}
 		if(getEnvi().getCellContent(wdt_capture-1, hgt_capture).getCharacter() != null) {
-			if(getWdt() != wdt_capture) throw new PostconditionError("goLeft : le personnage Ã  traversÃ© un personnage");
+			if(getWdt() != wdt_capture) throw new PostconditionError("goLeft : le personnage à  traversé un personnage");
 		}
 		if(wdt_capture != 0) {
 			if(getEnvi().getCellNature(wdt_capture-1, hgt_capture) != Cell.MTL && getEnvi().getCellNature(wdt_capture-1, hgt_capture) != Cell.PLT) {
@@ -133,14 +134,14 @@ public class CharacterContractClone extends CharacterDecorator {
 		//5.checkInvariants
 		checkInvariants();
 		//6.post
-		if(getHgt() != hgt_capture) throw new PostconditionError("goRight : la hauteur du personnage Ã  changÃ©");
+		if(getHgt() != hgt_capture) throw new PostconditionError("goRight : la hauteur du personnage à  changé");
 		if(wdt_capture == getEnvi().getWidth()-1 ) {
-			if(getWdt() != wdt_capture) throw new PostconditionError("goRight : le personnage Ã  franchi la droite de l'Ã©cran");
+			if(getWdt() != wdt_capture) throw new PostconditionError("goRight : le personnage à  franchi la droite de l'écran");
 			return;
 		}
 		if(getEnvi().getCellNature(wdt_capture+1, hgt_capture) == Cell.MTL || 
 		   getEnvi().getCellNature(wdt_capture+1, hgt_capture) == Cell.PLT) {
-			if(getWdt() != wdt_capture) throw new PostconditionError("goRight : le personnage Ã  franchi un mur");
+			if(getWdt() != wdt_capture) throw new PostconditionError("goRight : le personnage à  franchi un mur");
 		}
 		if(getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.LAD && 
 		   getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.HDR) {
@@ -148,12 +149,12 @@ public class CharacterContractClone extends CharacterDecorator {
 			   getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.MTL && 
 			   getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.LAD) {
 				if(getEnvi().getCellContent(wdt_capture, hgt_capture-1).getCharacter() == null) {
-					if(getWdt() != wdt_capture) throw new PostconditionError("goRight : le personnage n'Ã©tait pas censÃ© se dÃ©placer");
+					if(getWdt() != wdt_capture) throw new PostconditionError("goRight : le personnage n'était pas censé se déplacer");
 				}
 			}
 		}
 		if(getEnvi().getCellContent(wdt_capture+1, hgt_capture).getCharacter() != null) {
-			if(getWdt() != wdt_capture) throw new PostconditionError("goRight : le personnage Ã  traversÃ© un personnage");
+			if(getWdt() != wdt_capture) throw new PostconditionError("goRight : le personnage à  traversé un personnage");
 		}
 		if(wdt_capture != getEnvi().getWidth()-1) {
 			if(getEnvi().getCellNature(wdt_capture+1, hgt_capture) != Cell.MTL && getEnvi().getCellNature(wdt_capture+1, hgt_capture) != Cell.PLT) {
@@ -183,13 +184,13 @@ public class CharacterContractClone extends CharacterDecorator {
 		//5.checkInvariants
 		checkInvariants();
 		//6.post
-		if (getWdt() != wdt_capture) throw new PostconditionError("goUp : la largeur du personnage a changÃ©");
+		if (getWdt() != wdt_capture) throw new PostconditionError("goUp : la largeur du personnage a changé");
 		if (hgt_capture == getEnvi().getHeight()-1) {
-			if (getHgt() != hgt_capture) throw new PostconditionError("goUp : le personnage a dÃ©passÃ© le plafond");
+			if (getHgt() != hgt_capture) throw new PostconditionError("goUp : le personnage a dépassé le plafond");
 			return;
 		}
 		if (getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.LAD) {
-			if (getHgt() != hgt_capture) throw new PostconditionError("goUp : le personnage est montÃ© sans Ã©chelle");
+			if (getHgt() != hgt_capture) throw new PostconditionError("goUp : le personnage est monté sans échelle");
 		}else {
 			if (getEnvi().getCellContent(wdt_capture, hgt_capture).getCharacter() == null
 			    &&
@@ -198,7 +199,7 @@ public class CharacterContractClone extends CharacterDecorator {
 			    getEnvi().getCellNature(wdt_capture, hgt_capture+1) != Cell.PLT
 			    &&
 			    getEnvi().getCellNature(wdt_capture, hgt_capture+1) != Cell.HOL) {
-				if (getHgt() != hgt_capture+1) throw new PostconditionError("goUp : le personnage n'est pas montÃ© apres un goUp permis");
+				if (getHgt() != hgt_capture+1) throw new PostconditionError("goUp : le personnage n'est pas monté apres un goUp permis");
 			}
 		}
 	}
@@ -216,7 +217,7 @@ public class CharacterContractClone extends CharacterDecorator {
 		//5.checkInvariants
 		checkInvariants();
 		//6.post
-		if (getWdt() != wdt_capture) throw new PostconditionError("goDown : la largeur du personnage a Ã©tÃ© modifiÃ©e");
+		if (getWdt() != wdt_capture) throw new PostconditionError("goDown : la largeur du personnage a été modifiée");
 		if (hgt_capture == 1) {//peut etre pas utile car on le verifie en dessous avec le metal
 			if (getHgt() != hgt_capture) throw new PostconditionError("goDown : le personnage est descendu alors qu'il ne pouvais pas");
 			return;
@@ -224,7 +225,7 @@ public class CharacterContractClone extends CharacterDecorator {
 		if(getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.PLT 
 		   ||
 		   getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL) {
-			if (getHgt() != hgt_capture) throw new PostconditionError("goDown : le personnage a pu descendre Ã  travers la matiÃ¨re");
+			if (getHgt() != hgt_capture) throw new PostconditionError("goDown : le personnage a pu descendre à  travers la matière");
 		}
 		if(getEnvi().getCellContent(wdt_capture, hgt_capture-1).getCharacter() != null)
 			throw new PostconditionError("goDown : le joueur est descendu alors qu'il y avait un personnage");
