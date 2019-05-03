@@ -9,6 +9,7 @@ import loderunner.data.CellContent;
 import loderunner.data.Command;
 import loderunner.data.Coord;
 import loderunner.data.GameState;
+import loderunner.data.Hole;
 import loderunner.data.ItemType;
 import loderunner.decorators.EngineDecorator;
 import loderunner.errors.InvariantError;
@@ -20,27 +21,22 @@ import loderunner.services.EnvironnementService;
 import loderunner.services.GuardService;
 import loderunner.services.PlayerService;
 
-public class EngineContract2 extends EngineDecorator{
+public class EngineContractClone extends EngineDecorator{
 
 	protected EngineService delegate;
 	
-	public EngineContract2(EngineService delegate) {
+	public EngineContractClone(EngineService delegate) {
 		super(delegate);
 		this.delegate = delegate;
 	}
 
-	protected EngineService getDelegate() {
+	/*protected EngineService getDelegate() {
 		return (EngineService) super.delegate;
-	}
+	}*/
 	
 	public void checkInvariants() {
 		CellContent cell_check = getEnvi().getCellContent(getPlayer().getWdt(), getPlayer().getHgt());
-		//System.out.println("character "+cell_check.getCharacter());
-		if(!cell_check.getCharacter().equals(getPlayer())) {
-			System.out.println("getCharacter "+cell_check.getCharacter());
-			System.out.println("getplayer : "+getPlayer());
-			throw new InvariantError("checkInvariants : Le player aux position du player n'est pas le player");
-		}
+		if(!cell_check.getCharacter().equals(getPlayer())) throw new InvariantError("checkInvariants : Le player aux position du player n'est pas le player");
 		for(GuardService g : getGuards()) {
 			cell_check = getEnvi().getCellContent(g.getWdt(), g.getHgt());
 			if(cell_check.getCharacter() != g) throw new InvariantError("checkInvariants : Le guard aux position du guard n'est pas le guard");
@@ -102,12 +98,27 @@ public class EngineContract2 extends EngineDecorator{
 	}
 	
 	@Override
+	public ArrayList<Hole> getHoles() {
+		//1.pre
+		//2.checkInvariants
+		//none
+		//4.run
+		return super.getHoles();
+	}
+	
+	@Override
+	public ArrayList<Command> getCommands() {
+		//1.pre
+		//2.checkInvariants
+		//none
+		//4.run
+		return super.getCommands();
+	}
+	
+	@Override
 	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Item> treasures) {
 		//1.pre
 		//if(!e.isPlayable()) throw new PreconditionError("init : l'ecran n'est pas défini comme jouable");
-		// les vérifications concernant la position d'initialisation des éléments sont faites dans charactere, besoin ici aussi ??
-		//if(e.getCellNature(player.getX(), player.getY()) != Cell.EMP) throw new PreconditionError("init : le player ne peut pas être init dans une case de l'envi non Cell.EMP");
-		
 		//2.checkInvariants
 		//none
 		//3.captures
@@ -139,7 +150,7 @@ public class EngineContract2 extends EngineDecorator{
 			}
 		}
 		for(Item treasure : treasures) {
-			if(treasure.getCol() == player.getX() && treasure.getHgt() == player.getX()) throw new PreconditionError("un trésor est sur la même case que le player");
+			if(treasure.getCol() == player.getX() && treasure.getHgt() == player.getY()) throw new PreconditionError("un trésor est sur la même case que le player");
 			if(e.getCellNature(treasure.getCol(), treasure.getHgt()) != Cell.EMP &&
 			   (e.getCellNature(treasure.getCol(), treasure.getHgt()-1) != Cell.PLT || e.getCellNature(treasure.getCol(), treasure.getHgt()-1) != Cell.MTL)) {
 				throw new PreconditionError("init : un trésor ne peut pas être init dans une case de l'envi non Cell.EMP");
@@ -170,12 +181,14 @@ public class EngineContract2 extends EngineDecorator{
 		//2.checkInvariants
 		checkInvariants();
 		//3.capture
-		//peut etre faire getCommands.size()
+		int size_command = getCommands().size();
 		//4.run
 		super.addCommand(c);
 		//5.checkInvariants
 		checkInvariants();
 		//6.post
+		if(getCommands().size() != size_command+1)
+			throw new PostconditionError("addCommand : on n'as pas ajouté de commande après un addCommand");
 		//peut etre verifier que ya un nouvel ajout dans la liste de commandes avec la capture
 			
 	}
@@ -216,9 +229,7 @@ public class EngineContract2 extends EngineDecorator{
 			if(g.getWdt()-getPlayer().getWdt() == 1 || g.getWdt()-getPlayer().getWdt() == -1) {
 				if(getStatus() != GameState.Loss) throw new PostconditionError("le player aurait du mourir");
 			}
-			if(g.getHgt()-getPlayer().getHgt() == 1 || g.getHgt()-getPlayer().getHgt() == -1) {
-				if(getStatus() != GameState.Loss) throw new PostconditionError("le player aurait du mourir");
-			}
 		}
 	}
+	
 }

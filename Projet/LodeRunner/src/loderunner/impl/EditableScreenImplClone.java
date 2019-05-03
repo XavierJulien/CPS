@@ -3,7 +3,7 @@ package loderunner.impl;
 import loderunner.data.Cell;
 import loderunner.services.EditableScreenService;
 
-public class EditableScreenImpl2 extends ScreenImpl implements EditableScreenService {
+public class EditableScreenImplClone extends ScreenImpl implements EditableScreenService {
 
 	
 	@Override

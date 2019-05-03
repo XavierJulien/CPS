@@ -4,14 +4,13 @@ import loderunner.data.Cell;
 import loderunner.decorators.CharacterDecorator;
 import loderunner.errors.InvariantError;
 import loderunner.errors.PostconditionError;
-import loderunner.errors.PreconditionError;
 import loderunner.services.CharacterService;
 import loderunner.services.EnvironnementService;
 import loderunner.services.ScreenService;
 
-public class CharacterContract extends CharacterDecorator {
+public class CharacterContractClone extends CharacterDecorator {
 
-	public CharacterContract(CharacterService delegate) {
+	public CharacterContractClone(CharacterService delegate) {
 		super(delegate);
 	}
 	
@@ -49,9 +48,9 @@ public class CharacterContract extends CharacterDecorator {
 	@Override
 	public void init(ScreenService s, int x, int y) {
 		//1.pre
-		if(s.getCellNature(x, y) != Cell.EMP) {
+		/*if(s.getCellNature(x, y) != Cell.EMP) {
 			throw new PreconditionError("init : la case ou on veut init le player n'est pas Cell.EMP");
-		}
+		}*/
 		//2.checkInvariants
 		//none
 		//3.capture

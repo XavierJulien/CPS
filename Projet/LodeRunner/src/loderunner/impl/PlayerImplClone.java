@@ -1,7 +1,6 @@
 package loderunner.impl;
 
 
-import loderunner.contracts.EngineContract;
 import loderunner.contracts.EngineContractClone;
 import loderunner.data.Cell;
 import loderunner.data.Command;
@@ -10,7 +9,7 @@ import loderunner.data.Hole;
 import loderunner.services.EngineService;
 import loderunner.services.PlayerService;
 
-public class PlayerImpl extends CharacterImpl implements PlayerService{
+public class PlayerImplClone extends CharacterImpl implements PlayerService{
 
 	private EngineService engine;
 	
@@ -72,9 +71,9 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 
 	@Override
 	public PlayerService clonePlayer() {
-		PlayerImpl p = new PlayerImpl();
+		PlayerImplClone p = new PlayerImplClone();
 		EngineImpl eng = new EngineImpl();
-		EngineContract engContract = new EngineContract(eng);
+		EngineContractClone engContract = new EngineContractClone(eng);
 		EditableScreenImpl edit = new EditableScreenImpl();
 		edit.init(getEngine().getEnvi().getWidth(), getEngine().getEnvi().getHeight());
 		for(int i  = 0;i<edit.getWidth();i++) {
@@ -89,7 +88,7 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 
 	@Override
 	public PlayerService clonePlayer2() {
-		PlayerImpl p = new PlayerImpl();
+		PlayerImplClone p = new PlayerImplClone();
 		EngineImpl eng = new EngineImpl();
 		EngineContractClone engContract = new EngineContractClone(eng);
 		EditableScreenImplClone edit = new EditableScreenImplClone();

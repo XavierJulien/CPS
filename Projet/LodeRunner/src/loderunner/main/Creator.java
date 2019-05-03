@@ -1,12 +1,14 @@
 package loderunner.main;
 
 import loderunner.contracts.CharacterContract;
+import loderunner.contracts.CharacterContractClone;
 import loderunner.contracts.EditableScreenContract;
 import loderunner.contracts.EngineContract;
-import loderunner.contracts.EngineContract2;
+import loderunner.contracts.EngineContractClone;
 import loderunner.contracts.EnvironnementContract;
 import loderunner.contracts.GuardContract;
 import loderunner.contracts.PlayerContract;
+import loderunner.contracts.PlayerContractClone;
 import loderunner.contracts.ScreenContract;
 import loderunner.services.CharacterService;
 import loderunner.services.EditableScreenService;
@@ -30,6 +32,12 @@ public class Creator {
 	public static CharacterContract createCharacterContract(CharacterService s) {
 		return new CharacterContract(s);
 	}
+	public static CharacterContractClone createCharacterContractClone(CharacterService s) {
+		return new CharacterContractClone(s);
+	}
+	public static PlayerContractClone createPlayerContractClone(PlayerService s) {
+		return new PlayerContractClone(s);
+	}
 	public static PlayerContract createPlayerContract(PlayerService s) {
 		return new PlayerContract(s);
 	}
@@ -39,8 +47,8 @@ public class Creator {
 	public static EngineContract createEngineContract(EngineService s) {
 		return new EngineContract(s);
 	}
-	public static EngineContract2 createEngineContract2(EngineService s) {
-		return new EngineContract2(s);
+	public static EngineContractClone createEngineContract2(EngineService s) {
+		return new EngineContractClone(s);
 	}
 	
 }

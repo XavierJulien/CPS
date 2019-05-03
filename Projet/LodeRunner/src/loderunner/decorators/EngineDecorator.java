@@ -43,6 +43,11 @@ public class EngineDecorator implements EngineService{
 	}
 
 	@Override
+	public ArrayList<Command> getCommands() {
+		return delegate.getCommands();		
+	}
+	
+	@Override
 	public GameState getStatus() {
 		return delegate.getStatus();
 	}

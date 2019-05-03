@@ -19,7 +19,6 @@ public class GuardContract extends CharacterContract implements GuardService {
 		this.delegate = delegate;
 	}
 	
-	
 	public void checkInvariants() {
 		super.checkInvariants();
 		
@@ -216,7 +215,6 @@ public class GuardContract extends CharacterContract implements GuardService {
 		return delegate.getTimeInHole();
 	}
 	
-
 	@Override
 	public void init(EngineService e, int x, int y, PlayerService target) {
 		//pre 

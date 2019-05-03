@@ -20,7 +20,7 @@ public class Main{
 		int lives = 3;
 		
 		ArrayList<String> filenames = new ArrayList<String>();
-		for(int i = 0;i<4;i++) {
+		for(int i = 1;i<4;i++) {
 			filenames.add("src/loderunner/maps/map"+i+".txt");//changer le nombre de clés
 		}
 		Scanner sc = new Scanner(System.in);

@@ -73,28 +73,7 @@ public class EnvironnementContract extends ScreenContract implements Environneme
 		}
 		
 	}
-	public String cellcont(CellContent c) {
-		if (c.getCharacter() != null) return "&";
-		if (c.getCharacter() == null) {
-			if(c.getItem() == null) return "0";
-			return "@";
-		}
-		return null;
-	}
-	
-	public String cellnat(Cell c) {
-		switch(c) {
-			case EMP : return " ";
-			case PLT : return "=";
-			case HOL : return "U";
-			case MTL : return "X";
-			case LAD : return "H";
-			case HDR : return "-";
-		}
-		return null;
-	}
-	
-	
+
 	@Override
 	public String toString() {
 		return delegate.toString();

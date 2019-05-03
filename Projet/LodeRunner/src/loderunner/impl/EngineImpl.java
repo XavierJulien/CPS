@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import loderunner.contracts.EnvironnementContract;
-import loderunner.contracts.GuardContract;
 import loderunner.contracts.PlayerContract;
 import loderunner.data.Command;
 import loderunner.data.Coord;
@@ -123,10 +122,9 @@ public class EngineImpl implements EngineService{
 		}
 		if(status == GameState.Playing) {
 			//step du player
-			System.out.println("player    "+player);
 			player.step();
 			//step du guard
-			for(GuardService guard : guards) guard.step();
+			//for(GuardService guard : guards) guard.step();
 			if(envi.getCellContent(player.getWdt(), player.getHgt()).getItem() != null) {
 				envi.getCellContent(player.getWdt(), player.getHgt()).setItem(null);
 				for(int i = 0;i<treasures.size();i++) {
@@ -145,6 +143,11 @@ public class EngineImpl implements EngineService{
 	@Override
 	public void addCommand(Command c) {
 		commands.add(c);
+	}
+
+	@Override
+	public ArrayList<Command> getCommands() {
+		return commands;
 	}
 
 }

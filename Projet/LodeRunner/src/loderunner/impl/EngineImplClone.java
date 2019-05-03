@@ -5,6 +5,7 @@ import java.util.List;
 
 import loderunner.contracts.EnvironnementContract;
 import loderunner.contracts.PlayerContract;
+import loderunner.contracts.PlayerContractClone;
 import loderunner.data.Command;
 import loderunner.data.Coord;
 import loderunner.data.GameState;
@@ -17,7 +18,7 @@ import loderunner.services.EnvironnementService;
 import loderunner.services.GuardService;
 import loderunner.services.PlayerService;
 
-public class EngineImpl2 implements EngineService{
+public class EngineImplClone implements EngineService{
 
 	protected EnvironnementService envi;
 	protected PlayerService player;
@@ -84,7 +85,7 @@ public class EngineImpl2 implements EngineService{
 		envi = new EnvironnementContract(new EnvironnementImpl());
 		envi.init(e);
 		
-		this.player = new PlayerContract(new PlayerImpl());
+		this.player = new PlayerContractClone(new PlayerImpl());
 		this.player.init(this,player);
 		envi.getCellContent(player.getX(), player.getY()).setCharacter(this.player);
 		/*for(Coord co : guards) {
@@ -137,6 +138,11 @@ public class EngineImpl2 implements EngineService{
 	@Override
 	public void addCommand(Command c) {
 		commands.add(c);
+	}
+
+	@Override
+	public ArrayList<Command> getCommands() {
+		return commands;
 	}
 
 }
