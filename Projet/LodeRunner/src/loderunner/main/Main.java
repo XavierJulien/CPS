@@ -37,14 +37,14 @@ public class Main{
 			editScreenContract = map.getEdit();
 			EngineContract engineContract = new EngineContract(engine);
 			engineContract.init(editScreenContract, map.getPlayer(), map.getGuards(), map.getTreasures());
-			System.out.println("-------MAP N°"+i+"--------");
+			System.out.println("-------MAP Nï¿½"+i+"--------");
 			System.out.println(engineContract.getEnvi().toString());
 			System.out.println("---------------------------");
 			System.out.println("---LIVES : "+lives+"---SCORE : "+engineContract.getScore()+"---");
 			while(true) {
 				if(engineContract.getStatus() == GameState.Win) {System.out.println("--------WELLPLAYED--------");break;}
-				if(engineContract.getStatus() == GameState.Loss){System.out.println("--------YOU LOSE--------");break;}
-				System.out.println("Veuillez saisir un déplacement(UP,DOWN,LEFT,RIGHT) : ");
+				if(engineContract.getStatus() == GameState.Loss){System.out.println("--------YOU LOOSE--------");break;}
+				System.out.println("Veuillez saisir un dï¿½placement(UP,DOWN,LEFT,RIGHT) : ");
 				String s = sc.nextLine();
 				if(s.equals("STOP")) break;
 				switch (s) {

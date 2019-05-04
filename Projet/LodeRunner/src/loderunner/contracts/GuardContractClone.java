@@ -366,4 +366,22 @@ public class GuardContractClone extends CharacterContract implements GuardServic
 		delegate.setTreasure(treasure);
 	}
 
+	@Override
+	public void waitInHole() {
+		//1.pre
+		if(getEngine().getEnvi().getCellNature(getWdt(), getHgt()) != Cell.HOL) throw new PreconditionError("waitInHole : ne peut pas faire cela dans une case différent d'un HOL");
+		//2.checkInvariants
+		checkInvariants();
+		//3.capture
+		int time_capture = getTimeInHole();
+		//4.run
+		delegate.waitInHole();
+		//5.checkInvariants
+		checkInvariants();
+		//6.post
+		if(time_capture+timeEpsilon != getTimeInHole()) {
+			throw new PostconditionError("waitInHole : le personnage n'as pas attendu un step de plus");
+		}
+	}
+
 }

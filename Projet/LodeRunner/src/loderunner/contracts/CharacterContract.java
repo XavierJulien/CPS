@@ -47,27 +47,34 @@ public class CharacterContract extends CharacterDecorator {
 	}
 
 	@Override
-	public void init(ScreenService s, int x, int y) {
+	public int getId() {
+		return delegate.getId();
+	}
+	
+	@Override
+	public void init(ScreenService s, int x, int y,int id) {
 		//1.pre
 		if(s.getCellNature(x, y) != Cell.EMP) {
 			throw new PreconditionError("init : la case ou on veut init le player n'est pas Cell.EMP");
 		}
+		if(getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
+				   getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT) {
+			throw new PostconditionError("init : le personnage devrait se situé sur une Cell.MTL ou Cell.PLT à l'initialisation");
+		}
+		if(id < -1) throw new PreconditionError("init character : l'id est inférieur à -1");
 		//2.checkInvariants
 		//none
-		//3.capture
+		//3.capture 
 		//none
 		//4.run
-		super.init(s, x, y);
+		super.init(s, x, y, id);
 		//5.checkInvariants
 		checkInvariants();
 		//6.post
 		if(getHgt() != y || getWdt() != x) {
 			throw new PostconditionError("init : le personnage à mal été initialisé au niveau de sa position");
 		}
-		if(getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
-		   getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT) {
-			throw new PostconditionError("init : le personnage devrait se situé sur une Cell.MTL ou Cell.PLT à l'initialisation");
-		}
+		
 	}
 
 	@Override

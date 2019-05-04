@@ -163,7 +163,10 @@ public class EngineContractClone extends EngineDecorator{
 		for(Coord guard : guards) {
 			//if(e.getCellNature(guard.getX(), guard.getY()) != Cell.EMP) throw new PreconditionError("init : un guard ne peut pas �tre init dans une case de l'envi non Cell.EMP");
 			//check coordonn�es �gal � un player ou tr�sor
-			if(guard.getX() == player.getX() && guard.getY() == player.getX()) throw new PreconditionError("un guard est sur la m�me case que le player");
+			/*if(guard.getX() == player.getX() && guard.getY() == player.getY()) {
+				System.out.println("["+player.getX()+","+player.getY()+"]");
+				throw new PreconditionError("un guard est sur la m�me case que le player");
+			}*/
 			/*for(Item treasure : getTreasures()) {
 				if(guard.getX() == treasure.getCol() && guard.getY() == treasure.getHgt()) throw new PreconditionError("un guard est sur la m�me case qu'un tr�sor");
 			}*/

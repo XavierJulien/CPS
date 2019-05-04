@@ -28,8 +28,8 @@ public abstract class CharacterDecorator implements CharacterService{
 	}
 
 	@Override
-	public void init(ScreenService s, int x, int y) {
-		delegate.init(s, x, y);
+	public void init(ScreenService s, int x, int y, int id) {
+		delegate.init(s, x, y, id);
 	}
 
 	@Override

@@ -136,7 +136,7 @@ public class GuardImplClone extends CharacterImpl implements GuardService {
 
 	@Override
 	public void init(EngineService e, int x, int y, PlayerService target) {
-		super.init(e.getEnvi(), x, y);
+		super.init(e.getEnvi(), x, y, id);
 		this.target = target;
 		engine = e;
 	}
@@ -185,7 +185,7 @@ public class GuardImplClone extends CharacterImpl implements GuardService {
 			}
 		}else{
 		if (willWaitInHole()) {
-			timeInHole+=timeEpsilon;
+			waitInHole();
 		}else{
 		if (willClimbLeft()) {
 			climbLeft();
@@ -203,7 +203,6 @@ public class GuardImplClone extends CharacterImpl implements GuardService {
 					if(treasure != null) {
 						treasure.setCol(this.getWdt()-1);
 						treasure.setHgt(this.getHgt());
-						System.out.println("goleft");
 					}
 					break;
 				case RIGHT:
@@ -211,7 +210,6 @@ public class GuardImplClone extends CharacterImpl implements GuardService {
 					if(treasure != null) {
 						treasure.setCol(this.getWdt()+1);
 						treasure.setHgt(this.getHgt());
-						System.out.println("goright");
 					}
 					break;
 				case DOWN : 
@@ -219,7 +217,6 @@ public class GuardImplClone extends CharacterImpl implements GuardService {
 					if(treasure != null) {
 						treasure.setCol(this.getWdt());
 						treasure.setHgt(this.getHgt()-1);
-						System.out.println("goup");
 					}
 					break;
 				case UP:
@@ -227,7 +224,6 @@ public class GuardImplClone extends CharacterImpl implements GuardService {
 					if(treasure != null) {
 						treasure.setCol(this.getWdt()+1);
 						treasure.setHgt(this.getHgt());
-						System.out.println("godown");
 					}
 					break;
 				default:
@@ -236,6 +232,10 @@ public class GuardImplClone extends CharacterImpl implements GuardService {
 		getEngine().getEnvi().getCellContent(getWdt(), getHgt()).setGuard(this);	
 	}
 
+	@Override
+	public void waitInHole() {
+		timeInHole = timeInHole+timeEpsilon;
+	}
 
 
 }

@@ -116,6 +116,10 @@ public class EngineImpl implements EngineService{
 				if(envi.getCellContent(h.getX(), h.getY()).getCharacter() != null) {
 					status = GameState.Loss;
 				}
+				if(envi.getCellContent(h.getX(), h.getY()).getGuard() != null) {
+					guards.remove(envi.getCellContent(h.getX(), h.getY()).getGuard());
+					envi.getCellContent(h.getX(), h.getY()).setGuard(null);
+				}
 				//pour les gardes
 				envi.fill(h.getX(), h.getY());
 			}
@@ -123,8 +127,18 @@ public class EngineImpl implements EngineService{
 		if(status == GameState.Playing) {
 			//step du player
 			player.step();
+			if(getEnvi().getCellContent(player.getWdt(), player.getHgt()).getGuard() != null) {
+				status = GameState.Loss;
+				return;
+			}
 			//step du guard
-			for(GuardService guard : guards) guard.step();
+			for(GuardService guard : guards) {
+				guard.step();
+				if(getEnvi().getCellContent(guard.getWdt(), guard.getHgt()).getCharacter() != null) {
+					status = GameState.Loss;
+					return;
+				}
+		}
 			if(envi.getCellContent(player.getWdt(), player.getHgt()).getItem() != null) {
 				envi.getCellContent(player.getWdt(), player.getHgt()).setItem(null);
 				for(int i = 0;i<treasures.size();i++) {
@@ -141,7 +155,7 @@ public class EngineImpl implements EngineService{
 						g.setTreasure(treasures.remove(i));
 					}
 				}
-			}	
+			}
 		}
 		if(treasures.isEmpty()) {
 			for(GuardService g : guards) {

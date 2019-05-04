@@ -5,13 +5,13 @@ public interface CharacterService {
 	public EnvironnementService getEnvi();
 	public int getHgt();
 	public int getWdt();
-	
+	public int getId();
 	
 	/* Constructors */
 	/**
 	 * pre : init(x,y) require getEnvi().getCellNature(x,y) == EMP
 	 */
-	public void init(ScreenService s,int x,int y);
+	public void init(ScreenService s,int x,int y,int id);
 	
 	
 	/* Invariant */

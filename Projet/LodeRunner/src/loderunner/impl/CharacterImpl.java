@@ -10,6 +10,7 @@ public class CharacterImpl implements CharacterService{
 
 	private EnvironnementService envi;
 	private int hgt,wdt;
+	private int id;
 	
 	@Override
 	public EnvironnementService getEnvi() {
@@ -26,6 +27,11 @@ public class CharacterImpl implements CharacterService{
 		return wdt;
 	}
 
+	@Override
+	public int getId() {
+		return id;
+	}
+
 	public void setWdt(int wdt) {
 		this.wdt = wdt;
 	}
@@ -33,10 +39,11 @@ public class CharacterImpl implements CharacterService{
 		this.hgt = hgt;
 	}
 	@Override
-	public void init(ScreenService s, int x, int y) {
+	public void init(ScreenService s, int x, int y, int id) {
 		envi = (EnvironnementContract)s;
 		wdt = x;
 		hgt = y;
+		this.id = id;
 	}
 
 	@Override
@@ -48,7 +55,7 @@ public class CharacterImpl implements CharacterService{
 				   (getEnvi().getCellNature(wdt, hgt-1) == Cell.PLT || getEnvi().getCellNature(wdt, hgt-1) == Cell.MTL || getEnvi().getCellNature(wdt, hgt-1) == Cell.LAD)
 				   ||
 				   (getEnvi().getCellContent(wdt, hgt-1).getCharacter() != null)) {
-					  if(getEnvi().getCellContent(wdt-1, hgt).getCharacter() == null && getEnvi().getCellContent(wdt-1, hgt).getGuard() == null) {
+					  if(id == -1 ||  getEnvi().getCellContent(wdt-1, hgt).getGuard() == null){
 							wdt -= 1;
 					  }	
 				}
@@ -65,7 +72,7 @@ public class CharacterImpl implements CharacterService{
 				   (getEnvi().getCellNature(wdt, hgt-1) == Cell.PLT || getEnvi().getCellNature(wdt, hgt-1) == Cell.MTL || getEnvi().getCellNature(wdt, hgt-1) == Cell.LAD)
 				   ||
 				   (getEnvi().getCellContent(wdt, hgt-1).getCharacter() != null)) {
-					  if(getEnvi().getCellContent(wdt+1, hgt).getCharacter() == null && getEnvi().getCellContent(wdt+1, hgt).getGuard() == null) {
+					  if(id == -1 ||  getEnvi().getCellContent(wdt+1, hgt).getGuard() == null) {
 							wdt += 1;
 					  }	
 				}
@@ -76,20 +83,24 @@ public class CharacterImpl implements CharacterService{
 	@Override
 	public void goUp() {
 		if(hgt != getEnvi().getHeight()-1 && getEnvi().getCellNature(wdt, hgt) == Cell.LAD) {
-			if(getEnvi().getCellNature(wdt, hgt+1) != Cell.MTL 
-					&& getEnvi().getCellNature(wdt, hgt+1) != Cell.PLT && getEnvi().getCellNature(wdt, hgt+1) != Cell.HOL && getEnvi().getCellContent(wdt, hgt+1).getCharacter() == null && getEnvi().getCellContent(wdt, hgt+1).getGuard() == null) {
+			if(getEnvi().getCellNature(wdt, hgt+1) != Cell.MTL && 
+			   getEnvi().getCellNature(wdt, hgt+1) != Cell.PLT && 
+			   getEnvi().getCellNature(wdt, hgt+1) != Cell.HOL && 
+			   (id == -1 ||  getEnvi().getCellContent(wdt, hgt+1).getGuard() == null)) {
 				hgt +=1;
 			}
 		}
 	}
 
 	@Override
-	public void goDown() {
+	public void goDown() {				
 		if(hgt != 1) {
-			if(getEnvi().getCellNature(wdt, hgt-1) != Cell.MTL && getEnvi().getCellNature(wdt, hgt-1) != Cell.PLT && getEnvi().getCellContent(wdt, hgt-1).getCharacter() == null && getEnvi().getCellContent(wdt, hgt-1).getGuard() == null) {
-				System.out.println("godown");
+			if(getEnvi().getCellNature(wdt, hgt-1) != Cell.MTL && 
+					getEnvi().getCellNature(wdt, hgt-1) != Cell.PLT 
+					&& (id == -1 ||  getEnvi().getCellContent(wdt, hgt-1).getGuard() == null)) {
 				hgt -=1;
 			}
 		}
 	}
+
 }

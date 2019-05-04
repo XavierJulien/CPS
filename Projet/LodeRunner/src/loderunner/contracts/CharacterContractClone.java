@@ -4,6 +4,7 @@ import loderunner.data.Cell;
 import loderunner.decorators.CharacterDecorator;
 import loderunner.errors.InvariantError;
 import loderunner.errors.PostconditionError;
+import loderunner.errors.PreconditionError;
 import loderunner.services.CharacterService;
 import loderunner.services.EnvironnementService;
 import loderunner.services.ScreenService;
@@ -46,17 +47,23 @@ public class CharacterContractClone extends CharacterDecorator {
 	}
 
 	@Override
-	public void init(ScreenService s, int x, int y) {
+	public int getId() {
+		return delegate.getId();
+	}
+	
+	@Override
+	public void init(ScreenService s, int x, int y,int id) {
 		//1.pre
 		/*if(s.getCellNature(x, y) != Cell.EMP) {
 			throw new PreconditionError("init : la case ou on veut init le player n'est pas Cell.EMP");
 		}*/
+		if(id < -1) throw new PreconditionError("init character : l'id est inférieur à -1");
 		//2.checkInvariants
 		//none
 		//3.capture
 		//none
 		//4.run
-		super.init(s, x, y);
+		super.init(s, x, y, id);
 		this.getEnvi().getCellContent(x, y).setCharacter(this);
 		//5.checkInvariants
 		checkInvariants();
@@ -84,14 +91,14 @@ public class CharacterContractClone extends CharacterDecorator {
 		//5.checkInvariants
 		checkInvariants();
 		//6.post
-		if(getHgt() != hgt_capture) throw new PostconditionError("goLeft : la hauteur du personnage � chang�");
+		if(getHgt() != hgt_capture) throw new PostconditionError("goLeft : la hauteur du personnage à changé");
 		if(wdt_capture == 0 ) {
-			if(getWdt() != wdt_capture) throw new PostconditionError("goLeft : le personnage � franchi la gauche de l'�cran");
+			if(getWdt() != wdt_capture) throw new PostconditionError("goLeft : le personnage à franchi la gauche de l'écran");
 			return;
 		}
 		if(getEnvi().getCellNature(wdt_capture-1, hgt_capture) == Cell.MTL || 
 		   getEnvi().getCellNature(wdt_capture-1, hgt_capture) == Cell.PLT) {
-			if(getWdt() != wdt_capture) throw new PostconditionError("goLeft : le personnage � franchi un mur");
+			if(getWdt() != wdt_capture) throw new PostconditionError("goLeft : le personnage à franchi un mur");
 		}
 		if(getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.LAD && 
 		   getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.HDR) {
@@ -99,12 +106,12 @@ public class CharacterContractClone extends CharacterDecorator {
 			   getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.MTL && 
 			   getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.LAD) {
 				if(getEnvi().getCellContent(wdt_capture, hgt_capture-1).getCharacter() == null) {
-					if(getWdt() != wdt_capture) throw new PostconditionError("goLeft : le personnage n'�tait pas cens� se d�placer");
+					if(getWdt() != wdt_capture) throw new PostconditionError("goLeft : le personnage n'était pas censé se déplacer");
 				}
 			}
 		}
 		if(getEnvi().getCellContent(wdt_capture-1, hgt_capture).getCharacter() != null) {
-			if(getWdt() != wdt_capture) throw new PostconditionError("goLeft : le personnage � travers� un personnage");
+			if(getWdt() != wdt_capture) throw new PostconditionError("goLeft : le personnage à traversé un personnage");
 		}
 		if(wdt_capture != 0) {
 			if(getEnvi().getCellNature(wdt_capture-1, hgt_capture) != Cell.MTL && getEnvi().getCellNature(wdt_capture-1, hgt_capture) != Cell.PLT) {
@@ -113,7 +120,7 @@ public class CharacterContractClone extends CharacterDecorator {
 				   (getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.PLT || getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL || getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.LAD)
 				   ||
 				   (getEnvi().getCellContent(wdt_capture, hgt_capture-1).getCharacter() != null)) {
-					  if(getEnvi().getCellContent(wdt_capture-1, hgt_capture).getCharacter() == null && getEnvi().getCellContent(wdt_capture-1, hgt_capture).getGuard() == null) {
+					  if(getEnvi().getCellContent(wdt_capture-1, hgt_capture).getCharacter() == null&& getEnvi().getCellContent(wdt_capture-1, hgt_capture).getGuard() == null) {
 						  if(getWdt() != wdt_capture-1) throw new PostconditionError("goLeft : le personnage aurait du bouger");
 					  }	
 				}
@@ -134,14 +141,14 @@ public class CharacterContractClone extends CharacterDecorator {
 		//5.checkInvariants
 		checkInvariants();
 		//6.post
-		if(getHgt() != hgt_capture) throw new PostconditionError("goRight : la hauteur du personnage � chang�");
+		if(getHgt() != hgt_capture) throw new PostconditionError("goRight : la hauteur du personnage à changé");
 		if(wdt_capture == getEnvi().getWidth()-1 ) {
-			if(getWdt() != wdt_capture) throw new PostconditionError("goRight : le personnage � franchi la droite de l'�cran");
+			if(getWdt() != wdt_capture) throw new PostconditionError("goRight : le personnage à franchi la droite de l'écran");
 			return;
 		}
 		if(getEnvi().getCellNature(wdt_capture+1, hgt_capture) == Cell.MTL || 
 		   getEnvi().getCellNature(wdt_capture+1, hgt_capture) == Cell.PLT) {
-			if(getWdt() != wdt_capture) throw new PostconditionError("goRight : le personnage � franchi un mur");
+			if(getWdt() != wdt_capture) throw new PostconditionError("goRight : le personnage à franchi un mur");
 		}
 		if(getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.LAD && 
 		   getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.HDR) {
@@ -149,12 +156,12 @@ public class CharacterContractClone extends CharacterDecorator {
 			   getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.MTL && 
 			   getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.LAD) {
 				if(getEnvi().getCellContent(wdt_capture, hgt_capture-1).getCharacter() == null) {
-					if(getWdt() != wdt_capture) throw new PostconditionError("goRight : le personnage n'�tait pas cens� se d�placer");
+					if(getWdt() != wdt_capture) throw new PostconditionError("goRight : le personnage n'était pas censé se déplacer");
 				}
 			}
 		}
 		if(getEnvi().getCellContent(wdt_capture+1, hgt_capture).getCharacter() != null) {
-			if(getWdt() != wdt_capture) throw new PostconditionError("goRight : le personnage � travers� un personnage");
+			if(getWdt() != wdt_capture) throw new PostconditionError("goRight : le personnage à traversé un personnage");
 		}
 		if(wdt_capture != getEnvi().getWidth()-1) {
 			if(getEnvi().getCellNature(wdt_capture+1, hgt_capture) != Cell.MTL && getEnvi().getCellNature(wdt_capture+1, hgt_capture) != Cell.PLT) {
@@ -184,15 +191,15 @@ public class CharacterContractClone extends CharacterDecorator {
 		//5.checkInvariants
 		checkInvariants();
 		//6.post
-		if (getWdt() != wdt_capture) throw new PostconditionError("goUp : la largeur du personnage a chang�");
+		if (getWdt() != wdt_capture) throw new PostconditionError("goUp : la largeur du personnage a changé");
 		if (hgt_capture == getEnvi().getHeight()-1) {
-			if (getHgt() != hgt_capture) throw new PostconditionError("goUp : le personnage a d�pass� le plafond");
+			if (getHgt() != hgt_capture) throw new PostconditionError("goUp : le personnage a dépassé le plafond");
 			return;
 		}
 		if (getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.LAD) {
-			if (getHgt() != hgt_capture) throw new PostconditionError("goUp : le personnage est mont� sans �chelle");
+			if (getHgt() != hgt_capture) throw new PostconditionError("goUp : le personnage est monté sans échelle");
 		}else {
-			if (getEnvi().getCellContent(wdt_capture, hgt_capture+1).getCharacter() == null
+			if (getEnvi().getCellContent(wdt_capture, hgt_capture).getCharacter() == null
 				&& 
 				getEnvi().getCellContent(wdt_capture, hgt_capture+1).getGuard() == null
 			    &&
@@ -201,7 +208,7 @@ public class CharacterContractClone extends CharacterDecorator {
 			    getEnvi().getCellNature(wdt_capture, hgt_capture+1) != Cell.PLT
 			    &&
 			    getEnvi().getCellNature(wdt_capture, hgt_capture+1) != Cell.HOL) {
-				if (getHgt() != hgt_capture+1) throw new PostconditionError("goUp : le personnage n'est pas mont� apres un goUp permis");
+				if (getHgt() != hgt_capture+1) throw new PostconditionError("goUp : le personnage n'est pas monté apres un goUp permis");
 			}
 		}
 	}
@@ -219,7 +226,7 @@ public class CharacterContractClone extends CharacterDecorator {
 		//5.checkInvariants
 		checkInvariants();
 		//6.post
-		if (getWdt() != wdt_capture) throw new PostconditionError("goDown : la largeur du personnage a �t� modifi�e");
+		if (getWdt() != wdt_capture) throw new PostconditionError("goDown : la largeur du personnage a été modifiée");
 		if (hgt_capture == 1) {//peut etre pas utile car on le verifie en dessous avec le metal
 			if (getHgt() != hgt_capture) throw new PostconditionError("goDown : le personnage est descendu alors qu'il ne pouvais pas");
 			return;
@@ -227,15 +234,18 @@ public class CharacterContractClone extends CharacterDecorator {
 		if(getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.PLT 
 		   ||
 		   getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL) {
-			if (getHgt() != hgt_capture) throw new PostconditionError("goDown : le personnage a pu descendre � travers la mati�re");
+			if (getHgt() != hgt_capture) throw new PostconditionError("goDown : le personnage a pu descendre à travers la matière");
 		}
-		if(getEnvi().getCellContent(wdt_capture, hgt_capture-1).getCharacter() != null)
-			throw new PostconditionError("goDown : le joueur est descendu alors qu'il y avait un personnage");
+		if(getEnvi().getCellContent(wdt_capture, hgt_capture-1).getCharacter() != null || 
+		   getEnvi().getCellContent(wdt_capture, hgt_capture-1).getGuard() != null) {
+			if(getHgt() != hgt_capture)
+				throw new PostconditionError("goDown : le joueur est descendu alors qu'il y avait un personnage");
+		}
 		if(hgt_capture != 1) {
 			if(getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.MTL 
 			   && getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.PLT 
-			   && getEnvi().getCellContent(wdt_capture, hgt_capture-1).getCharacter() == null
-			   && getEnvi().getCellContent(wdt_capture, hgt_capture-1).getGuard() == null) {
+			   && getEnvi().getCellContent(wdt_capture, hgt_capture-1).getCharacter() == null && 
+			   getEnvi().getCellContent(wdt_capture, hgt_capture-1).getGuard() == null) {
 				if (getHgt() != hgt_capture-1) throw new PostconditionError("goDown : le joueur n'est pas descendu alors qu'il devait");
 			}
 		}

@@ -21,7 +21,7 @@ public class PlayerImplClone extends CharacterImpl implements PlayerService{
 	@Override
 	public void init(EngineService e,Coord player) {
 		this.engine = e;
-		super.init(e.getEnvi(), player.getX(), player.getY());
+		super.init(e.getEnvi(), player.getX(), player.getY(),-1);
 	}
 	
 	@Override

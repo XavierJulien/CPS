@@ -15,6 +15,7 @@ public interface GuardService extends CharacterService {
 	public int getTimeInHole();
 	public EngineService getEngine();
 	public boolean hasItem();
+	public void waitInHole();
 	public void setTreasure(Item treasure);
 	
 	/* Constructor */
@@ -147,6 +148,7 @@ public interface GuardService extends CharacterService {
 	default boolean willWaitInHole() {
 		Cell nat = getEnvi().getCellNature(getWdt(), getHgt());
 		if (nat==Cell.HOL) {
+			System.out.println(getTimeInHole());
 			if (getTimeInHole() < 5)
 				return true;
 		}
@@ -156,7 +158,7 @@ public interface GuardService extends CharacterService {
 	default boolean willClimbLeft() {
 		Cell nat = getEnvi().getCellNature(getWdt(), getHgt());
 		if (nat==Cell.HOL) {
-			if (getTimeInHole()==5) {
+			if (getTimeInHole()>5) {
 				if (getBehaviour()==Command.LEFT) 
 					return true;
 			}
@@ -168,7 +170,7 @@ public interface GuardService extends CharacterService {
 	default boolean willClimbRight() {
 		Cell nat = getEnvi().getCellNature(getWdt(), getHgt());
 		if (nat==Cell.HOL) {
-			if (getTimeInHole()==5) {
+			if (getTimeInHole()>5) {
 				if (getBehaviour()==Command.RIGHT) 
 					return true;
 			}
@@ -180,7 +182,7 @@ public interface GuardService extends CharacterService {
 	default boolean willClimbNeutral() {
 		Cell nat = getEnvi().getCellNature(getWdt(), getHgt());
 		if (nat==Cell.HOL) {
-			if (getTimeInHole()==5) {
+			if (getTimeInHole()>5) {
 				if (getBehaviour()==Command.NEUTRAL) 
 					return true;
 			}

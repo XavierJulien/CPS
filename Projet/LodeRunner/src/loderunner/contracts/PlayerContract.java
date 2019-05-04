@@ -24,7 +24,7 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		super.checkInvariants();
 		if(getEnvi().getCellContent(getWdt(), getHgt()).getCharacter() != null) {
 			if(!getEnvi().getCellContent(getWdt(), getHgt()).getCharacter().equals(this)) {
-				throw new InvariantError("le joueur dans la case de notre joueur n'est pas lui-même");				
+				throw new InvariantError("le joueur dans la case de notre joueur n'est pas lui-mï¿½me");				
 			}
 		}
 	}
@@ -159,7 +159,7 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		//3.capture
 		//4.run
 		delegate.init(e, c);
-		super.init(e.getEnvi(), c.getX(), c.getY());
+		super.init(e.getEnvi(), c.getX(), c.getY(),-1);
 		//5.checkInvariants
 		checkInvariants();
 		//6.post

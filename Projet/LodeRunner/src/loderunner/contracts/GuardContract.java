@@ -41,7 +41,7 @@ public class GuardContract extends CharacterContract implements GuardService {
 		 * 				or Math.abs(getTarget().getHgt()-getHgt()) < Math.abs(getTarget().getWdt()-getWdt())
 		 * A VERIFIER CA A L'AIR CHELOU
 		 **/
-		/*if (getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD) {
+		if (getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD) {
 			if (getHgt() < getTarget().getHgt()) {
 				if ((getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL
 					 && getEnvi().getCellContent(getWdt(), getHgt()-1).getCharacter() == null) 
@@ -51,7 +51,7 @@ public class GuardContract extends CharacterContract implements GuardService {
 				}
 			}
 		}
-		*/
+		
 		/** le garde est sur une échelle, 
 		 * 	s'il y a un support dans la case en dessous, 
 		 * 		alors la distance entre garde et target est plus courte en axe y que en axe x
@@ -330,10 +330,12 @@ public class GuardContract extends CharacterContract implements GuardService {
 				throw new PostconditionError("step de Guard : willFall pb timeInHole");
 		}
 		if (guard_atpre.willWaitInHole()) {
+			guard_atpre.waitInHole();
 			if (getWdt()!=guard_atpre.getWdt() || getHgt()!=guard_atpre.getHgt())
 				throw new PostconditionError("step de Guard : le garde devait rester sur place dans le trou");
-			if (time_atpre+guard_atpre.getTimeInHole() != time_atpre+timeEpsilon)
-				throw new PostconditionError("step de Guard : willWaitInHole pb incr timeInHole");
+			if (time_atpre+guard_atpre.getTimeInHole() != time_atpre+timeEpsilon) {
+				throw new PostconditionError("step de Guard : willWaitInHole pb incr timeInHole");				
+			}
 		}
 		if (guard_atpre.willClimbLeft()) {
 			guard_atpre.climbLeft();
@@ -366,6 +368,24 @@ public class GuardContract extends CharacterContract implements GuardService {
 	@Override
 	public void setTreasure(Item treasure) {
 		delegate.setTreasure(treasure);
+	}
+
+	@Override
+	public void waitInHole() {
+		//1.pre
+		if(getEngine().getEnvi().getCellNature(getWdt(), getHgt()) != Cell.HOL) throw new PreconditionError("waitInHole : ne peut pas faire cela dans une case différent d'un HOL");
+		//2.checkInvariants
+		checkInvariants();
+		//3.capture
+		int time_capture = getTimeInHole();
+		//4.run
+		delegate.waitInHole();
+		//5.checkInvariants
+		checkInvariants();
+		//6.post
+		if(time_capture+timeEpsilon != getTimeInHole()) {
+			throw new PostconditionError("waitInHole : le personnage n'as pas attendu un step de plus");
+		}
 	}
 
 }

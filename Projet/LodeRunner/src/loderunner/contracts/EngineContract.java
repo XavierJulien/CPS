@@ -171,7 +171,7 @@ public class EngineContract extends EngineDecorator{
 		for(Coord guard : guards) {
 			if(e.getCellNature(guard.getX(), guard.getY()) != Cell.EMP) throw new PreconditionError("init : un guard ne peut pas être init dans une case de l'envi non Cell.EMP");
 			//check coordonnées égal à un player ou trésor
-			if(guard.getX() == player.getX() && guard.getY() == player.getX()) throw new PreconditionError("un guard est sur la même case que le player");
+			if(guard.getX() == player.getX() && guard.getY() == player.getY()) throw new PreconditionError("un guard est sur la même case que le player");
 			for(Item treasure : getTreasures()) {
 				if(guard.getX() == treasure.getCol() && guard.getY() == treasure.getHgt()) throw new PreconditionError("un guard est sur la même case qu'un trésor");
 			}
