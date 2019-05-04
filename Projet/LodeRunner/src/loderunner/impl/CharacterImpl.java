@@ -48,7 +48,7 @@ public class CharacterImpl implements CharacterService{
 				   (getEnvi().getCellNature(wdt, hgt-1) == Cell.PLT || getEnvi().getCellNature(wdt, hgt-1) == Cell.MTL || getEnvi().getCellNature(wdt, hgt-1) == Cell.LAD)
 				   ||
 				   (getEnvi().getCellContent(wdt, hgt-1).getCharacter() != null)) {
-					  if(getEnvi().getCellContent(wdt-1, hgt).getCharacter() == null) {
+					  if(getEnvi().getCellContent(wdt-1, hgt).getCharacter() == null && getEnvi().getCellContent(wdt-1, hgt).getGuard() == null) {
 							wdt -= 1;
 					  }	
 				}
@@ -65,7 +65,7 @@ public class CharacterImpl implements CharacterService{
 				   (getEnvi().getCellNature(wdt, hgt-1) == Cell.PLT || getEnvi().getCellNature(wdt, hgt-1) == Cell.MTL || getEnvi().getCellNature(wdt, hgt-1) == Cell.LAD)
 				   ||
 				   (getEnvi().getCellContent(wdt, hgt-1).getCharacter() != null)) {
-					  if(getEnvi().getCellContent(wdt+1, hgt).getCharacter() == null) {
+					  if(getEnvi().getCellContent(wdt+1, hgt).getCharacter() == null && getEnvi().getCellContent(wdt+1, hgt).getGuard() == null) {
 							wdt += 1;
 					  }	
 				}
@@ -77,7 +77,7 @@ public class CharacterImpl implements CharacterService{
 	public void goUp() {
 		if(hgt != getEnvi().getHeight()-1 && getEnvi().getCellNature(wdt, hgt) == Cell.LAD) {
 			if(getEnvi().getCellNature(wdt, hgt+1) != Cell.MTL 
-					&& getEnvi().getCellNature(wdt, hgt+1) != Cell.PLT && getEnvi().getCellNature(wdt, hgt+1) != Cell.HOL && getEnvi().getCellContent(wdt, hgt+1).getCharacter() == null) {
+					&& getEnvi().getCellNature(wdt, hgt+1) != Cell.PLT && getEnvi().getCellNature(wdt, hgt+1) != Cell.HOL && getEnvi().getCellContent(wdt, hgt+1).getCharacter() == null && getEnvi().getCellContent(wdt, hgt+1).getGuard() == null) {
 				hgt +=1;
 			}
 		}
@@ -86,7 +86,8 @@ public class CharacterImpl implements CharacterService{
 	@Override
 	public void goDown() {
 		if(hgt != 1) {
-			if(getEnvi().getCellNature(wdt, hgt-1) != Cell.MTL && getEnvi().getCellNature(wdt, hgt-1) != Cell.PLT && getEnvi().getCellContent(wdt, hgt-1).getCharacter() == null) {
+			if(getEnvi().getCellNature(wdt, hgt-1) != Cell.MTL && getEnvi().getCellNature(wdt, hgt-1) != Cell.PLT && getEnvi().getCellContent(wdt, hgt-1).getCharacter() == null && getEnvi().getCellContent(wdt, hgt-1).getGuard() == null) {
+				System.out.println("godown");
 				hgt -=1;
 			}
 		}

@@ -113,7 +113,7 @@ public class CharacterContract extends CharacterDecorator {
 				   (getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.PLT || getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL || getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.LAD)
 				   ||
 				   (getEnvi().getCellContent(wdt_capture, hgt_capture-1).getCharacter() != null)) {
-					  if(getEnvi().getCellContent(wdt_capture-1, hgt_capture).getCharacter() == null) {
+					  if(getEnvi().getCellContent(wdt_capture-1, hgt_capture).getCharacter() == null&& getEnvi().getCellContent(wdt_capture-1, hgt_capture).getGuard() == null) {
 						  if(getWdt() != wdt_capture-1) throw new PostconditionError("goLeft : le personnage aurait du bouger");
 					  }	
 				}
@@ -163,7 +163,7 @@ public class CharacterContract extends CharacterDecorator {
 				   (getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.PLT || getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL || getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.LAD)
 				   ||
 				   (getEnvi().getCellContent(wdt_capture, hgt_capture-1).getCharacter() != null)) {
-					  if(getEnvi().getCellContent(wdt_capture+1, hgt_capture).getCharacter() == null) {
+					  if(getEnvi().getCellContent(wdt_capture+1, hgt_capture).getCharacter() == null && getEnvi().getCellContent(wdt_capture+1, hgt_capture).getGuard() == null) {
 						  if(getWdt() != wdt_capture+1) throw new PostconditionError("goRight : le personnage aurait du bouger");
 					  }	
 				}
@@ -193,6 +193,8 @@ public class CharacterContract extends CharacterDecorator {
 			if (getHgt() != hgt_capture) throw new PostconditionError("goUp : le personnage est monté sans échelle");
 		}else {
 			if (getEnvi().getCellContent(wdt_capture, hgt_capture).getCharacter() == null
+				&& 
+				getEnvi().getCellContent(wdt_capture, hgt_capture+1).getGuard() == null
 			    &&
 			    getEnvi().getCellNature(wdt_capture, hgt_capture+1) != Cell.MTL
 			    &&
@@ -227,12 +229,16 @@ public class CharacterContract extends CharacterDecorator {
 		   getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL) {
 			if (getHgt() != hgt_capture) throw new PostconditionError("goDown : le personnage a pu descendre à travers la matière");
 		}
-		if(getEnvi().getCellContent(wdt_capture, hgt_capture-1).getCharacter() != null)
-			throw new PostconditionError("goDown : le joueur est descendu alors qu'il y avait un personnage");
+		if(getEnvi().getCellContent(wdt_capture, hgt_capture-1).getCharacter() != null || 
+		   getEnvi().getCellContent(wdt_capture, hgt_capture-1).getGuard() != null) {
+			if(getHgt() != hgt_capture)
+				throw new PostconditionError("goDown : le joueur est descendu alors qu'il y avait un personnage");
+		}
 		if(hgt_capture != 1) {
 			if(getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.MTL 
 			   && getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.PLT 
-			   && getEnvi().getCellContent(wdt_capture, hgt_capture-1).getCharacter() == null) {
+			   && getEnvi().getCellContent(wdt_capture, hgt_capture-1).getCharacter() == null && 
+			   getEnvi().getCellContent(wdt_capture, hgt_capture-1).getGuard() == null) {
 				if (getHgt() != hgt_capture-1) throw new PostconditionError("goDown : le joueur n'est pas descendu alors qu'il devait");
 			}
 		}

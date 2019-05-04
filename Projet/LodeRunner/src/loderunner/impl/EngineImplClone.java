@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import loderunner.contracts.EnvironnementContract;
-import loderunner.contracts.GuardContract;
+import loderunner.contracts.GuardContractClone;
 import loderunner.contracts.PlayerContractClone;
 import loderunner.data.Command;
 import loderunner.data.Coord;
@@ -91,7 +91,7 @@ public class EngineImplClone implements EngineService{
 		envi.getCellContent(player.getX(), player.getY()).setCharacter(this.player);
 		this.guards = new ArrayList<>();
 		for(Coord co : guards) {
-			GuardContract guard = new GuardContract(new GuardImpl(-1));
+			GuardContractClone guard = new GuardContractClone(new GuardImplClone(-1));
 			guard.init(this, co.getX(), co.getY(), getPlayer());
 			this.guards.add(guard);
 			envi.getCellContent(co.getX(), co.getY()).setGuard(guard);

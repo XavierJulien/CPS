@@ -137,7 +137,7 @@ public interface GuardService extends CharacterService {
 		Cell nat_under = getEnvi().getCellNature(getWdt(), getHgt()-1);
 		if (nat != Cell.LAD && nat != Cell.HDR && nat != Cell.HOL) {
 			if (nat_under == Cell.HDR || nat_under == Cell.EMP || nat_under == Cell.HOL) {
-				if (getEnvi().getCellContent(getWdt(), getHgt()-1).getCharacter() == null)
+				if (getEnvi().getCellContent(getWdt(), getHgt()-1).getCharacter() == null && getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() == null)
 					return true;
 			}
 		}

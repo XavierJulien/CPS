@@ -11,11 +11,11 @@ import loderunner.services.EngineService;
 import loderunner.services.GuardService;
 import loderunner.services.PlayerService;
 
-public class GuardContract extends CharacterContract implements GuardService {
+public class GuardContractClone extends CharacterContract implements GuardService {
 
 	private final GuardService delegate;
 	
-	public GuardContract(GuardService delegate) {
+	public GuardContractClone(GuardService delegate) {
 		super(delegate);
 		this.delegate = delegate;
 	}
@@ -213,9 +213,7 @@ public class GuardContract extends CharacterContract implements GuardService {
 
 	@Override
 	public Command getBehaviour() {
-		Command behaviour =  delegate.getBehaviour();
-		System.out.println("guard : "+this+", action "+behaviour);
-		return behaviour;
+		return delegate.getBehaviour();
 	}
 
 	@Override
@@ -226,11 +224,11 @@ public class GuardContract extends CharacterContract implements GuardService {
 	@Override
 	public void init(EngineService e, int x, int y, PlayerService target) {
 		//pre 
-		if(e.getEnvi().getCellNature(x, y) != Cell.EMP) {
+		/*if(e.getEnvi().getCellNature(x, y) != Cell.EMP) {
 			throw new PreconditionError("init de guard : la case ou on veut init le player n'est pas Cell.EMP");
-		}
-		if(e.getEnvi().getCellContent(x, y).getCharacter() != null)
-			throw new PreconditionError("init de guard : le case contient déjà qqn"); 
+		}*/
+		/*if(e.getEnvi().getCellContent(x, y).getGuard() != null)
+			throw new PreconditionError("init de guard : le case contient déjà un guard");*/ 
 		//inv
 		//appel
 		delegate.init(e, x, y, target);
@@ -304,7 +302,7 @@ public class GuardContract extends CharacterContract implements GuardService {
 		//inv
 		checkInvariants();
 		//captures
-		GuardContract capture_self = this;
+		GuardContractClone capture_self = this;
 		EngineService engine_atpre = getEngine();
 		PlayerService target_atpre = getTarget();
 		GuardService guard_atpre = new GuardImpl(getId());

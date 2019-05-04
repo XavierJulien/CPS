@@ -31,7 +31,7 @@ public class EngineContractClone extends EngineDecorator{
 	}
 
 	public void checkInvariants() {
-		CellContent cell_check = getEnvi().getCellContent(getPlayer().getWdt(), getPlayer().getHgt());
+		/*CellContent cell_check = getEnvi().getCellContent(getPlayer().getWdt(), getPlayer().getHgt());
 		if(!cell_check.getCharacter().equals(getPlayer())) throw new InvariantError("checkInvariants : Le player aux position du player n'est pas le player");
 		for(GuardService g : getGuards()) {
 			cell_check = getEnvi().getCellContent(g.getWdt(), g.getHgt());
@@ -40,9 +40,9 @@ public class EngineContractClone extends EngineDecorator{
 		}
 		for(Item t : getTreasures()) {
 			cell_check = getEnvi().getCellContent(t.getCol(), t.getHgt());
-			if(cell_check.getItem().getNature() != ItemType.Treasure) throw new InvariantError("checkInvariants : Il devrait y avoir un trésor en ("+t.getCol()+","+t.getHgt()+")");
+			if(cell_check.getItem().getNature() != ItemType.Treasure) throw new InvariantError("checkInvariants : Il devrait y avoir un trï¿½sor en ("+t.getCol()+","+t.getHgt()+")");
 			
-		}
+		}*/
 	}
 	
 	@Override
@@ -114,7 +114,7 @@ public class EngineContractClone extends EngineDecorator{
 	@Override
 	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Item> treasures) {
 		//1.pre
-		//if(!e.isPlayable()) throw new PreconditionError("init : l'ecran n'est pas défini comme jouable");
+		//if(!e.isPlayable()) throw new PreconditionError("init : l'ecran n'est pas dï¿½fini comme jouable");
 		//2.checkInvariants
 		//none
 		//3.captures
@@ -124,48 +124,48 @@ public class EngineContractClone extends EngineDecorator{
 		//5.checkInvariants
 		checkInvariants();
 		//6.post
-		// tous les éléments ont été correctement initialisés sur les bonnes positions
-		// à  revoir pas vraiment très bon
+		// tous les ï¿½lï¿½ments ont ï¿½tï¿½ correctement initialisï¿½s sur les bonnes positions
+		// ï¿½ revoir pas vraiment trï¿½s bon
 		for(int i = 0;i<getEnvi().getWidth();i++) {
 			for(int j = 0;j<getEnvi().getHeight();j++) {
 				if(i == getPlayer().getWdt() && j == getPlayer().getHgt()) {
 					if(getEnvi().getCellContent(i, j).getCharacter() != getPlayer()) {
-						throw new PostconditionError("init : le player à  mal été initialisé");	
+						throw new PostconditionError("init : le player ï¿½ mal ï¿½tï¿½ initialisï¿½");	
 					}
 				}
 				for(GuardService g : getGuards()) {
 					if(i == g.getWdt() && j == g.getHgt()) {
-						if(!getEnvi().getCellContent(i, j).getGuard().equals(g)) throw new PostconditionError("init : un guard à  mal été initialisé");	
+						if(!getEnvi().getCellContent(i, j).getGuard().equals(g)) throw new PostconditionError("init : un guard ï¿½ mal ï¿½tï¿½ initialisï¿½");	
 					}
 				}
 				for(Item treasure : getTreasures()) {
 					if(i == treasure.getCol() && j == treasure.getHgt()) {
-						if(getEnvi().getCellContent(i, j).getItem().getNature() != ItemType.Treasure) throw new PostconditionError("init : un trésor à  mal été initialisé");	
+						if(getEnvi().getCellContent(i, j).getItem().getNature() != ItemType.Treasure) throw new PostconditionError("init : un trï¿½sor ï¿½ mal ï¿½tï¿½ initialisï¿½");	
 					}
 				}
 			}
 		}
 		for(Item treasure : treasures) {
-			if(treasure.getCol() == player.getX() && treasure.getHgt() == player.getY()) throw new PreconditionError("un trésor est sur la màªme case que le player");
+			if(treasure.getCol() == player.getX() && treasure.getHgt() == player.getY()) throw new PreconditionError("un trï¿½sor est sur la mï¿½me case que le player");
 			if(e.getCellNature(treasure.getCol(), treasure.getHgt()) != Cell.EMP &&
 			   (e.getCellNature(treasure.getCol(), treasure.getHgt()-1) != Cell.PLT || e.getCellNature(treasure.getCol(), treasure.getHgt()-1) != Cell.MTL)) {
-				throw new PreconditionError("init : un trésor ne peut pas àªtre init dans une case de l'envi non Cell.EMP");
+				throw new PreconditionError("init : un trï¿½sor ne peut pas ï¿½tre init dans une case de l'envi non Cell.EMP");
 			}
 			for(Item other : treasures) {
 				if (other.equals(treasure)) {
 					continue;
 				}else {
 					if (other.getCol()==treasure.getCol() && other.getHgt()==treasure.getHgt())
-						throw new PreconditionError("init : les trésors doivent àªtre initialisés sur des cases distinctes");
+						throw new PreconditionError("init : les trï¿½sors doivent ï¿½tre initialisï¿½s sur des cases distinctes");
 				}
 			}
 		}
 		for(Coord guard : guards) {
-			if(e.getCellNature(guard.getX(), guard.getY()) != Cell.EMP) throw new PreconditionError("init : un guard ne peut pas àªtre init dans une case de l'envi non Cell.EMP");
-			//check coordonnées égal à  un player ou trésor
-			if(guard.getX() == player.getX() && guard.getY() == player.getX()) throw new PreconditionError("un guard est sur la màªme case que le player");
+			//if(e.getCellNature(guard.getX(), guard.getY()) != Cell.EMP) throw new PreconditionError("init : un guard ne peut pas ï¿½tre init dans une case de l'envi non Cell.EMP");
+			//check coordonnï¿½es ï¿½gal ï¿½ un player ou trï¿½sor
+			if(guard.getX() == player.getX() && guard.getY() == player.getX()) throw new PreconditionError("un guard est sur la mï¿½me case que le player");
 			/*for(Item treasure : getTreasures()) {
-				if(guard.getX() == treasure.getCol() && guard.getY() == treasure.getHgt()) throw new PreconditionError("un guard est sur la màªme case qu'un trésor");
+				if(guard.getX() == treasure.getCol() && guard.getY() == treasure.getHgt()) throw new PreconditionError("un guard est sur la mï¿½me case qu'un trï¿½sor");
 			}*/
 		}
 	}
@@ -184,7 +184,7 @@ public class EngineContractClone extends EngineDecorator{
 		checkInvariants();
 		//6.post
 		if(getCommands().size() != size_command+1)
-			throw new PostconditionError("addCommand : on n'as pas ajouté de commande aprà¨s un addCommand");
+			throw new PostconditionError("addCommand : on n'as pas ajoutï¿½ de commande aprï¿½s un addCommand");
 		//peut etre verifier que ya un nouvel ajout dans la liste de commandes avec la capture
 			
 	}
@@ -202,23 +202,23 @@ public class EngineContractClone extends EngineDecorator{
 		//5.checkInvariants
 		checkInvariants();
 		//6.post
-		//verif que le joueur a fait ce qu'il devait faire en terme de changement de position sur le screen -> voir le step de player peut etre que c'est ici que les post que j'ai ecrit dans player sont veirifiées  
+		//verif que le joueur a fait ce qu'il devait faire en terme de changement de position sur le screen -> voir le step de player peut etre que c'est ici que les post que j'ai ecrit dans player sont veirifiï¿½es  
 		//verif tous les tresors qui devaient disparaitre ont disparue et ceux qui ne le devaient pas, n'ont pas diparus 
-		//si le nombre de trésor a changé, on vérifie qu'un trésor n'as pas été oublié sinon on vérifie que justement un n'aurais pas du disparaitre
-		//si l'on est a proximité d'un guard on doit mourrir et changer le gamestate
-		//idem si on as ramassé tous les trésors 
+		//si le nombre de trï¿½sor a changï¿½, on vï¿½rifie qu'un trï¿½sor n'as pas ï¿½tï¿½ oubliï¿½ sinon on vï¿½rifie que justement un n'aurais pas du disparaitre
+		//si l'on est a proximitï¿½ d'un guard on doit mourrir et changer le gamestate
+		//idem si on as ramassï¿½ tous les trï¿½sors 
 		if(getTreasures().size() == 0) {
-			if (getStatus() != GameState.Win) throw new PostconditionError("le joueur à  ramassé tous les trésors, il aurait du gagné");
+			if (getStatus() != GameState.Win) throw new PostconditionError("le joueur ï¿½ ramassï¿½ tous les trï¿½sors, il aurait du gagnï¿½");
 		}else {
-			if (getStatus() == GameState.Win) throw new PostconditionError("le joueur n'as pas tout ramassé");
+			if (getStatus() == GameState.Win) throw new PostconditionError("le joueur n'as pas tout ramassï¿½");
 		}
 		if(treasure_capture.size() != getTreasures().size()) {
 			for(Item treasure : getTreasures()) {
-				if(treasure.getCol() == getPlayer().getWdt() && treasure.getHgt() == getPlayer().getHgt()) throw new PostconditionError("un trésor supplémentaire aurait du disparaà®tre");
+				if(treasure.getCol() == getPlayer().getWdt() && treasure.getHgt() == getPlayer().getHgt()) throw new PostconditionError("un trï¿½sor supplï¿½mentaire aurait du disparaï¿½tre");
 			}
 		}else {
 			for(Item treasure : treasure_capture) {
-				if(treasure.getCol() == getPlayer().getWdt() && treasure.getHgt() == getPlayer().getHgt()) throw new PostconditionError("un trésor aurait du disparaà®tre");
+				if(treasure.getCol() == getPlayer().getWdt() && treasure.getHgt() == getPlayer().getHgt()) throw new PostconditionError("un trï¿½sor aurait du disparaï¿½tre");
 			}
 		}
 		/*for(GuardService g : getGuards()) {
