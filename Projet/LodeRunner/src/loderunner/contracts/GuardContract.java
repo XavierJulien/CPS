@@ -111,9 +111,9 @@ public class GuardContract extends CharacterContract implements GuardService {
 			Math.abs(getTarget().getWdt()-getWdt()) > Math.abs(getTarget().getHgt()-getHgt()))) 
 			||
 			((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HOL || 
-			  getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL || 
-			  getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT || 
-			  getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null) && 
+			  (getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL && getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD) || 
+			  (getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT && getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD) || 
+			  (getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null && getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD)) && 
 			 getTarget().getWdt() < getWdt())) {
 				if (getBehaviour() != Command.LEFT)
 					throw new InvariantError("Le behaviour ne renvoie pas LEFT alors qu'il devrait");
@@ -403,9 +403,7 @@ public class GuardContract extends CharacterContract implements GuardService {
 				throw new PostconditionError("step de Guard : willclimbleft pb timeInHole");
 		}
 		if (guard_atpre.willClimbRight()) {
-			System.out.println("avant climbright clone :"+guard_atpre.getWdt()+","+guard_atpre.getHgt());
 			guard_atpre.climbRight();
-			System.out.println("apres climbright clone :"+guard_atpre.getWdt()+","+guard_atpre.getHgt());
 			if (getWdt()!=guard_atpre.getWdt() || getHgt()!=guard_atpre.getHgt())
 				throw new PostconditionError("step de Guard : pb position joueur apres climbright");
 			if (getTimeInHole()!= guard_atpre.getTimeInHole())

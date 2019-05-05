@@ -19,8 +19,11 @@ public class CharacterContract extends CharacterDecorator {
 		if(getEnvi().getCellNature(getWdt(), getHgt()) != Cell.EMP && 
 		   getEnvi().getCellNature(getWdt(), getHgt()) != Cell.HOL &&
 		   getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD &&
-		   getEnvi().getCellNature(getWdt(), getHgt()) != Cell.HDR)
+		   getEnvi().getCellNature(getWdt(), getHgt()) != Cell.HDR) {
+			System.out.println(getEnvi().getCellNature(getWdt(), getHgt()));
 			throw new InvariantError("le joueur n'est pas dans une case valide");
+		}
+			
 	}
 	
 	public EnvironnementService getEnvi() {

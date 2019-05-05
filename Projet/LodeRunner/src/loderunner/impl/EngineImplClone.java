@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import loderunner.contracts.EnvironnementContract;
+import loderunner.contracts.GuardContract;
 import loderunner.contracts.GuardContractClone;
 import loderunner.contracts.PlayerContractClone;
 import loderunner.data.Command;
@@ -23,6 +24,7 @@ public class EngineImplClone implements EngineService{
 	protected EnvironnementService envi;
 	protected PlayerService player;
 	protected ArrayList<GuardService> guards;
+	protected ArrayList<GuardService> guards_at_init;
 	protected ArrayList<Item> treasures;
 	protected GameState status;
 	protected ArrayList<Command> commands;
@@ -86,6 +88,7 @@ public class EngineImplClone implements EngineService{
 		envi = new EnvironnementContract(new EnvironnementImpl());
 		envi.init(e);
 		
+		this.guards_at_init = new ArrayList<>();
 		this.player = new PlayerContractClone(new PlayerImplClone());
 		this.player.init(this,player);
 		envi.getCellContent(player.getX(), player.getY()).setCharacter(this.player);
@@ -95,6 +98,11 @@ public class EngineImplClone implements EngineService{
 			guard.init(this, co.getX(), co.getY(), getPlayer());
 			this.guards.add(guard);
 			envi.getCellContent(co.getX(), co.getY()).setGuard(guard);
+		}
+		for(GuardService g : this.guards) {
+			GuardContractClone guardcopy = new GuardContractClone(new GuardImplClone(g.getId()));
+			guardcopy.init(this, g.getWdt(), g.getHgt(), getPlayer());
+			this.guards_at_init.add(guardcopy);
 		}
 		this.treasures = (ArrayList<Item>) treasures;
 		for(Item i : treasures) {
@@ -116,6 +124,19 @@ public class EngineImplClone implements EngineService{
 						if(envi.getCellContent(h.getX(), h.getY()).getCharacter() != null) {
 							status = GameState.Loss;
 						}
+						if(envi.getCellContent(h.getX(), h.getY()).getGuard() != null) {
+							for(GuardService g : guards_at_init) {
+								if(g.getId() == envi.getCellContent(h.getX(), h.getY()).getGuard().getId()) {
+									guards.remove(envi.getCellContent(h.getX(), h.getY()).getGuard());
+									GuardContract guardcopy = new GuardContract(new GuardImpl(g.getId()));
+									guardcopy.init(this, g.getWdt(), g.getHgt(), getPlayer());
+									guards.add(guardcopy);
+									envi.getCellContent(g.getWdt(), g.getHgt()).setGuard(guardcopy);
+								}
+							}
+							envi.getCellContent(h.getX(), h.getY()).setGuard(null);
+						}
+						envi.getCellContent(h.getX(), h.getY()).setGuard(null);
 						//pour les gardes
 						envi.fill(h.getX(), h.getY());
 					}

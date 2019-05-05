@@ -15,6 +15,7 @@ import loderunner.decorators.EngineDecorator;
 import loderunner.errors.InvariantError;
 import loderunner.errors.PostconditionError;
 import loderunner.errors.PreconditionError;
+import loderunner.impl.EngineImpl;
 import loderunner.services.EditableScreenService;
 import loderunner.services.EngineService;
 import loderunner.services.EnvironnementService;
@@ -29,16 +30,20 @@ public class EngineContract extends EngineDecorator{
 		super(delegate);
 		this.delegate = delegate;
 	}
+	
+	 public EngineImpl getDelegate() {
+		return (EngineImpl)delegate;
+	}
 
 	public void checkInvariants() {
-		/*CellContent cell_check = getEnvi().getCellContent(getPlayer().getWdt(), getPlayer().getHgt());
+		CellContent cell_check = getEnvi().getCellContent(getPlayer().getWdt(), getPlayer().getHgt());
 		if(!cell_check.getCharacter().equals(getPlayer())) throw new InvariantError("checkInvariants : Le player aux position du player n'est pas le player");
 		for(GuardService g : getGuards()) {
 			cell_check = getEnvi().getCellContent(g.getWdt(), g.getHgt());
 			if(!cell_check.getGuard().equals(g)) throw new InvariantError("checkInvariants : Le guard aux position du guard n'est pas le guard");
 			for(Item t : getTreasures()) {
 				cell_check = getEnvi().getCellContent(t.getCol(), t.getHgt());
-				if(cell_check.getItem() != null && t.getCol() == g.getWdt() && t.getHgt() == g.getHgt()) throw new InvariantError("checkInvariants : il ne devrait plus y avoir de tr�sor � cette case : ["+g.getWdt()+","+g.getHgt()+"]");
+				if(cell_check.getItem() != null && t.getCol() == g.getWdt() && t.getHgt() == g.getHgt() && !g.hasItem()) throw new InvariantError("checkInvariants : il ne devrait plus y avoir de tr�sor � cette case : ["+g.getWdt()+","+g.getHgt()+"]");
 				
 			}
 			
@@ -50,7 +55,7 @@ public class EngineContract extends EngineDecorator{
 				
 			}
 			
-		}*/
+		}
 	}
 	
 	@Override

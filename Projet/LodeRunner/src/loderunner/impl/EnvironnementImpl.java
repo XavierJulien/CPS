@@ -32,7 +32,7 @@ public class EnvironnementImpl extends ScreenImpl implements EnvironnementServic
 	}
 	
 	public String cellcont(CellContent c) {
-		if (c.getGuard() != null) return "G";
+		if (c.getGuard() != null) return "$";
 		if (c.getCharacter() != null) return "&";
 		if (c.getItem() != null) return "@";
 		return "";
@@ -41,11 +41,11 @@ public class EnvironnementImpl extends ScreenImpl implements EnvironnementServic
 	public String cellnat(Cell c) {
 		switch(c) {
 			case EMP : return " ";
-			case PLT : return "=";
-			case HOL : return "U";
-			case MTL : return "X";
+			case PLT : return "☐";
+			case HOL : return "_";
+			case MTL : return "▩";
 			case LAD : return "H";
-			case HDR : return "-";
+			case HDR : return "─";
 		}
 		return null;
 	}

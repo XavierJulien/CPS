@@ -31,7 +31,7 @@ public class EngineContractClone extends EngineDecorator{
 	}
 
 	public void checkInvariants() {
-		/*CellContent cell_check = getEnvi().getCellContent(getPlayer().getWdt(), getPlayer().getHgt());
+		CellContent cell_check = getEnvi().getCellContent(getPlayer().getWdt(), getPlayer().getHgt());
 		if(!cell_check.getCharacter().equals(getPlayer())) throw new InvariantError("checkInvariants : Le player aux position du player n'est pas le player");
 		for(GuardService g : getGuards()) {
 			cell_check = getEnvi().getCellContent(g.getWdt(), g.getHgt());
@@ -42,7 +42,7 @@ public class EngineContractClone extends EngineDecorator{
 			cell_check = getEnvi().getCellContent(t.getCol(), t.getHgt());
 			if(cell_check.getItem().getNature() != ItemType.Treasure) throw new InvariantError("checkInvariants : Il devrait y avoir un tr�sor en ("+t.getCol()+","+t.getHgt()+")");
 			
-		}*/
+		}
 	}
 	
 	@Override
@@ -160,17 +160,17 @@ public class EngineContractClone extends EngineDecorator{
 				}
 			}
 		}
-		for(Coord guard : guards) {
-			//if(e.getCellNature(guard.getX(), guard.getY()) != Cell.EMP) throw new PreconditionError("init : un guard ne peut pas �tre init dans une case de l'envi non Cell.EMP");
-			//check coordonn�es �gal � un player ou tr�sor
-			/*if(guard.getX() == player.getX() && guard.getY() == player.getY()) {
+		/*for(Coord guard : guards) {
+			if(e.getCellNature(guard.getX(), guard.getY()) != Cell.EMP) throw new PreconditionError("init : un guard ne peut pas �tre init dans une case de l'envi non Cell.EMP");
+			check coordonn�es �gal � un player ou tr�sor
+			if(guard.getX() == player.getX() && guard.getY() == player.getY()) {
 				System.out.println("["+player.getX()+","+player.getY()+"]");
 				throw new PreconditionError("un guard est sur la m�me case que le player");
-			}*/
-			/*for(Item treasure : getTreasures()) {
+			}
+			for(Item treasure : getTreasures()) {
 				if(guard.getX() == treasure.getCol() && guard.getY() == treasure.getHgt()) throw new PreconditionError("un guard est sur la m�me case qu'un tr�sor");
-			}*/
-		}
+			}
+		}*/
 	}
 
 	@Override

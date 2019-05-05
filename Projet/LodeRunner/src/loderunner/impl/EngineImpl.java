@@ -23,6 +23,7 @@ public class EngineImpl implements EngineService{
 	protected EnvironnementService envi;
 	protected PlayerService player;
 	protected ArrayList<GuardService> guards;
+	protected ArrayList<GuardService> guards_at_init;
 	protected ArrayList<Item> treasures;
 	protected GameState status;
 	protected ArrayList<Command> commands;
@@ -41,6 +42,10 @@ public class EngineImpl implements EngineService{
 		return player;
 	}
 
+	public void setPlayer(PlayerService player) {
+		this.player = player;
+	}
+	
 	@Override
 	public ArrayList<GuardService> getGuards() {
 		return guards;
@@ -85,23 +90,31 @@ public class EngineImpl implements EngineService{
 		envi.init(e);
 		
 		this.guards = new ArrayList<>();
+		this.guards_at_init = new ArrayList<>();
 		this.status = GameState.Playing;
+		this.treasures = (ArrayList<Item>) treasures;
 		this.player = new PlayerContract(new PlayerImpl());
+		commands = new ArrayList<>();
+		holes = new ArrayList<>();
 		envi.getCellContent(player.getX(), player.getY()).setCharacter(this.player);
 		this.player.init(this,player);
-		this.guards = new ArrayList<>();
 		for(Coord co : guards) {
 			GuardContract guard = new GuardContract(new GuardImpl(-1));
 			guard.init(this, co.getX(), co.getY(), getPlayer());
+			
 			envi.getCellContent(co.getX(), co.getY()).setGuard(guard);		
 			this.guards.add(guard);
+			
 		}
-		this.treasures = (ArrayList<Item>) treasures;
+		for(GuardService g : this.guards) {
+			GuardContract guardcopy = new GuardContract(new GuardImpl(g.getId()));
+			guardcopy.init(this, g.getWdt(), g.getHgt(), getPlayer());
+			this.guards_at_init.add(guardcopy);
+		}
+		
 		for(Item i : treasures) {
 			envi.getCellContent(i.getCol(), i.getHgt()).setItem(new Item(i.getCol(), i.getHgt(), ItemType.Treasure));;
 		}
-		commands = new ArrayList<>();
-		holes = new ArrayList<>();
 		score = 0;
 	}
 
@@ -117,7 +130,15 @@ public class EngineImpl implements EngineService{
 					status = GameState.Loss;
 				}
 				if(envi.getCellContent(h.getX(), h.getY()).getGuard() != null) {
-					guards.remove(envi.getCellContent(h.getX(), h.getY()).getGuard());
+					for(GuardService g : guards_at_init) {
+						if(g.getId() == envi.getCellContent(h.getX(), h.getY()).getGuard().getId()) {
+							guards.remove(envi.getCellContent(h.getX(), h.getY()).getGuard());
+							GuardContract guardcopy = new GuardContract(new GuardImpl(g.getId()));
+							guardcopy.init(this, g.getWdt(), g.getHgt(), getPlayer());
+							guards.add(guardcopy);
+							envi.getCellContent(g.getWdt(), g.getHgt()).setGuard(guardcopy);
+						}
+					}
 					envi.getCellContent(h.getX(), h.getY()).setGuard(null);
 				}
 				//pour les gardes
