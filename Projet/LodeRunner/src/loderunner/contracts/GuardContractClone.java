@@ -21,7 +21,7 @@ public class GuardContractClone extends CharacterContract implements GuardServic
 	}
 	
 	public void checkInvariants() {
-		super.checkInvariants();
+super.checkInvariants();
 		
 		/** le garde est sur une échelle, 
 		 * 	s'il y a un support dans la case en dessous, 
@@ -41,17 +41,18 @@ public class GuardContractClone extends CharacterContract implements GuardServic
 		 * 				or Math.abs(getTarget().getHgt()-getHgt()) < Math.abs(getTarget().getWdt()-getWdt())
 		 * A VERIFIER CA A L'AIR CHELOU
 		 **/
-		/*if (getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD) {
+		if (getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD) {
 			if (getHgt() < getTarget().getHgt()) {
-				if ((getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL
-					 && getEnvi().getCellContent(getWdt(), getHgt()-1).getCharacter() == null) 
-					|| Math.abs(getTarget().getHgt()-getHgt()) < Math.abs(getTarget().getWdt()-getWdt())) {
+				if ((getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && 
+					 getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
+					 getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() == null) && 
+					(Math.abs(getTarget().getHgt()-getHgt()) > Math.abs(getTarget().getWdt()-getWdt()))) {
 					if (getBehaviour() != Command.UP)
 						throw new InvariantError("Le behaviour ne renvoie pas UP alors qu'il devrait");
 				}
 			}
 		}
-		*/
+		
 		/** le garde est sur une échelle, 
 		 * 	s'il y a un support dans la case en dessous, 
 		 * 		alors la distance entre garde et target est plus courte en axe y que en axe x
@@ -64,22 +65,17 @@ public class GuardContractClone extends CharacterContract implements GuardServic
 		 * 				implies Math.abs(getTarget().getHgt()-getHgt()) < Math.abs(getTarget().getWdt()-getWdt())
 		 * 			implies getBehaviour() == DOWN 
 		 **/
-		/*if (getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD) {
-			System.out.println("in ladder");
-			System.out.println(getWdt());
-			System.out.println(getHgt());
+		if (getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD) {
 			if (getHgt() > getTarget().getHgt()) {
-				System.out.println("hauteur plus grande");
-				if ((getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL
-					 && getEnvi().getCellContent(getWdt(), getHgt()-1).getCharacter() == null) 
-					|| Math.abs(getTarget().getHgt()-getHgt()) < Math.abs(getTarget().getWdt()-getWdt())) {
-					System.out.println(getEnvi().getCellNature(getWdt(), getHgt()-1));//souci car on as ici une PLT
-					if (getBehaviour() != Command.DOWN)
-						throw new InvariantError("Le behaviour ne renvoie pas DOWN alors qu'il devrait");
+				if ((getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && 
+					 getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
+					 getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() == null) &&
+					 (Math.abs(getTarget().getHgt()-getHgt()) > Math.abs(getTarget().getWdt()-getWdt()))) {
+						if (getBehaviour() != Command.DOWN)
+							throw new InvariantError("Le behaviour ne renvoie pas DOWN alors qu'il devrait");
 				}
 			}
-		}*/
-		
+		}
 		/**
 		 * le garde est sur une échelle, 
 		 * s'il y a un support dans la case en dessous, 
@@ -102,24 +98,21 @@ public class GuardContractClone extends CharacterContract implements GuardServic
 		 * 		implies getBehaviour() == LEFT
 		 * 
 		 **/
-		/*if ((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD
-				&& (getTarget().getWdt() < getWdt() )
-					&& ((getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL
-						 && getEnvi().getCellContent(getWdt(), getHgt()-1).getCharacter() == null) 
-						|| Math.abs(getTarget().getWdt()-getWdt()) < Math.abs(getTarget().getHgt()-getHgt())
-						)
-				)
+		if ((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD && 
+			(getTarget().getWdt() < getWdt()) && 
+			((getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && 
+			  getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
+			  getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() == null) && 
+			Math.abs(getTarget().getWdt()-getWdt()) > Math.abs(getTarget().getHgt()-getHgt()))) 
 			||
-			((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HOL || getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HDR
-				|| getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL || getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT
-				|| getEnvi().getCellContent(getWdt(), getHgt()-1).getCharacter() != null)
-			&& getTarget().getWdt() < getWdt())
-			) {
+			((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HOL || 
+			  getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL || 
+			  getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT || 
+			  getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null) && 
+			 getTarget().getWdt() < getWdt())) {
 				if (getBehaviour() != Command.LEFT)
 					throw new InvariantError("Le behaviour ne renvoie pas LEFT alors qu'il devrait");
 			}
-		
-		*/
 		/**
 		 * 
 		 * le garde est sur une échelle, 
@@ -143,23 +136,20 @@ public class GuardContractClone extends CharacterContract implements GuardServic
 		 * 		implies getBehaviour() == RIGHT
 		 * 
 		 **/
-		/*if ((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD
-				&& (getTarget().getWdt() > getWdt())
-					&& ((getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL
-						 && getEnvi().getCellContent(getWdt(), getHgt()-1).getCharacter() == null) 
-						|| Math.abs(getTarget().getWdt()-getWdt()) < Math.abs(getTarget().getHgt()-getHgt())
-						)
-				)
+		if ((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD && (getTarget().getWdt() > getWdt()) && 
+			((getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && 
+			  getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
+			  getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() == null) && 
+			 Math.abs(getTarget().getWdt()-getWdt()) > Math.abs(getTarget().getHgt()-getHgt())))
 			||
-			((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HOL || getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HDR
-				|| getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL || getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT
-				|| getEnvi().getCellContent(getWdt(), getHgt()-1).getCharacter() != null)
-			&& getTarget().getWdt() > getWdt())
-			) {
+			((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HOL || 
+			  getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL || 
+			  getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT || 
+			  getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null) && 
+			getTarget().getWdt() > getWdt())) {
 				if (getBehaviour() != Command.RIGHT)
 					throw new InvariantError("Le behaviour ne renvoie pas RIGHT alors qu'il devrait");
 			}
-		*/
 		/**
 		 * inv :( (getEnvi().getCellNature(getWdt(),getHgt()) \in {HOL,HDR}
 		 * 			|| getEnvi().getCellNature(getWdt(),getHgt()-1) \in {MTL,PLT}
@@ -171,26 +161,81 @@ public class GuardContractClone extends CharacterContract implements GuardServic
 		 * 		
 		 * 		implies getBehaviour() == NEUTRAL
 		**/
-		/*if (((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HOL || getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HDR
-				|| getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL || getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT
-				|| getEnvi().getCellContent(getWdt(), getHgt()-1).getCharacter() != null)
-			& getTarget().getWdt() == getWdt())
+		if (((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HOL || 
+			  getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HDR || 
+			  getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL || 
+			  getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT || 
+			  getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null) && 
+			getTarget().getWdt() == getWdt())
 			|| 
-			(getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD 
-				&&  getTarget().getHgt() == getHgt())
-			) {
+			(getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD &&  
+			 getTarget().getHgt() == getHgt())) {
 			if(getBehaviour() != Command.NEUTRAL) {
 				throw new InvariantError("Le bahaviour ne renvoie pas NEUTRAL alors qu'il devrait");
 			}
-		}*/
+		}
+		/**
+		 * CAS HDR
+		 */
+		if(getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HDR) {
+			if(getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL || 
+			   getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT || 
+			   getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null ||
+			   Math.abs(getTarget().getWdt()-getWdt()) > Math.abs(getTarget().getHgt()-getHgt())){
+				if (getTarget().getWdt() < getWdt()) {
+					if (getBehaviour() != Command.LEFT)
+						throw new InvariantError("Le behaviour ne renvoie pas LEFT alors qu'il devrait");
+				}
+				if (getTarget().getWdt() > getWdt()) {
+					if (getBehaviour() != Command.RIGHT)
+						throw new InvariantError("Le behaviour ne renvoie pas RIGHT alors qu'il devrait");
+				}
+				if (getTarget().getWdt() == getWdt()) {
+					if (getBehaviour() != Command.NEUTRAL)
+						throw new InvariantError("Le behaviour ne renvoie pas NEUTRAL alors qu'il devrait");
+				}
+			}
+			if(getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
+			   getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && 
+			   getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() == null) {
+				if(Math.abs(getTarget().getWdt()-getWdt()) > Math.abs(getTarget().getHgt()-getHgt())){
+					if (getTarget().getWdt() < getWdt()) {
+						if (getBehaviour() != Command.LEFT)
+							throw new InvariantError("Le behaviour ne renvoie pas LEFT alors qu'il devrait");
+					}
+					if (getTarget().getWdt() > getWdt()) {
+						if (getBehaviour() != Command.RIGHT)
+							throw new InvariantError("Le behaviour ne renvoie pas RIGHT alors qu'il devrait");
+					}
+					if (getTarget().getWdt() == getWdt()) {
+						if (getBehaviour() != Command.NEUTRAL)
+							throw new InvariantError("Le behaviour ne renvoie pas NEUTRAL alors qu'il devrait");
+					}
+				}else {
+					if (getTarget().getHgt() < getHgt()) {
+						if (getBehaviour() != Command.DOWN)
+							throw new InvariantError("Le behaviour ne renvoie pas DOWN alors qu'il devrait");
+					}
+					if (getTarget().getHgt() > getHgt()) {
+						if (getBehaviour() != Command.UP)
+							throw new InvariantError("Le behaviour ne renvoie pas UP alors qu'il devrait");
+					}
+					if (getTarget().getHgt() == getHgt()) {
+						if (getBehaviour() != Command.NEUTRAL)
+							throw new InvariantError("Le behaviour ne renvoie pas NEUTRAL alors qu'il devrait");
+					}
+				}
+			}
+			   
+		}
+		
 		/**
 		 * ajout de celle du character
 		 */
-		/*if(getEnvi().getCellContent(getWdt(), getHgt()).getCharacter() != null) {
-			if(!getEnvi().getCellContent(getWdt(), getHgt()).getCharacter().equals(this))
+		if(getEnvi().getCellContent(getWdt(), getHgt()).getGuard() != null) {
+			if(!getEnvi().getCellContent(getWdt(), getHgt()).getGuard().equals(this))
 			throw new InvariantError("le joueur dans la case de notre joueur n'est pas lui-même");
 		}
-		*/
 	}
 	
 	@Override

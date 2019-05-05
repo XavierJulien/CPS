@@ -33,21 +33,21 @@ public interface GuardService extends CharacterService {
 	 * inv : getEnvi().getCellNature(getWdt(),getHgt()) == LAD
 	 * 			&& getHgt() < getTarget().getHgt()
 	 * 			&& (getEnvi().getCellNature(getWdt(),getHgt()-1) \in {PLT,MTL}
-	 * 				|| getEnvi().getCellContent(getWdt(),getHgt()-1).getCharacter() != null
+	 * 				|| getEnvi().getCellContent(getWdt(),getHgt()-1).getGuard() != null
 	 * 				implies Math.abs(getTarget().getHgt()-getHgt()) < Math.abs(getTarget().getWdt()-getWdt())
 	 * 			implies getBehaviour() == UP 
 	 *
 	 * inv : getEnvi().getCellNature(getWdt(),getHgt()) == LAD
 	 * 			&& getHgt() > getTarget().getHgt()
 	 * 			&& (getEnvi().getCellNature(getWdt(),getHgt()-1) \in {PLT,MTL}
-	 * 				|| getEnvi().getCellContent(getWdt(),getHgt()-1).getCharacter() != null
+	 * 				|| getEnvi().getCellContent(getWdt(),getHgt()-1).getGuard() != null
 	 * 				implies Math.abs(getTarget().getHgt()-getHgt()) < Math.abs(getTarget().getWdt()-getWdt())
 	 * 			implies getBehaviour() == DOWN 
 	 * 
 	 * inv : (getEnvi().getCellNature(getWdt(),getHgt()) == LAD
 	 * 			&& getTarget().getWdt() < getWdt()
 	 * 			&& (getEnvi().getCellNature(getWdt(),getHgt()-1) \in {PLT,MTL}
-	 * 				|| getEnvi().getCellContent(getWdt(),getHgt()-1).getCharacter() != null
+	 * 				|| getEnvi().getCellContent(getWdt(),getHgt()-1).getGuard() != null
 	 * 				implies Math.abs(getTarget().getWdt()-getWdt()) < Math.abs(getTarget().getHgt()-getHgt())))
 	 * 		||
 	 * 		((getEnvi().getCellNature(getWdt(),getHgt()) \in {HOL,HDR}
@@ -60,7 +60,7 @@ public interface GuardService extends CharacterService {
 	 * inv : (getEnvi().getCellNature(getWdt(),getHgt()) == LAD
 	 * 			&& getTarget().getWdt() > getWdt()
 	 * 			&& (getEnvi().getCellNature(getWdt(),getHgt()-1) \in {PLT,MTL}
-	 * 				|| getEnvi().getCellContent(getWdt(),getHgt()-1).getCharacter() != null
+	 * 				|| getEnvi().getCellContent(getWdt(),getHgt()-1).getGuard() != null
 	 * 				implies Math.abs(getTarget().getWdt()-getWdt()) < Math.abs(getTarget().getHgt()-getHgt())))
 	 * 		||
 	 * 		((getEnvi().getCellNature(getWdt(),getHgt()) \in {HOL,HDR}

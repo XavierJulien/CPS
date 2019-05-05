@@ -64,7 +64,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		switch(nat) {
 			case EMP : {
 				if (nat_under==Cell.PLT || 
-					nat_under==Cell.MTL || 
+					nat_under==Cell.MTL ||
 					getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null){
 								if(target.getWdt()-getWdt() > 0) return Command.RIGHT;
 								if(target.getWdt()-getWdt() < 0) return Command.LEFT;
@@ -86,6 +86,27 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 				return Command.DOWN;
 			}
 			case LAD :{
+				if(nat_under==Cell.PLT || 
+				   nat_under==Cell.MTL || 
+				   getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null) {
+					if (Math.abs(target.getWdt()-getWdt()) > Math.abs(target.getHgt()-getHgt())){
+						//suivre l'axe  horizontal
+						if(target.getWdt()-getWdt() > 0) return Command.RIGHT;
+						if(target.getWdt()-getWdt() < 0) return Command.LEFT;
+						if(target.getWdt()-getWdt() == 0) return Command.NEUTRAL;
+					}else{
+						//suivre l'axe vertical
+						if(target.getHgt()-getHgt() > 0) {
+							System.out.println("UP");
+							return Command.UP;
+						}
+						if(target.getHgt()-getHgt() < 0) {
+							if(target.getWdt()-getWdt() > 0) return Command.RIGHT;
+							if(target.getWdt()-getWdt() < 0) return Command.LEFT;
+						}
+						if(target.getHgt()-getHgt() == 0) return Command.NEUTRAL;
+					}
+				}else {
 					if (Math.abs(target.getWdt()-getWdt()) > Math.abs(target.getHgt()-getHgt())){
 						//suivre l'axe  horizontal
 						if(target.getWdt()-getWdt() > 0) return Command.RIGHT;
@@ -97,9 +118,10 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 						if(target.getHgt()-getHgt() < 0) return Command.DOWN;
 						if(target.getHgt()-getHgt() == 0) return Command.NEUTRAL;
 					}
+				}
 			}
 			case HDR : {
-				if(nat_under == Cell.EMP) {
+				if(nat_under == Cell.EMP || nat_under == Cell.LAD) {
 					if (Math.abs(target.getWdt()-getWdt()) > Math.abs(target.getHgt()-getHgt())){
 						//suivre l'axe  horizontal
 						if(target.getWdt()-getWdt() > 0) return Command.RIGHT;
