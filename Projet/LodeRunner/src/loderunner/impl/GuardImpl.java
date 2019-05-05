@@ -65,7 +65,6 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			case EMP : {
 				if (nat_under==Cell.PLT || 
 					nat_under==Cell.MTL || 
-					getEnvi().getCellContent(getWdt(), getHgt()-1).getCharacter() != null || 
 					getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null){
 								if(target.getWdt()-getWdt() > 0) return Command.RIGHT;
 								if(target.getWdt()-getWdt() < 0) return Command.LEFT;
@@ -144,11 +143,12 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 
 	@Override
 	public void climbLeft() {
+		System.out.println("climbLeft");
 		if (getEnvi().getCellNature(getWdt(), getHgt()+1) != Cell.PLT 
 			&& getEnvi().getCellNature(getWdt(), getHgt()+1) != Cell.MTL) {
 			if (getEnvi().getCellNature(getWdt()-1, getHgt()+1) != Cell.PLT 
 				&& getEnvi().getCellNature(getWdt()-1, getHgt()+1) != Cell.MTL) {
-				if (getEnvi().getCellContent(getWdt()-1, getHgt()+1).getCharacter() == null) {
+				if (getEnvi().getCellContent(getWdt()-1, getHgt()+1).getGuard() == null) {
 					setWdt(getWdt()-1);
 					setHgt(getHgt()+1);
 					timeInHole=0;
@@ -159,13 +159,15 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 
 	@Override
 	public void climbRight() {
+		System.out.println("climbRight");
 		if (getEnvi().getCellNature(getWdt(), getHgt()+1) != Cell.PLT 
 			&& getEnvi().getCellNature(getWdt(), getHgt()+1) != Cell.MTL) {
 			if (getEnvi().getCellNature(getWdt()+1, getHgt()+1) != Cell.PLT 
 				&& getEnvi().getCellNature(getWdt()+1, getHgt()+1) != Cell.MTL) {
-				if (getEnvi().getCellContent(getWdt()+1, getHgt()+1).getCharacter() == null) {
+				if (getEnvi().getCellContent(getWdt()+1, getHgt()+1).getGuard() == null) {
 					setWdt(getWdt()+1);
 					setHgt(getHgt()+1);
+					System.out.println("apres climbright "+getWdt()+","+getHgt());
 					timeInHole=0;
 				}
 			}
@@ -178,7 +180,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		getEngine().getEnvi().getCellContent(getWdt(), getHgt()).setGuard(null);
 		if (willFall()) {
 			goDown();
-			if(getEngine().getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.HOL) {
+			if(getEngine().getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HOL) {
 				if(treasure != null) {
 					getEngine().getEnvi().getCellContent(getWdt(), getHgt()+1).setItem(treasure);
 					treasure = null;

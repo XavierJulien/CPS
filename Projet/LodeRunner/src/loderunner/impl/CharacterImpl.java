@@ -50,14 +50,14 @@ public class CharacterImpl implements CharacterService{
 	public void goLeft() {
 		if(wdt != 0) {
 			if(getEnvi().getCellNature(wdt-1, hgt) != Cell.MTL && getEnvi().getCellNature(wdt-1, hgt) != Cell.PLT) {
-				if((getEnvi().getCellNature(wdt, hgt) == Cell.LAD || getEnvi().getCellNature(wdt, hgt) == Cell.HDR)
-				   ||
-				   (getEnvi().getCellNature(wdt, hgt-1) == Cell.PLT || getEnvi().getCellNature(wdt, hgt-1) == Cell.MTL || getEnvi().getCellNature(wdt, hgt-1) == Cell.LAD)
-				   ||
-				   (getEnvi().getCellContent(wdt, hgt-1).getCharacter() != null)) {
-					  if(id == -1 ||  getEnvi().getCellContent(wdt-1, hgt).getGuard() == null){
-							wdt -= 1;
-					  }	
+				if((getEnvi().getCellNature(wdt, hgt) == Cell.LAD || getEnvi().getCellNature(wdt, hgt) == Cell.HDR)||
+				   (getEnvi().getCellNature(wdt, hgt-1) == Cell.PLT || 
+				    getEnvi().getCellNature(wdt, hgt-1) == Cell.MTL || 
+				    getEnvi().getCellNature(wdt, hgt-1) == Cell.LAD ||
+				    getEnvi().getCellContent(wdt, hgt-1).getGuard() != null)) {
+					if(id == -1 ||  getEnvi().getCellContent(wdt-1, hgt).getGuard() == null) {
+						wdt -= 1;
+					}	
 				}
 			}
 		}
@@ -67,11 +67,11 @@ public class CharacterImpl implements CharacterService{
 	public void goRight() {
 		if(wdt != getEnvi().getWidth()-1) {
 			if(getEnvi().getCellNature(wdt+1, hgt) != Cell.MTL && getEnvi().getCellNature(wdt+1, hgt) != Cell.PLT) {
-				if((getEnvi().getCellNature(wdt, hgt) == Cell.LAD || getEnvi().getCellNature(wdt, hgt) == Cell.HDR )
-				   ||
-				   (getEnvi().getCellNature(wdt, hgt-1) == Cell.PLT || getEnvi().getCellNature(wdt, hgt-1) == Cell.MTL || getEnvi().getCellNature(wdt, hgt-1) == Cell.LAD)
-				   ||
-				   (getEnvi().getCellContent(wdt, hgt-1).getCharacter() != null)) {
+				if((getEnvi().getCellNature(wdt, hgt) == Cell.LAD || getEnvi().getCellNature(wdt, hgt) == Cell.HDR ) ||
+				   (getEnvi().getCellNature(wdt, hgt-1) == Cell.PLT || 
+				    getEnvi().getCellNature(wdt, hgt-1) == Cell.MTL || 
+				    getEnvi().getCellNature(wdt, hgt-1) == Cell.LAD ||
+				    getEnvi().getCellContent(wdt, hgt-1).getGuard() != null)) {
 					  if(id == -1 ||  getEnvi().getCellContent(wdt+1, hgt).getGuard() == null) {
 							wdt += 1;
 					  }	
@@ -96,9 +96,16 @@ public class CharacterImpl implements CharacterService{
 	public void goDown() {				
 		if(hgt != 1) {
 			if(getEnvi().getCellNature(wdt, hgt-1) != Cell.MTL && 
-					getEnvi().getCellNature(wdt, hgt-1) != Cell.PLT 
-					&& (id == -1 ||  getEnvi().getCellContent(wdt, hgt-1).getGuard() == null)) {
-				hgt -=1;
+					getEnvi().getCellNature(wdt, hgt-1) != Cell.PLT) {
+					if(id == -1) {
+						if(getEnvi().getCellContent(wdt, hgt-1).getGuard() == null) {
+							hgt -=1;
+						}
+					}else {
+						if(getEnvi().getCellContent(wdt, hgt-1).getGuard() == null) {
+							hgt -=1;
+						}
+					}
 			}
 		}
 	}

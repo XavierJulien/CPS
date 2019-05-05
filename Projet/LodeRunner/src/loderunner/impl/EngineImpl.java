@@ -151,7 +151,7 @@ public class EngineImpl implements EngineService{
 			for(int i = 0;i<treasures.size();i++) {
 				for(GuardService g : guards) {
 					if(treasures.get(i).getCol() == g.getWdt() && treasures.get(i).getHgt() == g.getHgt() && !g.hasItem()) {
-						System.out.println("remove de "+treasures.get(i));
+						envi.getCellContent(treasures.get(i).getCol(), treasures.get(i).getHgt()).setItem(null);
 						g.setTreasure(treasures.remove(i));
 					}
 				}

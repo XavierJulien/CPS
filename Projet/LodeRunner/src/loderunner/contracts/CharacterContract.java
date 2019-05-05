@@ -105,7 +105,7 @@ public class CharacterContract extends CharacterDecorator {
 			if(getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.PLT && 
 			   getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.MTL && 
 			   getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.LAD) {
-				if(getEnvi().getCellContent(wdt_capture, hgt_capture-1).getCharacter() == null) {
+				if(getEnvi().getCellContent(wdt_capture, hgt_capture-1).getGuard() == null) {
 					if(getWdt() != wdt_capture) throw new PostconditionError("goLeft : le personnage n'était pas censé se déplacer");
 				}
 			}
@@ -155,7 +155,7 @@ public class CharacterContract extends CharacterDecorator {
 			if(getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.PLT && 
 			   getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.MTL && 
 			   getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.LAD) {
-				if(getEnvi().getCellContent(wdt_capture, hgt_capture-1).getCharacter() == null) {
+				if(getEnvi().getCellContent(wdt_capture, hgt_capture-1).getGuard() == null) {
 					if(getWdt() != wdt_capture) throw new PostconditionError("goRight : le personnage n'était pas censé se déplacer");
 				}
 			}

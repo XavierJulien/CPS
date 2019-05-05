@@ -143,14 +143,17 @@ public class GuardImplClone extends CharacterImpl implements GuardService {
 
 	@Override
 	public void climbLeft() {
+		System.out.println("climbLeft");
 		if (getEnvi().getCellNature(getWdt(), getHgt()+1) != Cell.PLT 
 			&& getEnvi().getCellNature(getWdt(), getHgt()+1) != Cell.MTL) {
 			if (getEnvi().getCellNature(getWdt()-1, getHgt()+1) != Cell.PLT 
 				&& getEnvi().getCellNature(getWdt()-1, getHgt()+1) != Cell.MTL) {
-				if (getEnvi().getCellContent(getWdt()-1, getHgt()+1).getCharacter() == null) {
+				if (getEnvi().getCellContent(getWdt()-1, getHgt()+1).getGuard() == null) {
+					getEngine().getEnvi().getCellContent(getWdt(), getHgt()).setGuard(null);
 					setWdt(getWdt()-1);
 					setHgt(getHgt()+1);
 					timeInHole=0;
+					getEngine().getEnvi().getCellContent(getWdt()-1, getHgt()+1).setGuard(this);
 				}
 			}
 		}
@@ -158,14 +161,17 @@ public class GuardImplClone extends CharacterImpl implements GuardService {
 
 	@Override
 	public void climbRight() {
+		System.out.println("climbRight");
 		if (getEnvi().getCellNature(getWdt(), getHgt()+1) != Cell.PLT 
 			&& getEnvi().getCellNature(getWdt(), getHgt()+1) != Cell.MTL) {
 			if (getEnvi().getCellNature(getWdt()+1, getHgt()+1) != Cell.PLT 
 				&& getEnvi().getCellNature(getWdt()+1, getHgt()+1) != Cell.MTL) {
-				if (getEnvi().getCellContent(getWdt()+1, getHgt()+1).getCharacter() == null) {
+				if (getEnvi().getCellContent(getWdt()+1, getHgt()+1).getGuard() == null) {
+					getEngine().getEnvi().getCellContent(getWdt(), getHgt()).setGuard(null);
 					setWdt(getWdt()+1);
 					setHgt(getHgt()+1);
 					timeInHole=0;
+					getEngine().getEnvi().getCellContent(getWdt()-1, getHgt()+1).setGuard(this);
 				}
 			}
 		}

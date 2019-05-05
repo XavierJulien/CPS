@@ -1,11 +1,16 @@
 package loderunner.contracts;
 
+import java.util.ArrayList;
+
 import loderunner.data.Cell;
 import loderunner.data.Command;
+import loderunner.data.Coord;
 import loderunner.data.Item;
 import loderunner.errors.InvariantError;
 import loderunner.errors.PostconditionError;
 import loderunner.errors.PreconditionError;
+import loderunner.impl.EditableScreenImpl;
+import loderunner.impl.EngineImplClone;
 import loderunner.impl.GuardImpl;
 import loderunner.services.EngineService;
 import loderunner.services.GuardService;
@@ -41,16 +46,18 @@ public class GuardContract extends CharacterContract implements GuardService {
 		 * 				or Math.abs(getTarget().getHgt()-getHgt()) < Math.abs(getTarget().getWdt()-getWdt())
 		 * A VERIFIER CA A L'AIR CHELOU
 		 **/
-		if (getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD) {
+		/*if (getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD) {
 			if (getHgt() < getTarget().getHgt()) {
-				if ((getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL
-					 && getEnvi().getCellContent(getWdt(), getHgt()-1).getCharacter() == null) 
-					|| Math.abs(getTarget().getHgt()-getHgt()) < Math.abs(getTarget().getWdt()-getWdt())) {
+				if ((getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && 
+					 getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
+					 getEnvi().getCellContent(getWdt(), getHgt()-1).getCharacter() == null) 
+					|| 
+					(Math.abs(getTarget().getHgt()-getHgt()) < Math.abs(getTarget().getWdt()-getWdt()))) {
 					if (getBehaviour() != Command.UP)
 						throw new InvariantError("Le behaviour ne renvoie pas UP alors qu'il devrait");
 				}
 			}
-		}
+		}*/
 		
 		/** le garde est sur une échelle, 
 		 * 	s'il y a un support dans la case en dessous, 
@@ -70,9 +77,11 @@ public class GuardContract extends CharacterContract implements GuardService {
 			System.out.println(getHgt());
 			if (getHgt() > getTarget().getHgt()) {
 				System.out.println("hauteur plus grande");
-				if ((getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL
-					 && getEnvi().getCellContent(getWdt(), getHgt()-1).getCharacter() == null) 
-					|| Math.abs(getTarget().getHgt()-getHgt()) < Math.abs(getTarget().getWdt()-getWdt())) {
+				if ((getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && 
+					 getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
+					 getEnvi().getCellContent(getWdt(), getHgt()-1).getCharacter() == null) 
+					|| 
+					(Math.abs(getTarget().getHgt()-getHgt()) < Math.abs(getTarget().getWdt()-getWdt()))) {
 					System.out.println(getEnvi().getCellNature(getWdt(), getHgt()-1));//souci car on as ici une PLT
 					if (getBehaviour() != Command.DOWN)
 						throw new InvariantError("Le behaviour ne renvoie pas DOWN alors qu'il devrait");
@@ -117,9 +126,7 @@ public class GuardContract extends CharacterContract implements GuardService {
 			) {
 				if (getBehaviour() != Command.LEFT)
 					throw new InvariantError("Le behaviour ne renvoie pas LEFT alors qu'il devrait");
-			}
-		
-		*/
+			}*/
 		/**
 		 * 
 		 * le garde est sur une échelle, 
@@ -158,8 +165,7 @@ public class GuardContract extends CharacterContract implements GuardService {
 			) {
 				if (getBehaviour() != Command.RIGHT)
 					throw new InvariantError("Le behaviour ne renvoie pas RIGHT alors qu'il devrait");
-			}
-		*/
+			}*/
 		/**
 		 * inv :( (getEnvi().getCellNature(getWdt(),getHgt()) \in {HOL,HDR}
 		 * 			|| getEnvi().getCellNature(getWdt(),getHgt()-1) \in {MTL,PLT}
@@ -186,11 +192,10 @@ public class GuardContract extends CharacterContract implements GuardService {
 		/**
 		 * ajout de celle du character
 		 */
-		/*if(getEnvi().getCellContent(getWdt(), getHgt()).getCharacter() != null) {
-			if(!getEnvi().getCellContent(getWdt(), getHgt()).getCharacter().equals(this))
+		if(getEnvi().getCellContent(getWdt(), getHgt()).getGuard() != null) {
+			if(!getEnvi().getCellContent(getWdt(), getHgt()).getGuard().equals(this))
 			throw new InvariantError("le joueur dans la case de notre joueur n'est pas lui-même");
 		}
-		*/
 	}
 	
 	@Override
@@ -262,7 +267,7 @@ public class GuardContract extends CharacterContract implements GuardService {
 			&& getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.MTL) {
 			if (getEnvi().getCellNature(wdt_atpre-1, hgt_atpre+1) != Cell.PLT 
 				&& getEnvi().getCellNature(wdt_atpre-1, hgt_atpre+1) != Cell.MTL) {
-				if (getEnvi().getCellContent(wdt_atpre-1, hgt_atpre+1).getCharacter() == null) {
+				if (getEnvi().getCellContent(wdt_atpre-1, hgt_atpre+1).getGuard() == null) {
 					if (getWdt() != wdt_atpre-1 || getHgt() != hgt_atpre+1)
 						throw new PostconditionError("climbLeft : le guard n'a pas correctement grimpé à gauche");
 				}
@@ -289,7 +294,7 @@ public class GuardContract extends CharacterContract implements GuardService {
 			&& getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.MTL) {
 			if (getEnvi().getCellNature(wdt_atpre+1, hgt_atpre+1) != Cell.PLT 
 				&& getEnvi().getCellNature(wdt_atpre+1, hgt_atpre+1) != Cell.MTL) {
-				if (getEnvi().getCellContent(wdt_atpre+1, hgt_atpre+1).getCharacter() == null) {
+				if (getEnvi().getCellContent(wdt_atpre+1, hgt_atpre+1).getGuard() == null) {
 					if (getWdt() != wdt_atpre+1 || getHgt() != hgt_atpre+1)
 						throw new PostconditionError("climbRight : le guard n'a pas correctement grimpé à droite");
 				}
@@ -298,26 +303,46 @@ public class GuardContract extends CharacterContract implements GuardService {
 
 	}
 
+
 	@Override
 	public void step() {
 		//pre : rien
 		//inv
 		checkInvariants();
 		//captures
-		GuardContract capture_self = this;
-		EngineService engine_atpre = getEngine();
+		EngineService engine_atpre = new EngineImplClone();
+		ArrayList<Coord> guards_atpre_without_self = new ArrayList<>();
+		for(int i = 0;i<getEngine().getGuards().size();i++) {
+			if(getEngine().getGuards().get(i).getId() != getId()) {
+				guards_atpre_without_self.add(new Coord(getEngine().getGuards().get(i).getWdt(),getEngine().getGuards().get(i).getHgt()));
+			}
+		}
+		EditableScreenImpl edit = new EditableScreenImpl();
+		edit.init(getEngine().getEnvi().getWidth(), getEngine().getEnvi().getHeight());
+		for(int i  = 0;i<edit.getWidth();i++) {
+			for(int j = 0;j<edit.getHeight();j++) {
+				edit.setNature(i, j, getEngine().getEnvi().getCellNature(i, j));
+			}
+		}
+		engine_atpre.init(edit, new Coord(getEngine().getPlayer().getWdt(),getEngine().getPlayer().getHgt()), guards_atpre_without_self, getEngine().getTreasures());
 		PlayerService target_atpre = getTarget();
 		GuardService guard_atpre = new GuardImpl(getId());
+		for(int i = 0;i<engine_atpre.getGuards().size();i++) {
+			if(engine_atpre.getGuards().get(i).getId() == getId()) {
+				engine_atpre.getGuards().remove(i);
+			}
+		}
 		guard_atpre.init(engine_atpre, getWdt(), getHgt(), target_atpre);
 		int time_atpre = getTimeInHole();
-
+		for(int i = 0;i<time_atpre;i++) {
+			guard_atpre.waitInHole();
+		}
 		//appel
-		
 		getEngine().getEnvi().getCellContent(getWdt(), getHgt()).setGuard(null);
 		delegate.step();
-		getEngine().getEnvi().getCellContent(getWdt(), getHgt()).setGuard(capture_self);
+		getEngine().getEnvi().getCellContent(getWdt(), getHgt()).setGuard(this);
+		System.out.println("apres step "+getEngine().getEnvi().getCellContent(getWdt(), getHgt()).getGuard());
 
-		
 		//inv
 		checkInvariants();
 		
@@ -329,14 +354,7 @@ public class GuardContract extends CharacterContract implements GuardService {
 			if (getTimeInHole() != time_atpre)
 				throw new PostconditionError("step de Guard : willFall pb timeInHole");
 		}
-		if (guard_atpre.willWaitInHole()) {
-			guard_atpre.waitInHole();
-			if (getWdt()!=guard_atpre.getWdt() || getHgt()!=guard_atpre.getHgt())
-				throw new PostconditionError("step de Guard : le garde devait rester sur place dans le trou");
-			if (time_atpre+guard_atpre.getTimeInHole() != time_atpre+timeEpsilon) {
-				throw new PostconditionError("step de Guard : willWaitInHole pb incr timeInHole");				
-			}
-		}
+		
 		if (guard_atpre.willClimbLeft()) {
 			guard_atpre.climbLeft();
 			if (getWdt()!=guard_atpre.getWdt() || getHgt()!=guard_atpre.getHgt())
@@ -345,7 +363,9 @@ public class GuardContract extends CharacterContract implements GuardService {
 				throw new PostconditionError("step de Guard : willclimbleft pb timeInHole");
 		}
 		if (guard_atpre.willClimbRight()) {
+			System.out.println("avant climbright clone :"+guard_atpre.getWdt()+","+guard_atpre.getHgt());
 			guard_atpre.climbRight();
+			System.out.println("apres climbright clone :"+guard_atpre.getWdt()+","+guard_atpre.getHgt());
 			if (getWdt()!=guard_atpre.getWdt() || getHgt()!=guard_atpre.getHgt())
 				throw new PostconditionError("step de Guard : pb position joueur apres climbright");
 			if (getTimeInHole()!= guard_atpre.getTimeInHole())
@@ -357,7 +377,14 @@ public class GuardContract extends CharacterContract implements GuardService {
 			if (getTimeInHole()!= guard_atpre.getTimeInHole())
 				throw new PostconditionError("step de Guard : willclimbneutral pb timeInHole");
 		}
-		
+		if (guard_atpre.willWaitInHole()) {
+			guard_atpre.waitInHole();
+			if (getWdt()!=guard_atpre.getWdt() || getHgt()!=guard_atpre.getHgt())
+				throw new PostconditionError("step de Guard : le garde devait rester sur place dans le trou");
+			if (guard_atpre.getTimeInHole() != time_atpre+timeEpsilon) {
+				throw new PostconditionError("step de Guard : willWaitInHole pb incr timeInHole");				
+			}
+		}
 	}
 
 	@Override

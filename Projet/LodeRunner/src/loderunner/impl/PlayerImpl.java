@@ -29,9 +29,10 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 		getEnvi().getCellContent(engine.getPlayer().getWdt(), engine.getPlayer().getHgt()).setCharacter(null);
 		Command cmd = engine.getNextCommand();
 		if(engine.getEnvi().getCellNature(engine.getPlayer().getWdt(), engine.getPlayer().getHgt()) != Cell.HDR) {
-			if(engine.getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.HOL || 
-			   engine.getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.EMP || 
-			   engine.getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.HDR) {
+			if((engine.getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.HOL || 
+			    engine.getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.EMP || 
+			    engine.getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.HDR) &&
+				engine.getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() == null) {
 				super.goDown();
 				getEnvi().getCellContent(engine.getPlayer().getWdt(), engine.getPlayer().getHgt()).setCharacter(this);
 				return;
@@ -40,19 +41,15 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 		if(cmd == null) return;//neutral 
 		switch(cmd) {
 			case UP : 
-				System.out.println("goUp");
 				super.goUp();
 				break;
 			case DOWN : 
-				System.out.println("goDown");
 				super.goDown();
 				break;
 			case LEFT : 
-				System.out.println("goLeft");
 				super.goLeft();
 				break;
 			case RIGHT : 
-				System.out.println("goRight");
 				super.goRight();
 				break;
 			case DIGL :
@@ -106,7 +103,6 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 		}
 		engContract.init(edit, new Coord(getWdt(), getHgt()), getEngine().getGuardsCoord(), getEngine().getTreasures());
 		p.init(engContract, new Coord(this.getWdt(), this.getHgt()));
-		System.out.println("player clone 1 :"+p.getWdt()+","+p.getHgt());
 		return p;
 	}
 
