@@ -10,13 +10,15 @@ public interface CharacterService {
 	/* Constructors */
 	/**
 	 * pre : init(x,y) require getEnvi().getCellNature(x,y) == EMP
+	 * pre : init(x,y) require getEnvi().getCellNature(x,y-1) == PLT 
+	 * 		&& init(x,y) require getEnvi().getCellNature(x,y-1) == MTL
 	 */
 	public void init(ScreenService s,int x,int y,int id);
 	
 	
 	/* Invariant */
 	/**
-	 * getEnvi().getCellNature(getWdt(),getHgt()) \in {Cell.EMP,Cell.HOL,Cell.LAD,Cell.HDR} &&
+	 * getEnvi().getCellNature(getWdt(),getHgt()) \in {Cell.EMP,Cell.HOL,Cell.LAD,Cell.HDR}
 	 * \exists x : Character \in getEnvi().getCellContent(getWdt(),getHgt()) \implies x==this
 	 *
 	 */
