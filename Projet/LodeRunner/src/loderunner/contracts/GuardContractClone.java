@@ -21,7 +21,7 @@ public class GuardContractClone extends CharacterContract implements GuardServic
 	}
 	
 	public void checkInvariants() {
-super.checkInvariants();
+		super.checkInvariants();
 		
 		/** le garde est sur une échelle, 
 		 * 	s'il y a un support dans la case en dessous, 
@@ -161,18 +161,14 @@ super.checkInvariants();
 		 * 		
 		 * 		implies getBehaviour() == NEUTRAL
 		**/
-		if (((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HOL || 
-			  getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HDR || 
-			  getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL || 
-			  getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT || 
-			  getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null) && 
-			getTarget().getWdt() == getWdt())
-			|| 
-			(getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD &&  
-			 getTarget().getHgt() == getHgt())) {
-			if(getBehaviour() != Command.NEUTRAL) {
-				throw new InvariantError("Le bahaviour ne renvoie pas NEUTRAL alors qu'il devrait");
-			}
+		if((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HOL || 
+			getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HDR ||
+			getEnvi().getCellNature(getWdt(), getHgt()) == Cell.EMP) &&
+		   (getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL || 
+			getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT || 
+			getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null) &&
+		   getTarget().getWdt() == getWdt()) {
+			if(getBehaviour() != Command.NEUTRAL) throw new InvariantError("Le bahaviour ne renvoie pas NEUTRAL alors qu'il devrait");
 		}
 		/**
 		 * CAS HDR

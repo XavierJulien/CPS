@@ -71,11 +71,7 @@ public class GuardContract extends CharacterContract implements GuardService {
 		 * 			implies getBehaviour() == DOWN 
 		 **/
 		if (getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD) {
-			System.out.println("in ladder");
-			System.out.println(getWdt());
-			System.out.println(getHgt());
 			if (getHgt() > getTarget().getHgt()) {
-				System.out.println("hauteur plus grande");
 				if ((getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && 
 					 getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
 					 getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() == null) &&
