@@ -16,24 +16,34 @@ import loderunner.impl.CharacterImpl;
 import loderunner.impl.EditableScreenImpl;
 import loderunner.impl.EnvironnementImpl;
 import loderunner.services.CharacterService;
+import loderunner.services.EditableScreenService;
 import loderunner.services.EnvironnementService;
 
 public class CharacterTest {
 		
 	protected CharacterService c;
 	protected EnvironnementService envi;
+	protected EditableScreenService es;
 	
 
 	@Before
 	public void beforeTests() {
 		c = new CharacterContract(new CharacterImpl());
 		envi = new EnvironnementContract(new EnvironnementImpl());
+		es = new EditableScreenContract(new EditableScreenImpl());
+		es.init(15, 10);
+		for (int i=0; i<es.getWidth(); i++) {
+			es.setNature(i, 0, Cell.MTL);
+			es.setNature(i, 1, Cell.PLT);
+		}
+		envi.init(es);
 	}
 	
 	@After
 	public void afterTests() {
 		c = null;
 		envi = null;
+		es = null;
 	}
 	
 	public void checkinv() {
@@ -53,42 +63,16 @@ public class CharacterTest {
 	@Test
 	public void preInitPass() {
 		//Conditions Initiales :
-		EditableScreenContract es = new EditableScreenContract(new EditableScreenImpl());
-		es.init(15, 10);
-		for (int i=0; i<es.getWidth(); i++) {
-			es.setNature(i, 0, Cell.MTL);
-		}
-		envi.init(es);
 		//Opération(s)
-		c.init(envi,5,1,-1);
+		c.init(envi,5,2,-1);
 		//Oracle : None
 	}
 	
 	@Test(expected = PreconditionError.class)
 	public void preInitFail() {
 		//Conditions Initiales :
-		EditableScreenContract es = new EditableScreenContract(new EditableScreenImpl());
-		es.init(15, 10);
-		for (int i=0; i<es.getWidth(); i++) {
-			es.setNature(i, 0, Cell.MTL);
-		}
-		envi.init(es);
 		//Opération(s)
 		c.init(envi,-1,10,-1);
-		//Oracle : error
-	}
-	
-	@Test(expected = PreconditionError.class)
-	public void preInitFail2() {
-		//Conditions Initiales :
-		EditableScreenContract es = new EditableScreenContract(new EditableScreenImpl());
-		es.init(15, 10);
-		for (int i=0; i<es.getWidth(); i++) {
-			es.setNature(i, 0, Cell.MTL);
-		}
-		envi.init(es);
-		//Opération(s)
-		c.init(envi,5,5,-1);
 		//Oracle : error
 	}
 	
@@ -98,14 +82,8 @@ public class CharacterTest {
 	@Test
 	public void transitionInit() {
 		//CI :
-		EditableScreenContract es = new EditableScreenContract(new EditableScreenImpl());
-		es.init(15, 10);
-		for (int i=0; i<es.getWidth(); i++) {
-			es.setNature(i, 0, Cell.MTL);
-		}
-		envi.init(es);
 		//OP :
-		c.init(envi, 5, 1,-1);
+		c.init(envi, 5, 2,-1);
 		//ORACLE
 		/*post*/
 		/*inv*/
@@ -115,13 +93,7 @@ public class CharacterTest {
 	@Test
 	public void transitionGoLeft() {
 		//CI :
-		EditableScreenContract es = new EditableScreenContract(new EditableScreenImpl());
-		es.init(15, 10);
-		for (int i=0; i<es.getWidth(); i++) {
-			es.setNature(i, 0, Cell.MTL);
-		}
-		envi.init(es);
-		c.init(envi, 5, 1,-1);
+		c.init(envi, 5, 2,-1);
 		int hgt_capture = c.getHgt();
 		int wdt_capture = c.getWdt();
 		//OP :
@@ -168,13 +140,7 @@ public class CharacterTest {
 	@Test
 	public void transitionGoRight() {
 		//CI :
-		EditableScreenContract es = new EditableScreenContract(new EditableScreenImpl());
-		es.init(15, 10);
-		for (int i=0; i<es.getWidth(); i++) {
-			es.setNature(i, 0, Cell.MTL);
-		}
-		envi.init(es);
-		c.init(envi, 5, 1,-1);
+		c.init(envi, 5, 2,-1);
 		int hgt_capture = c.getHgt();
 		int wdt_capture = c.getWdt();
 		//OP :
@@ -221,13 +187,7 @@ public class CharacterTest {
 	@Test
 	public void transitionGoUp() {
 		//CI :
-		EditableScreenContract es = new EditableScreenContract(new EditableScreenImpl());
-		es.init(15, 10);
-		for (int i=0; i<es.getWidth(); i++) {
-			es.setNature(i, 0, Cell.MTL);
-		}
-		envi.init(es);
-		c.init(envi, 5, 1,-1);	
+		c.init(envi, 5, 2,-1);	
 		int hgt_capture = c.getHgt();
 		int wdt_capture = c.getWdt();
 		//OP :
@@ -259,13 +219,7 @@ public class CharacterTest {
 	@Test
 	public void transitionGoDown() {
 		//CI :
-		EditableScreenContract es = new EditableScreenContract(new EditableScreenImpl());
-		es.init(15, 10);
-		for (int i=0; i<es.getWidth(); i++) {
-			es.setNature(i, 0, Cell.MTL);
-		}
-		envi.init(es);
-		c.init(envi, 5, 1,-1);	
+		c.init(envi, 5, 2,-1);	
 		int hgt_capture = c.getHgt();
 		int wdt_capture = c.getWdt();
 		//OP :
@@ -308,13 +262,7 @@ public class CharacterTest {
 	public void etatRemarquableGauche() {
 		//CI : None
 		//OP :
-		EditableScreenContract es = new EditableScreenContract(new EditableScreenImpl());
-		es.init(15, 10);
-		for (int i=0; i<es.getWidth(); i++) {
-			es.setNature(i, 0, Cell.MTL);
-		}
-		envi.init(es);
-		c.init(envi, 5, 1,-1);	
+		c.init(envi, 5, 2,-1);	
 		int hgt_capture = c.getHgt();
 		int wdt_capture = c.getWdt();
 		//op
@@ -330,13 +278,7 @@ public class CharacterTest {
 	public void etatRemarquableDroite() {
 		//CI : None
 		//OP :
-		EditableScreenContract es = new EditableScreenContract(new EditableScreenImpl());
-		es.init(15, 10);
-		for (int i=0; i<es.getWidth(); i++) {
-			es.setNature(i, 0, Cell.MTL);
-		}
-		envi.init(es);
-		c.init(envi, 5, 1,-1);	
+		c.init(envi, 5, 2,-1);	
 		int hgt_capture = c.getHgt();
 		int wdt_capture = c.getWdt();
 		//op
@@ -354,13 +296,7 @@ public class CharacterTest {
 	@Test
 	public void paireLeftRight() {
 		//CI :
-		EditableScreenContract es = new EditableScreenContract(new EditableScreenImpl());
-		es.init(15, 10);
-		for (int i=0; i<es.getWidth(); i++) {
-			es.setNature(i, 0, Cell.MTL);
-		}
-		envi.init(es);
-		c.init(envi, 5, 1,-1);	
+		c.init(envi, 5, 2,-1);	
 		int hgt_capture = c.getHgt();
 		int wdt_capture = c.getWdt();
 		//OP :
@@ -375,13 +311,7 @@ public class CharacterTest {
 	@Test
 	public void paireRightLeft() {
 		//CI :
-		EditableScreenContract es = new EditableScreenContract(new EditableScreenImpl());
-		es.init(15, 10);
-		for (int i=0; i<es.getWidth(); i++) {
-			es.setNature(i, 0, Cell.MTL);
-		}
-		envi.init(es);
-		c.init(envi, 5, 1,-1);	
+		c.init(envi, 5, 2,-1);	
 		int hgt_capture = c.getHgt();
 		int wdt_capture = c.getWdt();
 		//OP :
@@ -396,15 +326,10 @@ public class CharacterTest {
 	@Test
 	public void paireRightUp () {
 		//CI :
-		EditableScreenContract es = new EditableScreenContract(new EditableScreenImpl());
-		es.init(15, 10);
-		for (int i=0; i<es.getWidth(); i++) {
-			es.setNature(i, 0, Cell.MTL);
-		}
-		es.setNature(5, 1, Cell.LAD);
 		es.setNature(5, 2, Cell.LAD);
+		es.setNature(5, 3, Cell.LAD);
 		envi.init(es);
-		c.init(envi, 4, 1,-1);	
+		c.init(envi, 4, 2,-1);	
 		int hgt_capture = c.getHgt();
 		int wdt_capture = c.getWdt();
 		//OP :
@@ -419,15 +344,10 @@ public class CharacterTest {
 	@Test
 	public void paireUpDown () {
 		//CI :
-		EditableScreenContract es = new EditableScreenContract(new EditableScreenImpl());
-		es.init(15, 10);
-		for (int i=0; i<es.getWidth(); i++) {
-			es.setNature(i, 0, Cell.MTL);
-		}
-		es.setNature(5, 1, Cell.LAD);
 		es.setNature(5, 2, Cell.LAD);
+		es.setNature(5, 3, Cell.LAD);
 		envi.init(es);
-		c.init(envi, 4, 1,-1);	
+		c.init(envi, 4, 2,-1);	
 		int hgt_capture = c.getHgt();
 		int wdt_capture = c.getWdt();
 		//OP :
@@ -442,15 +362,10 @@ public class CharacterTest {
 	@Test
 	public void paireDownUp () {
 		//CI :
-		EditableScreenContract es = new EditableScreenContract(new EditableScreenImpl());
-		es.init(15, 10);
-		for (int i=0; i<es.getWidth(); i++) {
-			es.setNature(i, 0, Cell.MTL);
-		}
-		es.setNature(5, 1, Cell.LAD);
 		es.setNature(5, 2, Cell.LAD);
+		es.setNature(5, 3, Cell.LAD);
 		envi.init(es);
-		c.init(envi, 4, 1,-1);	
+		c.init(envi, 4, 2,-1);	
 		int hgt_capture = c.getHgt();
 		int wdt_capture = c.getWdt();
 		//OP :
