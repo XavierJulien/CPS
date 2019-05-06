@@ -36,7 +36,7 @@ public class EnvironnementImpl extends ScreenImpl implements EnvironnementServic
 			if(c.getGuard().hasItem()) return "Ô";
 			return "o";
 		}
-		if (c.getCharacter() != null) return "&";
+		if (c.getCharacter() != null) return "♀";
 		if (c.getItem() != null) return "@";
 		return "";
 	}

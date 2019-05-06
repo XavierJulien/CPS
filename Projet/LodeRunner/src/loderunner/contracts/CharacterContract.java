@@ -61,10 +61,6 @@ public class CharacterContract extends CharacterDecorator {
 			throw new PreconditionError("init : la case ou on veut init le player n'est pas Cell.EMP");
 		}
 		if(id < -1) throw new PreconditionError("init character : l'id est inférieur à -1");
-		if(s.getCellNature(x, y-1) != Cell.MTL && 
-				   s.getCellNature(x, y-1) != Cell.PLT) {
-					throw new PreconditionError("init : le personnage devrait se situé sur une Cell.MTL ou Cell.PLT à l'initialisation");
-		}
 		//2.checkInvariants
 		//none
 		//3.capture

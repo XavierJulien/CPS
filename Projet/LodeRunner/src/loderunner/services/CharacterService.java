@@ -10,8 +10,6 @@ public interface CharacterService {
 	/* Constructors */
 	/**
 	 * pre : init(x,y) require getEnvi().getCellNature(x,y) == EMP
-	 * pre : init(x,y) require getEnvi().getCellNature(x,y-1) == PLT 
-	 * 		&& init(x,y) require getEnvi().getCellNature(x,y-1) == MTL
 	 */
 	public void init(ScreenService s,int x,int y,int id);
 	

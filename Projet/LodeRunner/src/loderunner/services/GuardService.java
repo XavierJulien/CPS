@@ -148,7 +148,7 @@ public interface GuardService extends CharacterService {
 	default boolean willWaitInHole() {
 		Cell nat = getEnvi().getCellNature(getWdt(), getHgt());
 		if (nat==Cell.HOL) {
-			if (getTimeInHole() < 5)
+			if (getTimeInHole() < 10)
 				return true;
 		}
 		return false;
@@ -157,7 +157,7 @@ public interface GuardService extends CharacterService {
 	default boolean willClimbLeft() {
 		Cell nat = getEnvi().getCellNature(getWdt(), getHgt());
 		if (nat==Cell.HOL) {
-			if (getTimeInHole()==5) {
+			if (getTimeInHole()==10) {
 				if (getBehaviour()==Command.LEFT) 
 					return true;
 			}
@@ -169,7 +169,7 @@ public interface GuardService extends CharacterService {
 	default boolean willClimbRight() {
 		Cell nat = getEnvi().getCellNature(getWdt(), getHgt());
 		if (nat==Cell.HOL) {
-			if (getTimeInHole()==5) {
+			if (getTimeInHole()==10) {
 				if (getBehaviour()==Command.RIGHT) 
 					return true;
 			}
@@ -181,7 +181,7 @@ public interface GuardService extends CharacterService {
 	default boolean willClimbNeutral() {
 		Cell nat = getEnvi().getCellNature(getWdt(), getHgt());
 		if (nat==Cell.HOL) {
-			if (getTimeInHole()==5) {
+			if (getTimeInHole()==10) {
 				if (getBehaviour()==Command.NEUTRAL) 
 					return true;
 			}

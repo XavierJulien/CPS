@@ -295,6 +295,42 @@ public class PlayerTest {
 	 * SCENARIO
 	 */
 	
-	
+	@Test
+	public void Scenario() {
+		//Conditions Initiales
+		engine.addCommand(Command.NEUTRAL);
+		engine.addCommand(Command.RIGHT);
+		engine.addCommand(Command.DIGR);
+		engine.addCommand(Command.LEFT);
+		engine.addCommand(Command.DIGR);
+		engine.addCommand(Command.RIGHT);
+		engine.addCommand(Command.RIGHT);
+		engine.addCommand(Command.DIGL);
+		engine.addCommand(Command.RIGHT);
+		engine.addCommand(Command.LEFT);
+		engine.addCommand(Command.LEFT);
+		player = engine.getDelegate().getPlayer();
+		int wdt_capture = player.getWdt();
+		int hgt_capture = player.getHgt();
+		//Opération(s)
+		player.step();
+		player.step();
+		player.step();
+		player.step();
+		player.step();
+		player.step();
+		player.step();
+		player.step();
+		player.step();
+		player.step();
+		player.step();
+		//Oracle 
+		assertEquals(wdt_capture+1, player.getWdt());
+		assertEquals(hgt_capture-1, player.getHgt());
+		assertEquals(Cell.HOL, engine.getEnvi().getCellNature(player.getWdt()-3, player.getHgt()));
+		assertEquals(Cell.HOL, engine.getEnvi().getCellNature(player.getWdt(), player.getHgt()));
+		
+		checkinv();
+	}
 	
 }
