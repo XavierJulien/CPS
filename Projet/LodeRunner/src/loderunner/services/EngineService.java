@@ -42,7 +42,7 @@ public interface EngineService {
 					 List<Item> treasures);
 	/* Invariant */
 	/**
-	 *                                          ??    pre : step() require c : CellContent \def getEnvi().getCellContent(getPlayer.getWdt(),getPlayer().getHgt())
+	 *pre : step() require c : CellContent \def getEnvi().getCellContent(getPlayer.getWdt(),getPlayer().getHgt())
 	 *  c : CellContent \def getEnvi().getCellContent(getPlayer.getWdt(),getPlayer().getHgt()) 
 	 * 		\implies c.getCharacter() == getPlayer() &&
 	 *  \forall guard : Guard \in getGuards() 

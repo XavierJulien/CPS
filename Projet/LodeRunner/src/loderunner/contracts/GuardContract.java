@@ -263,7 +263,6 @@ public class GuardContract extends CharacterContract implements GuardService {
 	@Override
 	public Command getBehaviour() {
 		Command behaviour =  delegate.getBehaviour();
-		System.out.println("guard : ["+getWdt()+","+getHgt()+"], action "+behaviour);
 		return behaviour;
 	}
 
