@@ -50,20 +50,20 @@ public class EngineTest {
 	
 	public void checkinv() {
 		CellContent cell_check = engine.getEnvi().getCellContent(engine.getPlayer().getWdt(), engine.getPlayer().getHgt());
-		if(!cell_check.getCharacter().equals(engine.getPlayer())) throw new InvariantError("checkInvariants : Le player aux position du player n'est pas le player");
+		assertTrue(cell_check.getCharacter().equals(engine.getPlayer())); 
 		for(GuardService g : engine.getGuards()) {
 			cell_check = engine.getEnvi().getCellContent(g.getWdt(), g.getHgt());
 			if(!cell_check.getGuard().equals(g)) throw new InvariantError("checkInvariants : Le guard aux position du guard n'est pas le guard");
 			for(Item t : engine.getTreasures()) {
 				cell_check = engine.getEnvi().getCellContent(t.getCol(), t.getHgt());
-				assertTrue(cell_check.getItem() != null && t.getCol() == g.getWdt() && t.getHgt() == g.getHgt() && !g.hasItem());
+				assertTrue(cell_check.getItem() != null && (t.getCol() != g.getWdt() || t.getHgt() != g.getHgt()) && !g.hasItem());
 			}
 			
 		}
 		for(Item t : engine.getTreasures()) {
 			cell_check = engine.getEnvi().getCellContent(t.getCol(), t.getHgt());
 			for(GuardService g : engine.getGuards()) {
-				assertTrue(cell_check.getItem() == null && (t.getCol() != g.getWdt() || t.getHgt() != g.getHgt()));
+				assertTrue(cell_check.getItem() != null && (t.getCol() != g.getWdt() || t.getHgt() != g.getHgt()));
 			}
 			
 		}
@@ -85,7 +85,6 @@ public class EngineTest {
 		//Opération(s)
 		engine.init(es, new Coord(2,2), guards, treasures);
 		//Oracle : None
-		
 	}
 
 	@Test(expected = PreconditionError.class)
@@ -108,6 +107,7 @@ public class EngineTest {
 		engine.addCommand(Command.RIGHT);
 		//Oracle : 
 		assertEquals(Command.RIGHT,engine.getNextCommand());
+		checkinv();
 	}
 	
 	@Test
@@ -134,6 +134,7 @@ public class EngineTest {
 			assertNotEquals(c.getX(),engine.getGuards().get(i).getWdt());
 			assertEquals(c.getY(),engine.getGuards().get(i).getHgt());
 		}
+		checkinv();
 	}
 	
 	@Test
@@ -160,6 +161,7 @@ public class EngineTest {
 			assertNotEquals(c.getX(),engine.getGuards().get(i).getWdt());
 			assertEquals(c.getY(),engine.getGuards().get(i).getHgt());
 		}
+		checkinv();
 	}
 	
 	@Test
@@ -186,6 +188,7 @@ public class EngineTest {
 			assertNotEquals(c.getX(),engine.getGuards().get(i).getWdt());
 			assertEquals(c.getY(),engine.getGuards().get(i).getHgt());
 		}
+		checkinv();
 	}
 	
 	@Test
@@ -212,6 +215,7 @@ public class EngineTest {
 			assertNotEquals(c.getX(),engine.getGuards().get(i).getWdt());
 			assertEquals(c.getY(),engine.getGuards().get(i).getHgt());
 		}
+		checkinv();
 	}
 	
 	@Test
@@ -239,6 +243,7 @@ public class EngineTest {
 			assertNotEquals(c.getX(),engine.getGuards().get(i).getWdt());
 			assertEquals(c.getY(),engine.getGuards().get(i).getHgt());
 		}
+		checkinv();
 	}
 	
 	@Test
@@ -266,6 +271,7 @@ public class EngineTest {
 			assertNotEquals(c.getX(),engine.getGuards().get(i).getWdt());
 			assertEquals(c.getY(),engine.getGuards().get(i).getHgt());
 		}
+		checkinv();
 	}
 	
 	/**
@@ -300,6 +306,7 @@ public class EngineTest {
 			assertNotEquals(c.getX(),engine.getGuards().get(i).getWdt());
 			assertEquals(c.getY(),engine.getGuards().get(i).getHgt());
 		}
+		checkinv();
 	}
 	
 	@Test
@@ -325,6 +332,7 @@ public class EngineTest {
 		assertEquals(GameState.Loss,engine.getStatus());
 		assertEquals(guard_wdt_capture-1,engine.getGuards().get(0).getWdt());
 		assertEquals(guard_hgt_capture,engine.getGuards().get(0).getHgt());
+		checkinv();
 	}
 	/**
 	*  PAIRES DE TRANSITIONS
@@ -355,6 +363,7 @@ public class EngineTest {
 		assertEquals(GameState.Loss,engine.getStatus());
 		assertEquals(guard_wdt_capture-1,engine.getGuards().get(0).getWdt());
 		assertEquals(guard_hgt_capture,engine.getGuards().get(0).getHgt());
+		checkinv();
 	}
 	
 	@Test
@@ -382,6 +391,7 @@ public class EngineTest {
 		assertEquals(GameState.Loss,engine.getStatus());
 		assertEquals(guard_wdt_capture-2,engine.getGuards().get(0).getWdt());
 		assertEquals(guard_hgt_capture,engine.getGuards().get(0).getHgt());
+		checkinv();
 	}
 	
 	@Test
@@ -409,6 +419,7 @@ public class EngineTest {
 		assertEquals(GameState.Playing,engine.getStatus());
 		assertEquals(guard_wdt_capture-2,engine.getGuards().get(0).getWdt());
 		assertEquals(guard_hgt_capture,engine.getGuards().get(0).getHgt());
+		checkinv();
 	}
 	
 	@Test
@@ -437,6 +448,7 @@ public class EngineTest {
 		assertEquals(guard_wdt_capture-1,engine.getGuards().get(0).getWdt());
 		assertEquals(guard_hgt_capture-1,engine.getGuards().get(0).getHgt());
 		assertEquals(Cell.HOL,engine.getEnvi().getCellNature(engine.getGuards().get(0).getWdt(), engine.getGuards().get(0).getHgt()));
+		checkinv();
 	}
 	/**
 	*  SCENARIO
@@ -493,6 +505,7 @@ public class EngineTest {
 		assertEquals(guard_wdt_capture-10,engine.getGuards().get(0).getWdt());//le fait de monter rend le garde a faire neutral
 		assertEquals(guard_hgt_capture-1,engine.getGuards().get(0).getHgt());
 		assertEquals(Cell.HOL,engine.getEnvi().getCellNature(engine.getGuards().get(0).getWdt(), engine.getGuards().get(0).getHgt()));
+		checkinv();
 	}
 	
 }
