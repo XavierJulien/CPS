@@ -244,12 +244,6 @@ public class EngineContract extends EngineDecorator{
 			}
 		}
 		//verifier que les tresors ne disparaissent pas ceux qui ne doivent pas 
-		/*for(GuardService g : getGuards()) {
-			if(g.getWdt()-getPlayer().getWdt() == -1 || g.getHgt()-getPlayer().getHgt() == -1 || 
-			   g.getWdt()-getPlayer().getWdt() == 1 || g.getHgt()-getPlayer().getHgt() == 1) {
-				if(getStatus() != GameState.Loss) throw new PostconditionError("le player aurait du mourir");
-			}
-		}*/
 	}
 	
 }
