@@ -96,10 +96,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 						if(target.getWdt()-getWdt() == 0) return Command.NEUTRAL;
 					}else{
 						//suivre l'axe vertical
-						if(target.getHgt()-getHgt() > 0) {
-							System.out.println("UP");
-							return Command.UP;
-						}
+						if(target.getHgt()-getHgt() > 0) return Command.UP;
 						if(target.getHgt()-getHgt() < 0) {
 							if(target.getWdt()-getWdt() > 0) return Command.RIGHT;
 							if(target.getWdt()-getWdt() < 0) return Command.LEFT;
