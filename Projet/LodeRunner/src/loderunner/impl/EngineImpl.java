@@ -154,6 +154,13 @@ public class EngineImpl implements EngineService{
 			}
 			//step du guard
 			for(GuardService guard : guards) {
+				if(guard.willClimbLeft() || guard.willClimbRight()) {
+					if(getEnvi().getCellContent(guard.getWdt(), guard.getHgt()+1).getCharacter() != null) {
+						System.out.println("fin");
+						status = GameState.Loss;
+						return;
+					}
+				}
 				guard.step();
 				if(getEnvi().getCellContent(guard.getWdt(), guard.getHgt()).getCharacter() != null) {
 					status = GameState.Loss;
@@ -190,7 +197,7 @@ public class EngineImpl implements EngineService{
 
 	@Override
 	public void addCommand(Command c) {
-		commands.add(c);
+		commands.add(0,c);
 	}
 
 	@Override

@@ -20,6 +20,10 @@ public class PlayerContractClone extends CharacterContractClone implements Playe
 		this.delegate = delegate;
 	}
 	
+	public PlayerService getDelegate() {
+		return delegate;
+	}
+	
 	public void checkInvariants() {
 		super.checkInvariants();
 		if(getEnvi().getCellContent(getWdt(), getHgt()).getCharacter() != null) {
@@ -91,8 +95,8 @@ public class PlayerContractClone extends CharacterContractClone implements Playe
 				case RIGHT : {clone.goRight();break;}
 				case LEFT : {clone.goLeft();break;}
 				case NEUTRAL : break;
-				case DIGL : {clone.getEnvi().dig(clone.getWdt()-1, clone.getHgt()-1);clone.getEngine().getHoles().add(new Hole(clone.getWdt()-1, clone.getHgt()-1,0));break;}
-				case DIGR : {clone.getEnvi().dig(clone.getWdt()+1, clone.getHgt()-1);clone.getEngine().getHoles().add(new Hole(clone.getWdt()+1, clone.getHgt()-1,0));break;}
+				case DIGL : {clone.getDelegate().getEnvi().dig(clone.getWdt()-1, clone.getHgt()-1);clone.getDelegate().getEngine().getHoles().add(new Hole(clone.getWdt()-1, clone.getHgt()-1,0));break;}
+				case DIGR : {clone.getDelegate().getEnvi().dig(clone.getWdt()+1, clone.getHgt()-1);clone.getDelegate().getEngine().getHoles().add(new Hole(clone.getWdt()+1, clone.getHgt()-1,0));break;}
 			}
 		}
 		

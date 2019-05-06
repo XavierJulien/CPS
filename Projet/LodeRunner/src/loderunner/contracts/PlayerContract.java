@@ -20,6 +20,10 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		this.delegate = delegate;
 	}
 
+	public PlayerService getDelegate() {
+		return delegate;
+	}
+	
 	public void checkInvariants() {
 		super.checkInvariants();
 		if(getEnvi().getCellContent(getWdt(), getHgt()).getCharacter() != null) {
@@ -58,14 +62,10 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		PlayerContractClone clone;
 		if(getEngine().getEnvi().getCellNature(getWdt(), getHgt()) == Cell.EMP) {
 			clone = Creator.createPlayerContractClone(delegate.clonePlayer());
-			clone.getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(null);
-			clone.init(getEngine(), new Coord(getEngine().getPlayer().getWdt(),getEngine().getPlayer().getHgt()));
 			clone.getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(clone);
 			
 		}else {
 			clone = Creator.createPlayerContractClone(delegate.clonePlayer2());
-			clone.getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(null);
-			clone.init(getEngine(), new Coord(getEngine().getPlayer().getWdt(),getEngine().getPlayer().getHgt()));
 			clone.getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(clone);
 			
 		}
@@ -91,8 +91,8 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 				case RIGHT : {clone.goRight();break;}
 				case LEFT : {clone.goLeft();break;}
 				case NEUTRAL : break;
-				case DIGL : {clone.getEnvi().dig(clone.getWdt()-1, clone.getHgt()-1);clone.getEngine().getHoles().add(new Hole(clone.getWdt()-1, clone.getHgt()-1,0));break;}
-				case DIGR : {clone.getEnvi().dig(clone.getWdt()+1, clone.getHgt()-1);clone.getEngine().getHoles().add(new Hole(clone.getWdt()+1, clone.getHgt()-1,0));break;}
+				case DIGL : {clone.getDelegate().getEnvi().dig(clone.getWdt()-1, clone.getHgt()-1);clone.getEngine().getHoles().add(new Hole(clone.getWdt()-1, clone.getHgt()-1,0));break;}
+				case DIGR : {clone.getDelegate().getEnvi().dig(clone.getWdt()+1, clone.getHgt()-1);clone.getEngine().getHoles().add(new Hole(clone.getWdt()+1, clone.getHgt()-1,0));break;}
 			}
 		}
 		
@@ -105,8 +105,11 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		
 		//6.post
 		
-		
-		if(clone.getHgt() != getHgt() || clone.getWdt() != getWdt()) throw new PostconditionError("Player Step : le joueur n'as pas la bonne position");
+		if(clone.getHgt() != getHgt() || clone.getWdt() != getWdt()) {
+			System.out.println(clone.getWdt()+","+clone.getHgt());
+			System.out.println(getWdt()+","+getHgt());
+			throw new PostconditionError("Player Step : le joueur n'as pas la bonne position");
+		}
 		if (getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.LAD && 
 			getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.HDR) {
 			if (getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.MTL && 

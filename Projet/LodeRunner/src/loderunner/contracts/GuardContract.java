@@ -25,6 +25,10 @@ public class GuardContract extends CharacterContract implements GuardService {
 		this.delegate = delegate;
 	}
 	
+	public GuardService getDelegate() {
+		return delegate;
+	}
+	
 	public void checkInvariants() {
 		super.checkInvariants();
 		
@@ -166,8 +170,7 @@ public class GuardContract extends CharacterContract implements GuardService {
 		 * 		
 		 * 		implies getBehaviour() == NEUTRAL
 		**/
-		if((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HOL || 
-			getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HDR ||
+		if((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HDR ||
 			getEnvi().getCellNature(getWdt(), getHgt()) == Cell.EMP) &&
 		   (getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL || 
 			getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT || 

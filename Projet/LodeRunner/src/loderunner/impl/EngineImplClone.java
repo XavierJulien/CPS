@@ -160,7 +160,7 @@ public class EngineImplClone implements EngineService{
 
 	@Override
 	public void addCommand(Command c) {
-		commands.add(c);
+		commands.add(0,c);
 	}
 
 	@Override

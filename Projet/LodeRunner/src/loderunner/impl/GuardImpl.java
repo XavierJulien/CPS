@@ -141,7 +141,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			case HOL : {
 				if (target.getWdt()>getWdt()) return Command.RIGHT;
 				if (target.getWdt()<getWdt()) return Command.LEFT;
-				if (target.getWdt()==getWdt()) return Command.NEUTRAL;
+				if (target.getWdt()==getWdt()) return Command.LEFT;
 			}
 			default : 
 				return Command.NEUTRAL;
@@ -165,7 +165,6 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 
 	@Override
 	public void climbLeft() {
-		System.out.println("climbLeft");
 		if (getEnvi().getCellNature(getWdt(), getHgt()+1) != Cell.PLT 
 			&& getEnvi().getCellNature(getWdt(), getHgt()+1) != Cell.MTL) {
 			if (getEnvi().getCellNature(getWdt()-1, getHgt()+1) != Cell.PLT 
@@ -174,6 +173,8 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 					setWdt(getWdt()-1);
 					setHgt(getHgt()+1);
 					timeInHole=0;
+					if(getEnvi().getCellContent(getWdt(), getHgt()+1).getCharacter() != null) {
+					}
 				}
 			}
 		}
@@ -181,7 +182,6 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 
 	@Override
 	public void climbRight() {
-		System.out.println("climbRight");
 		if (getEnvi().getCellNature(getWdt(), getHgt()+1) != Cell.PLT 
 			&& getEnvi().getCellNature(getWdt(), getHgt()+1) != Cell.MTL) {
 			if (getEnvi().getCellNature(getWdt()+1, getHgt()+1) != Cell.PLT 
@@ -189,7 +189,6 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 				if (getEnvi().getCellContent(getWdt()+1, getHgt()+1).getGuard() == null) {
 					setWdt(getWdt()+1);
 					setHgt(getHgt()+1);
-					System.out.println("apres climbright "+getWdt()+","+getHgt());
 					timeInHole=0;
 				}
 			}

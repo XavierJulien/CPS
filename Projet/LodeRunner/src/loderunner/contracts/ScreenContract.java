@@ -70,6 +70,7 @@ public class ScreenContract extends ScreenDecorator {
 	@Override
 	public void dig(int x, int y) {
 		//1.pre
+		if(getCellNature(x, y) != Cell.PLT) throw new PreconditionError("dig : la case n'est pas un Cell.PLT");
 		//2.checkInvariants
 		//none
 		//3.capture
@@ -106,6 +107,7 @@ public class ScreenContract extends ScreenDecorator {
 	@Override
 	public void fill(int x, int y) {
 		//1.pre
+		if(getCellNature(x, y) != Cell.HOL) throw new PreconditionError("dig : la case n'est pas un Cell.HOL");
 		//2.checkInvariants
 		//none
 		//3.capture
