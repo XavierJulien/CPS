@@ -19,11 +19,8 @@ public class CharacterContract extends CharacterDecorator {
 		if(getEnvi().getCellNature(getWdt(), getHgt()) != Cell.EMP && 
 		   getEnvi().getCellNature(getWdt(), getHgt()) != Cell.HOL &&
 		   getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD &&
-		   getEnvi().getCellNature(getWdt(), getHgt()) != Cell.HDR) {
-			System.out.println(getEnvi().getCellNature(getWdt(), getHgt()));
+		   getEnvi().getCellNature(getWdt(), getHgt()) != Cell.HDR)
 			throw new InvariantError("le joueur n'est pas dans une case valide");
-		}
-			
 	}
 	
 	public EnvironnementService getEnvi() {
@@ -61,9 +58,10 @@ public class CharacterContract extends CharacterDecorator {
 			throw new PreconditionError("init : la case ou on veut init le player n'est pas Cell.EMP");
 		}
 		if(id < -1) throw new PreconditionError("init character : l'id est inférieur à -1");
+
 		//2.checkInvariants
 		//none
-		//3.capture
+		//3.capture 
 		//none
 		//4.run
 		super.init(s, x, y, id);
@@ -73,7 +71,7 @@ public class CharacterContract extends CharacterDecorator {
 		if(getHgt() != y || getWdt() != x) {
 			throw new PostconditionError("init : le personnage à mal été initialisé au niveau de sa position");
 		}
-		
+
 	}
 
 	@Override

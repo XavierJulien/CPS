@@ -1004,7 +1004,7 @@ public class LiftTest1 extends AbstractLiftTest {
 			assertTrue(l.getLiftStatus() == LiftStatus.IDLE);
 		}
 		//Invariants
-				assertTrue(l.getLevel() == l.getMinLevel());
+		assertTrue(l.getLevel() == l.getMinLevel());
 	}
 	
 }

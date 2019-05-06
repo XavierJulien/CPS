@@ -54,7 +54,7 @@ public class EnvironnementTest {
 	/**
 	 * PRECONDITIONS
 	 **/
-	//RIEN ?
+	//RIEN
 	
 	
 	/**
@@ -84,11 +84,12 @@ public class EnvironnementTest {
 	/**
 	* ETATS REMARQUABLES
 	*/
+	//RIEN 
 	
 	/**
 	*  PAIRES DE TRANSITIONS
 	*/
-	
+	//RIEN
 	
 
 }

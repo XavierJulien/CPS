@@ -15,7 +15,7 @@ import loderunner.services.ScreenService;
 
 public class ScreenTest {
 
-	private ScreenService screen;
+	protected ScreenService screen;
 	
 	@Before
 	public void beforeTests() {
@@ -23,7 +23,7 @@ public class ScreenTest {
 	}
 	
 	@After
-	public final void afterTests() {
+	public void afterTests() {
 		screen = null;
 	}
 	
@@ -45,7 +45,29 @@ public class ScreenTest {
 		screen.init(-2,10);
 		//Oracle : None
 	}
-	//Les tests sur les opérations Dig et Fill sont des objectifs inatteignables
+	//il y a encore 1 autre fail pour init non écrit : height < 0
+	
+	
+	@Test(expected = PreconditionError.class)
+	public void preDigFail() {
+		//Conditions Initiales : None
+		screen.init(15,10);
+		//Opération(s)
+		screen.dig(5,5);
+		//Oracle : None
+	}
+	
+	@Test(expected = PreconditionError.class)
+	public void preFillFail() {
+		//Conditions Initiales : None
+		screen.init(15,10);
+		//Opération(s)
+		screen.fill(5,5);
+		//Oracle : None
+	}
+	
+	
+	//Les tests pass sur les opérations Dig et Fill sont des objectifs inatteignables à ce niveau
 	
 	
 	/**
@@ -65,19 +87,20 @@ public class ScreenTest {
 				assertTrue(screen.getCellNature(i, j) == Cell.EMP);
 			}
 		}
-		/*inv*/ //none
-		
+		/*inv*/ //none	
 	}
 	
-	// De même pour les transitions Dig et Fill
+	//Les tests sur les opérations Dig et Fill sont des objectifs inatteignables à ce niveau
 	
 	/**
 	* ETATS REMARQUABLES
 	*/
+	//Les tests sur les opérations Dig et Fill sont des objectifs inatteignables à ce niveau
 	
 	/**
 	*  PAIRES DE TRANSITIONS
 	*/
+	//Les tests sur les opérations Dig et Fill sont des objectifs inatteignables à ce niveau
 	
 	
 }

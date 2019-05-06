@@ -20,8 +20,8 @@ import loderunner.services.EnvironnementService;
 
 public class CharacterTest {
 		
-	private CharacterService c;
-	private EnvironnementService envi;
+	protected CharacterService c;
+	protected EnvironnementService envi;
 	
 
 	@Before
@@ -31,7 +31,7 @@ public class CharacterTest {
 	}
 	
 	@After
-	public final void afterTests() {
+	public void afterTests() {
 		c = null;
 		envi = null;
 	}
@@ -302,11 +302,166 @@ public class CharacterTest {
 	/**
 	* ETATS REMARQUABLES
 	*/
+	//askip y en a pas 
 	
+	//Le caractère a de la place pour se déplacer à gauche
+	public void etatRemarquableGauche() {
+		//CI : None
+		//OP :
+		EditableScreenContract es = new EditableScreenContract(new EditableScreenImpl());
+		es.init(15, 10);
+		for (int i=0; i<es.getWidth(); i++) {
+			es.setNature(i, 0, Cell.MTL);
+		}
+		envi.init(es);
+		c.init(envi, 5, 1,-1);	
+		int hgt_capture = c.getHgt();
+		int wdt_capture = c.getWdt();
+		//op
+		c.goLeft();
+		//Oracle :
+		// est ce qu'il faut tout réécrire ou seulement ces deux ligne plus le checkinvariant suffit ?
+		assertTrue(c.getWdt() == wdt_capture-1);
+		assertTrue(c.getHgt() == hgt_capture);
+		checkinv();
+	}
+	
+	//Le caractère a de la place pour se déplacer à gauche
+	public void etatRemarquableDroite() {
+		//CI : None
+		//OP :
+		EditableScreenContract es = new EditableScreenContract(new EditableScreenImpl());
+		es.init(15, 10);
+		for (int i=0; i<es.getWidth(); i++) {
+			es.setNature(i, 0, Cell.MTL);
+		}
+		envi.init(es);
+		c.init(envi, 5, 1,-1);	
+		int hgt_capture = c.getHgt();
+		int wdt_capture = c.getWdt();
+		//op
+		c.goLeft();
+		//Oracle :
+		// est ce qu'il faut tout réécrire ou seulement ces deux ligne plus le checkinvariant suffit ?
+		assertTrue(c.getWdt() == wdt_capture+1);
+		assertTrue(c.getHgt() == hgt_capture);
+		checkinv();
+	}
 	
 	/**
 	*  PAIRES DE TRANSITIONS
 	*/
+	@Test
+	public void paireLeftRight() {
+		//CI :
+		EditableScreenContract es = new EditableScreenContract(new EditableScreenImpl());
+		es.init(15, 10);
+		for (int i=0; i<es.getWidth(); i++) {
+			es.setNature(i, 0, Cell.MTL);
+		}
+		envi.init(es);
+		c.init(envi, 5, 1,-1);	
+		int hgt_capture = c.getHgt();
+		int wdt_capture = c.getWdt();
+		//OP :
+		c.goLeft();
+		c.goRight();
+		//ORACLE
+		assertTrue(c.getWdt() == wdt_capture);
+		assertTrue(c.getHgt() == hgt_capture);
+		checkinv();
+	}
+	
+	@Test
+	public void paireRightLeft() {
+		//CI :
+		EditableScreenContract es = new EditableScreenContract(new EditableScreenImpl());
+		es.init(15, 10);
+		for (int i=0; i<es.getWidth(); i++) {
+			es.setNature(i, 0, Cell.MTL);
+		}
+		envi.init(es);
+		c.init(envi, 5, 1,-1);	
+		int hgt_capture = c.getHgt();
+		int wdt_capture = c.getWdt();
+		//OP :
+		c.goRight();
+		c.goLeft();
+		//ORACLE
+		assertTrue(c.getWdt() == wdt_capture);
+		assertTrue(c.getHgt() == hgt_capture);
+		checkinv();
+	}
+	
+	@Test
+	public void paireRightUp () {
+		//CI :
+		EditableScreenContract es = new EditableScreenContract(new EditableScreenImpl());
+		es.init(15, 10);
+		for (int i=0; i<es.getWidth(); i++) {
+			es.setNature(i, 0, Cell.MTL);
+		}
+		es.setNature(5, 1, Cell.LAD);
+		es.setNature(5, 2, Cell.LAD);
+		envi.init(es);
+		c.init(envi, 4, 1,-1);	
+		int hgt_capture = c.getHgt();
+		int wdt_capture = c.getWdt();
+		//OP :
+		c.goRight();
+		c.goUp();
+		//ORACLE 
+		assertTrue(c.getWdt() == wdt_capture+1);
+		assertTrue(c.getHgt() == hgt_capture+1);
+		checkinv();
+	}
+	
+	@Test
+	public void paireUpDown () {
+		//CI :
+		EditableScreenContract es = new EditableScreenContract(new EditableScreenImpl());
+		es.init(15, 10);
+		for (int i=0; i<es.getWidth(); i++) {
+			es.setNature(i, 0, Cell.MTL);
+		}
+		es.setNature(5, 1, Cell.LAD);
+		es.setNature(5, 2, Cell.LAD);
+		envi.init(es);
+		c.init(envi, 4, 1,-1);	
+		int hgt_capture = c.getHgt();
+		int wdt_capture = c.getWdt();
+		//OP :
+		c.goUp();
+		c.goDown();
+		//ORACLE 
+		assertTrue(c.getWdt() == wdt_capture);
+		assertTrue(c.getHgt() == hgt_capture);
+		checkinv();
+	}
+	
+	@Test
+	public void paireDownUp () {
+		//CI :
+		EditableScreenContract es = new EditableScreenContract(new EditableScreenImpl());
+		es.init(15, 10);
+		for (int i=0; i<es.getWidth(); i++) {
+			es.setNature(i, 0, Cell.MTL);
+		}
+		es.setNature(5, 1, Cell.LAD);
+		es.setNature(5, 2, Cell.LAD);
+		envi.init(es);
+		c.init(envi, 4, 1,-1);	
+		int hgt_capture = c.getHgt();
+		int wdt_capture = c.getWdt();
+		//OP :
+		c.goUp();
+		c.goDown();
+		//ORACLE 
+		assertTrue(c.getWdt() == wdt_capture);
+		assertTrue(c.getHgt() == hgt_capture);
+		checkinv();
+	}
+	
 	
 		
 

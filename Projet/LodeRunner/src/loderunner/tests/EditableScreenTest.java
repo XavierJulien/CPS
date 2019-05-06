@@ -12,7 +12,7 @@ import loderunner.errors.PreconditionError;
 import loderunner.impl.EditableScreenImpl;
 import loderunner.services.EditableScreenService;
 
-public class EditableScreenTest {
+public class EditableScreenTest extends ScreenTest {
 
 	private EditableScreenService es;
 	
@@ -23,10 +23,11 @@ public class EditableScreenTest {
 	@Before
 	public void beforeTests() {
 		es = new EditableScreenContract(new EditableScreenImpl());
+		screen = es;
 	}
 	
 	@After
-	public final void afterTests() {
+	public void afterTests() {
 		es = null;
 	}
 	
@@ -113,14 +114,101 @@ public class EditableScreenTest {
 		
 	}
 	
-	// De même pour les transitions Dig et Fill
+	@Test
+	public void preDigPass() {
+		//CI :
+		es.init(15,10);
+		Cell[][] natures_atpre = new Cell[15][10];
+		for (int i=0;i<es.getWidth();i++) {
+			for (int j=0; j<es.getHeight();j++) {
+				if (j == 0) {
+					es.setNature(i, j, Cell.PLT);
+				}
+				natures_atpre[i][j] = es.getCellNature(i, j);
+			}
+		}
+		//OP :
+		es.dig(5, 0);
+		//ORACLE
+		/*post*/
+		for (int i=0;i<es.getWidth();i++) {
+			for (int j=0; j<es.getHeight();j++) {
+				if (i==5 && j==0)
+					assertTrue(es.getCellNature(i,j) == Cell.HOL);
+				else 
+					assertTrue(es.getCellNature(i,j) == natures_atpre[i][j]);
+			}
+		}
+		/*inv*/
+		checkinv();
+	}
 	
+	@Test
+	public void preFillPass() {
+		//CI :
+		es.init(15,10);
+		Cell[][] natures_atpre = new Cell[15][10];
+		for (int i=0;i<es.getWidth();i++) {
+			for (int j=0; j<es.getHeight();j++) {
+				if (j == 0) {
+					es.setNature(i, j, Cell.PLT);
+				}
+				natures_atpre[i][j] = es.getCellNature(i, j);
+			}
+		}
+		es.dig(5,0);
+		//OP :
+		es.fill(5,0);
+		//ORACLE
+		/*post*/
+		for (int i=0;i<es.getWidth();i++) {
+			for (int j=0; j<es.getHeight();j++) {
+				if (i==5 && j==0)
+					assertTrue(es.getCellNature(i,j) == Cell.PLT);
+				else 
+					assertTrue(es.getCellNature(i,j) == natures_atpre[i][j]);
+			}
+		}
+		/*inv*/
+		checkinv();
+	}
+	
+	
+		
 	/**
 	* ETATS REMARQUABLES
 	*/
+	//la case 0,0 est MTL
+	@Test
+	public void etatRemarquable00MTL() {
+		//Conditions Initiales : Vides
+		//Opérations:
+		es.init(15, 10);
+		//captures
+		Cell[][] natures_atpre = new Cell[15][10];
+		for (int i=0;i<es.getWidth();i++) {
+			for (int j=0; j<es.getHeight();j++) {
+				natures_atpre[i][j] = es.getCellNature(i, j);
+			}
+		}
+		es.setNature(0, 0, Cell.MTL);
+		//Oracle : 
+		/*post*/
+		for (int i=0;i<es.getWidth();i++) {
+			for (int j=0; j<es.getHeight();j++) {
+				if (i==0 && j==0)
+					assertTrue(es.getCellNature(i,j) == Cell.MTL);
+				else 
+					assertTrue(es.getCellNature(i,j) == natures_atpre[i][j]);
+			}
+		}
+		/*inv*/
+		checkinv();
+	}
 	
 	/**
 	*  PAIRES DE TRANSITIONS
 	*/
+	//il n'y en a pas car seule transition = setNature
 	
 }
