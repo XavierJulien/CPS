@@ -6,12 +6,14 @@ import java.util.List;
 import loderunner.contracts.EnvironnementContract;
 import loderunner.contracts.GuardContract;
 import loderunner.contracts.PlayerContract;
+import loderunner.data.Cell;
 import loderunner.data.Command;
 import loderunner.data.Coord;
 import loderunner.data.GameState;
 import loderunner.data.Hole;
 import loderunner.data.Item;
 import loderunner.data.ItemType;
+import loderunner.data.Teleporteur;
 import loderunner.services.EditableScreenService;
 import loderunner.services.EngineService;
 import loderunner.services.EnvironnementService;
@@ -30,6 +32,8 @@ public class EngineImpl implements EngineService{
 	protected ArrayList<Hole> holes;
 	protected int score;
 	
+	protected ArrayList<Teleporteur> teleporteurs;
+	
 	@Override
 	public EnvironnementService getEnvi() {
 		
@@ -38,24 +42,19 @@ public class EngineImpl implements EngineService{
 
 	@Override
 	public PlayerService getPlayer() {
-		
 		return player;
 	}
 
-	public void setPlayer(PlayerService player) {
-		this.player = player;
-	}
-	
 	@Override
 	public ArrayList<GuardService> getGuards() {
 		return guards;
 	}
-
+	
 	@Override
 	public ArrayList<Item> getTreasures() {
 		return treasures;
 	}
-
+	
 	@Override
 	public GameState getStatus() {
 		return status;
@@ -85,8 +84,22 @@ public class EngineImpl implements EngineService{
 	}
 	
 	@Override
-	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Item> treasures) {
+	public ArrayList<Teleporteur> getTeleporteurs() {
+		System.out.println(teleporteurs.size());
+		return teleporteurs;
+	}
+	
+	@Override
+	public void init(EditableScreenService e, 
+			         Coord player, 
+			         List<Coord> guards, 
+			         List<Item> treasures,
+			         List<Teleporteur> teleporteurs) {
 		envi = new EnvironnementContract(new EnvironnementImpl());
+		for(Teleporteur t : teleporteurs) {
+			e.setNature(t.getPosA().getX(), t.getPosA().getY(), Cell.TLP);
+			e.setNature(t.getPosB().getX(), t.getPosB().getY(), Cell.TLP);
+		}
 		envi.init(e);
 		
 		this.guards = new ArrayList<>();
@@ -94,6 +107,7 @@ public class EngineImpl implements EngineService{
 		this.status = GameState.Playing;
 		this.treasures = (ArrayList<Item>) treasures;
 		this.player = new PlayerContract(new PlayerImpl());
+		this.teleporteurs = (ArrayList<Teleporteur>) teleporteurs;
 		commands = new ArrayList<>();
 		holes = new ArrayList<>();
 		envi.getCellContent(player.getX(), player.getY()).setCharacter(this.player);
@@ -103,17 +117,16 @@ public class EngineImpl implements EngineService{
 			guard.init(this, co.getX(), co.getY(), getPlayer());
 			envi.getCellContent(co.getX(), co.getY()).setGuard(guard);		
 			this.guards.add(guard);
-			
 		}
 		for(GuardService g : this.guards) {
 			GuardContract guardcopy = new GuardContract(new GuardImpl(g.getId()));
 			guardcopy.init(this, g.getWdt(), g.getHgt(), getPlayer());
 			this.guards_at_init.add(guardcopy);
 		}
-		
 		for(Item i : treasures) {
 			envi.getCellContent(i.getCol(), i.getHgt()).setItem(new Item(i.getCol(), i.getHgt(), ItemType.Treasure));;
 		}
+		
 		score = 0;
 	}
 
@@ -165,7 +178,7 @@ public class EngineImpl implements EngineService{
 					status = GameState.Loss;
 					return;
 				}
-		}
+			}
 			if(envi.getCellContent(player.getWdt(), player.getHgt()).getItem() != null) {
 				envi.getCellContent(player.getWdt(), player.getHgt()).setItem(null);
 				for(int i = 0;i<treasures.size();i++) {

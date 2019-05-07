@@ -95,10 +95,8 @@ public class ScreenContract extends ScreenDecorator {
 						throw new PostconditionError("dig : Une autre case à été modifié");
 				}
 				if(i == x && j == y) {
-					if(screen_capture[i][j] == Cell.PLT) {
-						if(getCellNature(i,j) != Cell.HOL) 
+					if(getCellNature(i,j) != Cell.HOL) 
 							throw new PostconditionError("dig : La case n'as pas été modifiée");
-					}
 				}
 			}
 		}

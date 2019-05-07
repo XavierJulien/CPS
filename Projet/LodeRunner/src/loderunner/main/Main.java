@@ -3,7 +3,6 @@ package loderunner.main;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import loderunner.contracts.EditableScreenContract;
 import loderunner.contracts.EngineContract;
 import loderunner.data.Command;
 import loderunner.data.GameState;
@@ -31,12 +30,11 @@ public class Main{
 			EngineImpl engine = new EngineImpl();
 			
 			//MAP
-			EditableScreenContract editScreenContract;
 			MapBuilder m = new MapBuilder(edit);
 			Map map = m.buildMap(filenames.get(i));
-			editScreenContract = map.getEdit();
 			EngineContract engineContract = new EngineContract(engine);
-			engineContract.init(editScreenContract, map.getPlayer(), map.getGuards(), map.getTreasures());
+			System.out.println(map.getTeleporteurs());
+			engineContract.init(map.getEdit(), map.getPlayer(), map.getGuards(), map.getTreasures(),map.getTeleporteurs());
 			System.out.println("-------MAP N�"+i+"--------");
 			System.out.println(engineContract.getEnvi().toString());
 			System.out.println("---------------------------");
@@ -62,6 +60,7 @@ public class Main{
 					System.out.println("---------------------------");
 					System.out.println("---LIVES : "+lives+"---SCORE : "+engineContract.getScore()+"---");
 					System.out.println("\n---------WELLPLAYED--------");
+					lives++;
 					break;
 				}else {
 					System.out.println("-------PLAYING--------");

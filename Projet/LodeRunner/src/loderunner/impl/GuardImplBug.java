@@ -65,6 +65,7 @@ public class GuardImplBug extends CharacterImpl implements GuardService {
 			case EMP : {
 				if (nat_under==Cell.PLT || 
 					nat_under==Cell.MTL ||
+					nat_under==Cell.TLP ||
 					getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null){
 								if(target.getWdt()-getWdt() > 0) return Command.RIGHT;
 								if(target.getWdt()-getWdt() < 0) return Command.LEFT;
@@ -88,6 +89,7 @@ public class GuardImplBug extends CharacterImpl implements GuardService {
 			case LAD :{
 				if(nat_under==Cell.PLT || 
 				   nat_under==Cell.MTL || 
+				   nat_under==Cell.TLP ||
 				   getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null) {
 					if (Math.abs(target.getWdt()-getWdt()) > Math.abs(target.getHgt()-getHgt())){
 						//suivre l'axe  horizontal

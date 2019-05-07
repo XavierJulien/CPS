@@ -53,7 +53,8 @@ public class GuardContract extends CharacterContract implements GuardService {
 		if (getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD) {
 			if (getHgt() < getTarget().getHgt()) {
 				if ((getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && 
-					 getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
+					 getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL &&
+					 getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.TLP &&
 					 getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() == null) && 
 					(Math.abs(getTarget().getHgt()-getHgt()) > Math.abs(getTarget().getWdt()-getWdt()))) {
 					if (getBehaviour() != Command.UP)
@@ -78,6 +79,7 @@ public class GuardContract extends CharacterContract implements GuardService {
 			if (getHgt() > getTarget().getHgt()) {
 				if ((getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && 
 					 getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
+					 getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.TLP &&
 					 getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() == null) &&
 					 (Math.abs(getTarget().getHgt()-getHgt()) > Math.abs(getTarget().getWdt()-getWdt()))) {
 						if (getBehaviour() != Command.DOWN)
@@ -111,12 +113,14 @@ public class GuardContract extends CharacterContract implements GuardService {
 			(getTarget().getWdt() < getWdt()) && 
 			((getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && 
 			  getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
+			  getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.TLP &&
 			  getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() == null) && 
 			Math.abs(getTarget().getWdt()-getWdt()) > Math.abs(getTarget().getHgt()-getHgt()))) 
 			||
 			((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HOL || 
 			  (getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL && getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD) || 
 			  (getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT && getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD) || 
+			  (getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.TLP && getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD) || 
 			  (getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null && getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD)) && 
 			 getTarget().getWdt() < getWdt())) {
 				if (getBehaviour() != Command.LEFT)
@@ -148,12 +152,14 @@ public class GuardContract extends CharacterContract implements GuardService {
 		if ((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD && (getTarget().getWdt() > getWdt()) && 
 			((getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && 
 			  getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
+			  getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.TLP && 
 			  getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() == null) && 
 			 Math.abs(getTarget().getWdt()-getWdt()) > Math.abs(getTarget().getHgt()-getHgt())))
 			||
 			((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HOL || 
 			  getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL || 
-			  getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT || 
+			  getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT ||
+			  getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.TLP ||
 			  getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null) && 
 			getTarget().getWdt() > getWdt())) {
 				if (getBehaviour() != Command.RIGHT)
@@ -174,6 +180,7 @@ public class GuardContract extends CharacterContract implements GuardService {
 			getEnvi().getCellNature(getWdt(), getHgt()) == Cell.EMP) &&
 		   (getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL || 
 			getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT || 
+			getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.TLP ||
 			getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null) &&
 		   getTarget().getWdt() == getWdt()) {
 			if(getBehaviour() != Command.NEUTRAL) throw new InvariantError("Le bahaviour ne renvoie pas NEUTRAL alors qu'il devrait");
@@ -183,7 +190,8 @@ public class GuardContract extends CharacterContract implements GuardService {
 		 */
 		if(getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HDR) {
 			if(getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL || 
-			   getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT || 
+			   getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT ||
+			   getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.TLP ||
 			   getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null ||
 			   Math.abs(getTarget().getWdt()-getWdt()) > Math.abs(getTarget().getHgt()-getHgt())){
 				if (getTarget().getWdt() < getWdt()) {
@@ -200,7 +208,8 @@ public class GuardContract extends CharacterContract implements GuardService {
 				}
 			}
 			if(getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
-			   getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && 
+			   getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT &&
+			   getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.TLP &&
 			   getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() == null) {
 				if(Math.abs(getTarget().getWdt()-getWdt()) > Math.abs(getTarget().getHgt()-getHgt())){
 					if (getTarget().getWdt() < getWdt()) {
@@ -306,10 +315,12 @@ public class GuardContract extends CharacterContract implements GuardService {
 		//inv
 		checkInvariants();
 		//post
-		if (getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.PLT 
-			&& getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.MTL) {
-			if (getEnvi().getCellNature(wdt_atpre-1, hgt_atpre+1) != Cell.PLT 
-				&& getEnvi().getCellNature(wdt_atpre-1, hgt_atpre+1) != Cell.MTL) {
+		if (getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.PLT && 
+			getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.MTL &&
+			getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.TLP) {
+			if (getEnvi().getCellNature(wdt_atpre-1, hgt_atpre+1) != Cell.PLT && 
+				getEnvi().getCellNature(wdt_atpre-1, hgt_atpre+1) != Cell.MTL &&
+				getEnvi().getCellNature(wdt_atpre-1, hgt_atpre+1) != Cell.TLP) {
 				if (getEnvi().getCellContent(wdt_atpre-1, hgt_atpre+1).getGuard() == null) {
 					if (getWdt() != wdt_atpre-1 || getHgt() != hgt_atpre+1)
 						throw new PostconditionError("climbLeft : le guard n'a pas correctement grimpé à gauche");
@@ -333,10 +344,12 @@ public class GuardContract extends CharacterContract implements GuardService {
 		//inv
 		checkInvariants();
 		//post
-		if (getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.PLT 
-			&& getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.MTL) {
-			if (getEnvi().getCellNature(wdt_atpre+1, hgt_atpre+1) != Cell.PLT 
-				&& getEnvi().getCellNature(wdt_atpre+1, hgt_atpre+1) != Cell.MTL) {
+		if (getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.PLT && 
+			getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.MTL &&
+			getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.TLP) {
+			if (getEnvi().getCellNature(wdt_atpre+1, hgt_atpre+1) != Cell.PLT && 
+				getEnvi().getCellNature(wdt_atpre+1, hgt_atpre+1) != Cell.MTL &&
+				getEnvi().getCellNature(wdt_atpre+1, hgt_atpre+1) != Cell.TLP) {
 				if (getEnvi().getCellContent(wdt_atpre+1, hgt_atpre+1).getGuard() == null) {
 					if (getWdt() != wdt_atpre+1 || getHgt() != hgt_atpre+1)
 						throw new PostconditionError("climbRight : le guard n'a pas correctement grimpé à droite");
@@ -367,7 +380,7 @@ public class GuardContract extends CharacterContract implements GuardService {
 				edit.setNature(i, j, getEngine().getEnvi().getCellNature(i, j));
 			}
 		}
-		engine_atpre.init(edit, new Coord(getEngine().getPlayer().getWdt(),getEngine().getPlayer().getHgt()), guards_atpre_without_self, getEngine().getTreasures());
+		engine_atpre.init(edit, new Coord(getEngine().getPlayer().getWdt(),getEngine().getPlayer().getHgt()), guards_atpre_without_self, getEngine().getTreasures(),getEngine().getTeleporteurs());
 		PlayerService target_atpre = getTarget();
 		GuardService guard_atpre = new GuardImpl(getId());
 		for(int i = 0;i<engine_atpre.getGuards().size();i++) {

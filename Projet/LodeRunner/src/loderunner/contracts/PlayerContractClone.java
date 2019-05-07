@@ -4,6 +4,7 @@ import loderunner.data.Cell;
 import loderunner.data.Command;
 import loderunner.data.Coord;
 import loderunner.data.Hole;
+import loderunner.data.Teleporteur;
 import loderunner.errors.InvariantError;
 import loderunner.errors.PostconditionError;
 import loderunner.errors.PreconditionError;
@@ -56,22 +57,19 @@ public class PlayerContractClone extends CharacterContractClone implements Playe
 		if(getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.HDR && 
 		   getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.LAD && 
 		   getEnvi().getCellContent(wdt_capture, hgt_capture-1).getGuard() == null &&
-		  (getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.EMP || getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.HOL)) {
+		   (getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.EMP || 
+		   	getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.HOL)) {
 			command_capture = Command.DOWN;
 		}
 		PlayerContractClone clone;
 		if(getEngine().getEnvi().getCellNature(getWdt(), getHgt()) == Cell.EMP) {
 			clone = Creator.createPlayerContractClone(delegate.clonePlayer());
-			clone.getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(null);
-			clone.init(getEngine(), new Coord(getEngine().getPlayer().getWdt(),getEngine().getPlayer().getHgt()));
 			clone.getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(clone);
-
+			
 		}else {
 			clone = Creator.createPlayerContractClone(delegate.clonePlayer2());
-			clone.getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(null);
-			clone.init(getEngine(), new Coord(getEngine().getPlayer().getWdt(),getEngine().getPlayer().getHgt()));
 			clone.getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(clone);
-
+			
 		}
 		if(getEngine().getPlayer().getWdt() >= 1) {
 			digl_capture = getEngine().getEnvi().getCellNature(wdt_capture-1, hgt_capture-1);
@@ -84,9 +82,9 @@ public class PlayerContractClone extends CharacterContractClone implements Playe
 		getEngine().addCommand(command_capture);
 		if(getEngine().getEnvi().getCellNature(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()) != Cell.HDR &&
 		   getEngine().getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() == null &&
-		  (getEngine().getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.HOL || 
-		   getEngine().getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.EMP || 
-		   getEngine().getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.HDR)) {
+		   (getEngine().getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.HOL || 
+		   	getEngine().getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.EMP || 
+		   	getEngine().getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.HDR)) {
 				clone.goDown();
 		}else {
 			switch(command_capture) {
@@ -95,8 +93,21 @@ public class PlayerContractClone extends CharacterContractClone implements Playe
 				case RIGHT : {clone.goRight();break;}
 				case LEFT : {clone.goLeft();break;}
 				case NEUTRAL : break;
-				case DIGL : {clone.getDelegate().getEnvi().dig(clone.getWdt()-1, clone.getHgt()-1);clone.getDelegate().getEngine().getHoles().add(new Hole(clone.getWdt()-1, clone.getHgt()-1,0));break;}
-				case DIGR : {clone.getDelegate().getEnvi().dig(clone.getWdt()+1, clone.getHgt()-1);clone.getDelegate().getEngine().getHoles().add(new Hole(clone.getWdt()+1, clone.getHgt()-1,0));break;}
+				case DIGL : {clone.getDelegate().getEnvi().dig(clone.getWdt()-1, clone.getHgt()-1);clone.getEngine().getHoles().add(new Hole(clone.getWdt()-1, clone.getHgt()-1,0));break;}
+				case DIGR : {clone.getDelegate().getEnvi().dig(clone.getWdt()+1, clone.getHgt()-1);clone.getEngine().getHoles().add(new Hole(clone.getWdt()+1, clone.getHgt()-1,0));break;}
+			}
+		}
+		if(getEngine().getEnvi().getCellNature(clone.getWdt(), clone.getHgt()-1) == Cell.TLP) {
+			for(Teleporteur tel : getEngine().getTeleporteurs()) {
+				if(tel.getPosB().getX() == clone.getWdt() && tel.getPosB().getY() == clone.getHgt()-1) {
+					clone.getDelegate().setWdt(tel.getPosA().getX());
+					clone.getDelegate().setHgt(tel.getPosA().getY()+1);
+					break;
+				}
+				if(tel.getPosA().getX() == clone.getWdt() && tel.getPosA().getY() == clone.getHgt()-1) {
+					clone.getDelegate().setWdt(tel.getPosB().getX());
+					clone.getDelegate().setHgt(tel.getPosB().getY()+1);
+				}
 			}
 		}
 		
@@ -108,14 +119,15 @@ public class PlayerContractClone extends CharacterContractClone implements Playe
 		checkInvariants();
 		
 		//6.post
-		
-		
-		if(clone.getHgt() != getHgt() || clone.getWdt() != getWdt()) throw new PostconditionError("Player Step : le joueur n'as pas la bonne position");
+		if(clone.getHgt() != getHgt() || clone.getWdt() != getWdt()) {
+			throw new PostconditionError("Player Step : le joueur n'as pas la bonne position");
+		}
 		if (getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.LAD && 
 			getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.HDR) {
 			if (getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.MTL && 
 				getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.PLT && 
-				getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.LAD) {
+				getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.LAD &&
+				getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.TLP) {
 				if (getEnvi().getCellContent(wdt_capture, hgt_capture-1).getGuard() == null) {
 					if (getHgt() != hgt_capture-1) throw new PostconditionError("Player step : le joueur devrait être en chute libre");
 				}
@@ -124,8 +136,9 @@ public class PlayerContractClone extends CharacterContractClone implements Playe
 		if (command_capture == Command.DIGL) {
 			if(digl_capture == Cell.PLT && clone.getEngine().getEnvi().getCellNature(wdt_capture-1, hgt_capture-1) != Cell.HOL) throw new PostconditionError("player step : une case aurait du etre creuser a gauche coté contract");
 			if (getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.PLT|| 
-				getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL|| 
-				getEnvi().getCellContent(wdt_capture, hgt_capture-1) != null ) {
+				getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL||
+				getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.TLP|| 
+				getEnvi().getCellContent(wdt_capture, hgt_capture-1) != null) {
 				if (getEnvi().getCellNature(wdt_capture-1, hgt_capture) == Cell.EMP ||
 					getEnvi().getCellNature(wdt_capture-1, hgt_capture) == Cell.LAD ||
 					getEnvi().getCellNature(wdt_capture-1, hgt_capture) == Cell.HDR ||
@@ -139,9 +152,10 @@ public class PlayerContractClone extends CharacterContractClone implements Playe
 		}
 		if (command_capture == Command.DIGR) {
 			if(digr_capture == Cell.PLT && clone.getEngine().getEnvi().getCellNature(wdt_capture+1, hgt_capture-1) != Cell.HOL) throw new PostconditionError("player step : une case aurait du etre creuser a droite coté contract");
-			if (getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.PLT
-					|| getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL
-					|| getEnvi().getCellContent(wdt_capture, hgt_capture-1) != null ) {
+			if (getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.PLT || 
+				getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL ||
+				getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL || 
+				getEnvi().getCellContent(wdt_capture, hgt_capture-1) != null ) {
 				if (getEnvi().getCellNature(wdt_capture+1, hgt_capture) == Cell.EMP
 						||getEnvi().getCellNature(wdt_capture+1, hgt_capture) == Cell.LAD
 						||getEnvi().getCellNature(wdt_capture+1, hgt_capture) == Cell.HDR

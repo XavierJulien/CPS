@@ -26,6 +26,16 @@ public abstract class CharacterDecorator implements CharacterService{
 	public int getWdt() {
 		return delegate.getWdt();
 	}
+	
+	@Override
+	public void setHgt(int hgt) {
+		delegate.setHgt(hgt);
+	}
+
+	@Override
+	public void setWdt(int wdt) {
+		delegate.setWdt(wdt);
+	}
 
 	@Override
 	public void init(ScreenService s, int x, int y, int id) {

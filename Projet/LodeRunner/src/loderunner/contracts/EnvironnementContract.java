@@ -17,11 +17,6 @@ public class EnvironnementContract extends ScreenContract implements Environneme
 		super(delegate);
 		this.delegate = delegate;
 	}
-
-	/*@Override
-	protected EditableScreenService getDelegate() {
-		return (EditableScreenService) super.getDelegate();
-	}*/
 	
 	public void checkInvariants() {
 		for(int i=0;i<getWidth();i++) {
@@ -29,12 +24,12 @@ public class EnvironnementContract extends ScreenContract implements Environneme
 				CharacterService c1 = getCellContent(i, j).getCharacter();
 				CharacterService c2 = getCellContent(i, j).getCharacter();
 				if(c1 != c2) throw new InvariantError(" deux client extraits de la même case sont différents");
-				if(getCellNature(i, j) == Cell.MTL || getCellNature(i, j) == Cell.PLT) {
-					if(getCellContent(i, j).getCharacter() != null || getCellContent(i, j).getItem() != null) throw new InvariantError(" une case qui est un Cell.MTL ou Cell.PLT à son contenu qui est différent de null");
+				if(getCellNature(i, j) == Cell.MTL || getCellNature(i, j) == Cell.PLT || getCellNature(i, j) == Cell.PLT) {
+					if(getCellContent(i, j).getCharacter() != null || getCellContent(i, j).getItem() != null) throw new InvariantError(" une case qui est un Cell.MTL ou Cell.PLT ou Cell.TLP à son contenu qui est différent de null");
 				}
 				if(getCellContent(i, j).getItem() != null) {//rajouter si ya personne dedans
-					if(getCellNature(i, j) != Cell.EMP && (getCellNature(i, j-1) != Cell.MTL || getCellNature(i, j-1) != Cell.PLT)) {
-						throw new InvariantError("la cellule contient un trésor mais pourtant la case est différent de Cell.EMP et la case à height-1 est différente de Cell.MTL ou Cell.PLT");
+					if(getCellNature(i, j) != Cell.EMP && (getCellNature(i, j-1) != Cell.MTL || getCellNature(i, j-1) != Cell.PLT || getCellNature(i, j) == Cell.TLP)) {
+						throw new InvariantError("la cellule contient un trésor mais pourtant la case est différent de Cell.EMP et la case à height-1 est différente de Cell.MTL ou Cell.PLT ou Cell.TLP");
 					}
 				}
 			}

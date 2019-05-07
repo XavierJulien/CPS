@@ -13,6 +13,7 @@ import loderunner.data.Coord;
 import loderunner.data.Item;
 import loderunner.data.ItemType;
 import loderunner.data.Map;
+import loderunner.data.Teleporteur;
 import loderunner.services.EditableScreenService;
 
 public class MapBuilder {
@@ -22,6 +23,7 @@ public class MapBuilder {
 	ArrayList<Item> treasures = new ArrayList<>();
 	Coord player;
 	ArrayList<Coord> guards = new ArrayList<>();
+	ArrayList<Teleporteur> teleporteurs = new ArrayList<>();
 	
 	public MapBuilder(EditableScreenService delegate) {
 		this.edit = new EditableScreenContract(delegate);
@@ -66,6 +68,14 @@ public class MapBuilder {
 				String[] Coord_split = t.split(",");
 				guards.add(new Coord(Integer.parseInt(Coord_split[0]),Integer.parseInt(Coord_split[1])));
 			}
+			line = br.readLine();
+			String[] tp_split= line.split(";");
+			for(int i = 0;i<tp_split.length;i=i+2) {
+				String[] Coord_splitA = tp_split[i].split(",");
+				String[] Coord_splitB = tp_split[i+1].split(",");
+				teleporteurs.add(new Teleporteur(new Coord(Integer.parseInt(Coord_splitA[0]),Integer.parseInt(Coord_splitA[1])),
+												 new Coord(Integer.parseInt(Coord_splitB[0]),Integer.parseInt(Coord_splitB[1]))));
+			}
 			br.close();
 			fr.close();
 		} catch (FileNotFoundException e) {
@@ -74,10 +84,10 @@ public class MapBuilder {
 			e.printStackTrace();
 		}
 		System.out.println("fin build map");
-		return new Map(edit,player,treasures,guards);
+		return new Map(edit,player,treasures,guards,teleporteurs);
 	}
 	
-	public EditableScreenService buildMapTestPlayer(String filename) {
+	public Map buildMapTeleporteurPlayer(String filename) {
 		try {
 			FileReader fr = new FileReader(new File(filename));
 			BufferedReader br = new BufferedReader(fr);
@@ -101,6 +111,29 @@ public class MapBuilder {
 					}
 				}
 			}
+			line = br.readLine();
+			String[] player_split= line.split(" ");
+			player = new Coord(Integer.parseInt(player_split[0]),Integer.parseInt(player_split[1]));
+			line = br.readLine();
+			String[] treasures_split= line.split(";");
+			for(String t : treasures_split) {
+				String[] Coord_split = t.split(",");
+				treasures.add(new Item(Integer.parseInt(Coord_split[0]),Integer.parseInt(Coord_split[1]),ItemType.Treasure));
+			}
+			line = br.readLine();
+			String[] guards_split= line.split(";");
+			for(String t : guards_split) {
+				String[] Coord_split = t.split(",");
+				guards.add(new Coord(Integer.parseInt(Coord_split[0]),Integer.parseInt(Coord_split[1])));
+			}
+			line = br.readLine();
+			String[] tp_split= line.split(";");
+			for(int i = 0;i<tp_split.length;i=i+2) {
+				String[] Coord_splitA = tp_split[i].split(",");
+				String[] Coord_splitB = tp_split[i+1].split(",");
+				teleporteurs.add(new Teleporteur(new Coord(Integer.parseInt(Coord_splitA[0]),Integer.parseInt(Coord_splitA[1])),
+												 new Coord(Integer.parseInt(Coord_splitB[0]),Integer.parseInt(Coord_splitB[1]))));
+			}
 			br.close();
 			fr.close();
 		} catch (FileNotFoundException e) {
@@ -108,6 +141,6 @@ public class MapBuilder {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return edit;
+		return new Map(edit,player,treasures,guards,teleporteurs);
 	}
 }

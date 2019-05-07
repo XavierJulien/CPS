@@ -7,7 +7,7 @@ public class EditableScreenImplBug extends ScreenImpl implements EditableScreenS
 
 	
 	@Override
-	public boolean isPlayable() {
+	public boolean isPlayable() {//bug
 		return true;
 	}
 

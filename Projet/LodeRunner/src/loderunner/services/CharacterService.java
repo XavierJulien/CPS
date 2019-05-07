@@ -23,6 +23,8 @@ public interface CharacterService {
 		
 	
 	/* Operators */
+	public void setWdt(int wdt);
+	public void setHgt(int hgt);
 	/**
 	 * post : getHgt() = getHgt()@pre
 	 *		  getWdt()@pre == 0 \implies getWdt() == getWdt()@pre

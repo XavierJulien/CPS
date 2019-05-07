@@ -8,6 +8,7 @@ import loderunner.data.Coord;
 import loderunner.data.GameState;
 import loderunner.data.Hole;
 import loderunner.data.Item;
+import loderunner.data.Teleporteur;
 
 public interface EngineService {
 	/* Observators */
@@ -21,25 +22,28 @@ public interface EngineService {
 	public int getScore();
 	public ArrayList<Coord> getGuardsCoord();
 	public ArrayList<Command> getCommands();
+	public ArrayList<Teleporteur> getTeleporteurs();
 	
 	/* Constructors */
 	/**
-	 * pre : init(e,p,g,t) require 
+	 * pre : init(e,p,g,t,tel) require 
 	 * 	e.isPlayable() && 
-	 * 	e.getCellNature(p.getX(),p.getY()) == EMP &&
-	 *  \forall guard : Guard \in g 
-	 *  	e.getCellNature(guard.getX(),guard.getY()) == EMP &&
 	 *  \forall treasure : Treasure \in t 
 	 *  	e.getCellNature(treasure.getX(),treasure.getY()) == EMP &&
 	 *  	e.getCellNature(treasure.getX(),treasure.getY()-1) \in {PLT,MTL}
 	 *  	&& \forall t : Treasure \in t \without treasure
 	 *  		t.getX() != treasure.getX() || t.getY() != treasure.getY()
-	 *  
+	 *  \forall teleporteur : Teleporteur \in tel
+	 *  	e.getCellNature(teleporteur.getPosA().getX(),teleporteur.getPosA().getY()) == PLT &&
+	 *  	e.getCellNature(teleporteur.getPosB().getX(),teleporteur.getPosB().getY()) == PLT &&
+	 *  	e.getCellContent(teleporteur.getPosA().getX(),teleporteur.getPosA().getY()).getCharacter() == null &&
+	 *  	e.getCellContent(teleporteur.getPosB().getX(),teleporteur.getPosB().getY()).getCharacter() == null
 	 */
 	public void init(EditableScreenService e,
 					 Coord player,
 					 List<Coord> guards,
-					 List<Item> treasures);
+					 List<Item> treasures,
+					 List<Teleporteur> teleporteurs);
 	/* Invariant */
 	/**
 	 *pre : step() require c : CellContent \def getEnvi().getCellContent(getPlayer.getWdt(),getPlayer().getHgt())

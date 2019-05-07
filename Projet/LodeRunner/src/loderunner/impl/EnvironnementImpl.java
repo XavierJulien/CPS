@@ -49,6 +49,7 @@ public class EnvironnementImpl extends ScreenImpl implements EnvironnementServic
 			case MTL : return "▩";
 			case LAD : return "H";
 			case HDR : return "─";
+			case TLP : return "▣";
 		}
 		return null;
 	}

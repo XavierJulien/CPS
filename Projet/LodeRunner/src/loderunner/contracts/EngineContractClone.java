@@ -11,6 +11,7 @@ import loderunner.data.Coord;
 import loderunner.data.GameState;
 import loderunner.data.Hole;
 import loderunner.data.ItemType;
+import loderunner.data.Teleporteur;
 import loderunner.decorators.EngineDecorator;
 import loderunner.errors.InvariantError;
 import loderunner.errors.PostconditionError;
@@ -112,39 +113,18 @@ public class EngineContractClone extends EngineDecorator{
 	}
 	
 	@Override
-	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Item> treasures) {
+	public ArrayList<Teleporteur> getTeleporteurs() {
 		//1.pre
-		//if(!e.isPlayable()) throw new PreconditionError("init : l'ecran n'est pas d�fini comme jouable");
 		//2.checkInvariants
 		//none
-		//3.captures
-		//none
 		//4.run
-		super.init(e, player, guards, treasures);
-		//5.checkInvariants
-		checkInvariants();
-		//6.post
-		// tous les �l�ments ont �t� correctement initialis�s sur les bonnes positions
-		// � revoir pas vraiment tr�s bon
-		for(int i = 0;i<getEnvi().getWidth();i++) {
-			for(int j = 0;j<getEnvi().getHeight();j++) {
-				if(i == getPlayer().getWdt() && j == getPlayer().getHgt()) {
-					if(getEnvi().getCellContent(i, j).getCharacter() != getPlayer()) {
-						throw new PostconditionError("init : le player � mal �t� initialis�");	
-					}
-				}
-				for(GuardService g : getGuards()) {
-					if(i == g.getWdt() && j == g.getHgt()) {
-						if(!getEnvi().getCellContent(i, j).getGuard().equals(g)) throw new PostconditionError("init : un guard � mal �t� initialis�");	
-					}
-				}
-				for(Item treasure : getTreasures()) {
-					if(i == treasure.getCol() && j == treasure.getHgt()) {
-						if(getEnvi().getCellContent(i, j).getItem().getNature() != ItemType.Treasure) throw new PostconditionError("init : un tr�sor � mal �t� initialis�");	
-					}
-				}
-			}
-		}
+		return super.getTeleporteurs();
+	}
+	
+	@Override
+	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Item> treasures,List<Teleporteur> teleporteurs) {
+		//1.pre
+		//if(!e.isPlayable()) throw new PreconditionError("init : l'ecran n'est pas d�fini comme jouable");
 		for(Item treasure : treasures) {
 			if(treasure.getCol() == player.getX() && treasure.getHgt() == player.getY()) throw new PreconditionError("un tr�sor est sur la m�me case que le player");
 			if(e.getCellNature(treasure.getCol(), treasure.getHgt()) != Cell.EMP &&
@@ -171,6 +151,40 @@ public class EngineContractClone extends EngineDecorator{
 				if(guard.getX() == treasure.getCol() && guard.getY() == treasure.getHgt()) throw new PreconditionError("un guard est sur la m�me case qu'un tr�sor");
 			}
 		}*/
+		/*for(Teleporteur teleporteur : teleporteurs) {
+			if(e.getCellNature(teleporteur.getPosA().getX(), teleporteur.getPosA().getY()) != Cell.PLT && 
+			   e.getCellNature(teleporteur.getPosB().getX(), teleporteur.getPosB().getY()) != Cell.PLT) throw new PreconditionError("un teleporteur n'est pas init dans une case PLT");
+		}*/
+		//2.checkInvariants
+		//none
+		//3.captures
+		//none
+		//4.run
+		super.init(e, player, guards, treasures,teleporteurs);
+		//5.checkInvariants
+		checkInvariants();
+		//6.post
+		// tous les �l�ments ont �t� correctement initialis�s sur les bonnes positions
+		// � revoir pas vraiment tr�s bon
+		for(int i = 0;i<getEnvi().getWidth();i++) {
+			for(int j = 0;j<getEnvi().getHeight();j++) {
+				if(i == getPlayer().getWdt() && j == getPlayer().getHgt()) {
+					if(getEnvi().getCellContent(i, j).getCharacter() != getPlayer()) {
+						throw new PostconditionError("init : le player � mal �t� initialis�");	
+					}
+				}
+				for(GuardService g : getGuards()) {
+					if(i == g.getWdt() && j == g.getHgt()) {
+						if(!getEnvi().getCellContent(i, j).getGuard().equals(g)) throw new PostconditionError("init : un guard � mal �t� initialis�");	
+					}
+				}
+				for(Item treasure : getTreasures()) {
+					if(i == treasure.getCol() && j == treasure.getHgt()) {
+						if(getEnvi().getCellContent(i, j).getItem().getNature() != ItemType.Treasure) throw new PostconditionError("init : un tr�sor � mal �t� initialis�");	
+					}
+				}
+			}
+		}
 	}
 
 	@Override

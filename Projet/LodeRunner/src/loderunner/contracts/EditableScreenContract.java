@@ -1,5 +1,6 @@
 package loderunner.contracts;
 
+
 import loderunner.data.Cell;
 import loderunner.errors.InvariantError;
 import loderunner.errors.PostconditionError;
@@ -16,15 +17,19 @@ public class EditableScreenContract extends ScreenContract implements EditableSc
 	}
 	
 	public void checkInvariants() {
-		for(int i = 0;i<getWidth();i++) {
-			for(int j = 0;j<getHeight();j++) {
-				if(getCellNature(i,j) == Cell.HOL) 
-					throw new InvariantError("Une case est Cell.HOL");
-			}
+		boolean ok_es = true;
+		for (int i=0;i<getWidth();i++) {
+			for (int j=0; j<getHeight();j++) {
+				if (j==0) {
+					if (getCellNature(i, j) != Cell.MTL)
+						ok_es = false;
+				}else {
+					if (getCellNature(i, j) == Cell.HOL)
+						ok_es = false;
+				}
+			}	
 		}
-		/*for(int i = 0;i<getWidth();i++) { //vision défensive en avance lors du set de la premiere case a MTL
-			if(getCellNature(i, 0) != Cell.MTL) throw new InvariantError("Une case en ("+i+",0) est différent de Cell.MTL");
-		}*/
+		if(isPlayable() != ok_es) throw new InvariantError("Invariants : IsPlayable pose problème car est faux");
 	}
 	
 	@Override

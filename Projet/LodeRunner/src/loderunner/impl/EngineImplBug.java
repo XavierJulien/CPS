@@ -6,12 +6,14 @@ import java.util.List;
 import loderunner.contracts.EnvironnementContract;
 import loderunner.contracts.GuardContract;
 import loderunner.contracts.PlayerContract;
+import loderunner.data.Cell;
 import loderunner.data.Command;
 import loderunner.data.Coord;
 import loderunner.data.GameState;
 import loderunner.data.Hole;
 import loderunner.data.Item;
 import loderunner.data.ItemType;
+import loderunner.data.Teleporteur;
 import loderunner.services.EditableScreenService;
 import loderunner.services.EngineService;
 import loderunner.services.EnvironnementService;
@@ -30,6 +32,8 @@ public class EngineImplBug implements EngineService{
 	protected ArrayList<Hole> holes;
 	protected int score;
 	
+	protected ArrayList<Teleporteur> teleporteurs;
+	
 	@Override
 	public EnvironnementService getEnvi() {
 		
@@ -40,10 +44,6 @@ public class EngineImplBug implements EngineService{
 	public PlayerService getPlayer() {
 		
 		return player;
-	}
-
-	public void setPlayer(PlayerService player) {
-		this.player = player;
 	}
 	
 	@Override
@@ -85,8 +85,16 @@ public class EngineImplBug implements EngineService{
 	}
 	
 	@Override
-	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Item> treasures) {
+	public ArrayList<Teleporteur> getTeleporteurs() {
+		return teleporteurs;
+	}
+	
+	@Override
+	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Item> treasures,List<Teleporteur> teleporteurs) {
 		envi = new EnvironnementContract(new EnvironnementImpl());
+		for(Teleporteur t : teleporteurs) {
+			e.setNature(t.getPosA().getX(), t.getPosA().getY(), Cell.TLP);
+		}
 		envi.init(e);
 		
 		this.guards = new ArrayList<>();
@@ -94,6 +102,7 @@ public class EngineImplBug implements EngineService{
 		this.status = GameState.Playing;
 		this.treasures = (ArrayList<Item>) treasures;
 		this.player = new PlayerContract(new PlayerImpl());
+		this.teleporteurs = (ArrayList<Teleporteur>) teleporteurs;
 		commands = new ArrayList<>();
 		holes = new ArrayList<>();
 		envi.getCellContent(player.getX(), player.getY()).setCharacter(this.player);

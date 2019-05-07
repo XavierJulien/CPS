@@ -4,6 +4,7 @@ import loderunner.data.Cell;
 import loderunner.data.Command;
 import loderunner.data.Coord;
 import loderunner.data.Hole;
+import loderunner.data.Teleporteur;
 import loderunner.errors.InvariantError;
 import loderunner.errors.PostconditionError;
 import loderunner.errors.PreconditionError;
@@ -28,7 +29,7 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		super.checkInvariants();
 		if(getEnvi().getCellContent(getWdt(), getHgt()).getCharacter() != null) {
 			if(!getEnvi().getCellContent(getWdt(), getHgt()).getCharacter().equals(this)) {
-				throw new InvariantError("le joueur dans la case de notre joueur n'est pas lui-m�me");				
+				throw new InvariantError("le joueur dans la case de notre joueur n'est pas lui-même");				
 			}
 		}
 	}
@@ -56,7 +57,8 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		if(getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.HDR && 
 		   getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.LAD && 
 		   getEnvi().getCellContent(wdt_capture, hgt_capture-1).getGuard() == null &&
-		  (getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.EMP || getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.HOL)) {
+		   (getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.EMP || 
+		   	getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.HOL)) {
 			command_capture = Command.DOWN;
 		}
 		PlayerContractClone clone;
@@ -80,9 +82,9 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		getEngine().addCommand(command_capture);
 		if(getEngine().getEnvi().getCellNature(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()) != Cell.HDR &&
 		   getEngine().getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() == null &&
-		  (getEngine().getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.HOL || 
-		   getEngine().getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.EMP || 
-		   getEngine().getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.HDR)) {
+		   (getEngine().getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.HOL || 
+		   	getEngine().getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.EMP || 
+		   	getEngine().getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.HDR)) {
 				clone.goDown();
 		}else {
 			switch(command_capture) {
@@ -95,6 +97,19 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 				case DIGR : {clone.getDelegate().getEnvi().dig(clone.getWdt()+1, clone.getHgt()-1);clone.getEngine().getHoles().add(new Hole(clone.getWdt()+1, clone.getHgt()-1,0));break;}
 			}
 		}
+		if(getEngine().getEnvi().getCellNature(clone.getWdt(), clone.getHgt()-1) == Cell.TLP) {
+			for(Teleporteur tel : getEngine().getTeleporteurs()) {
+				if(tel.getPosB().getX() == clone.getWdt() && tel.getPosB().getY() == clone.getHgt()-1) {
+					clone.getDelegate().setWdt(tel.getPosA().getX());
+					clone.getDelegate().setHgt(tel.getPosA().getY()+1);
+					break;
+				}
+				if(tel.getPosA().getX() == clone.getWdt() && tel.getPosA().getY() == clone.getHgt()-1) {
+					clone.getDelegate().setWdt(tel.getPosB().getX());
+					clone.getDelegate().setHgt(tel.getPosB().getY()+1);
+				}
+			}
+		}
 		
 		getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(null);
 		delegate.step();
@@ -104,17 +119,17 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		checkInvariants();
 		
 		//6.post
-		
 		if(clone.getHgt() != getHgt() || clone.getWdt() != getWdt()) {
-			System.out.println(clone.getWdt()+","+clone.getHgt());
-			System.out.println(getWdt()+","+getHgt());
+			System.out.println("clone : "+clone.getWdt()+","+clone.getHgt());
+			System.out.println("joueur : "+getWdt()+","+getHgt());
 			throw new PostconditionError("Player Step : le joueur n'as pas la bonne position");
 		}
 		if (getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.LAD && 
 			getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.HDR) {
 			if (getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.MTL && 
 				getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.PLT && 
-				getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.LAD) {
+				getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.LAD &&
+				getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.TLP) {
 				if (getEnvi().getCellContent(wdt_capture, hgt_capture-1).getGuard() == null) {
 					if (getHgt() != hgt_capture-1) throw new PostconditionError("Player step : le joueur devrait être en chute libre");
 				}
@@ -123,7 +138,8 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		if (command_capture == Command.DIGL) {
 			if(digl_capture == Cell.PLT && clone.getEngine().getEnvi().getCellNature(wdt_capture-1, hgt_capture-1) != Cell.HOL) throw new PostconditionError("player step : une case aurait du etre creuser a gauche coté contract");
 			if (getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.PLT|| 
-				getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL|| 
+				getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL||
+				getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.TLP|| 
 				getEnvi().getCellContent(wdt_capture, hgt_capture-1) != null) {
 				if (getEnvi().getCellNature(wdt_capture-1, hgt_capture) == Cell.EMP ||
 					getEnvi().getCellNature(wdt_capture-1, hgt_capture) == Cell.LAD ||
@@ -138,9 +154,10 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		}
 		if (command_capture == Command.DIGR) {
 			if(digr_capture == Cell.PLT && clone.getEngine().getEnvi().getCellNature(wdt_capture+1, hgt_capture-1) != Cell.HOL) throw new PostconditionError("player step : une case aurait du etre creuser a droite coté contract");
-			if (getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.PLT
-					|| getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL
-					|| getEnvi().getCellContent(wdt_capture, hgt_capture-1) != null ) {
+			if (getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.PLT || 
+				getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL ||
+				getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL || 
+				getEnvi().getCellContent(wdt_capture, hgt_capture-1) != null ) {
 				if (getEnvi().getCellNature(wdt_capture+1, hgt_capture) == Cell.EMP
 						||getEnvi().getCellNature(wdt_capture+1, hgt_capture) == Cell.LAD
 						||getEnvi().getCellNature(wdt_capture+1, hgt_capture) == Cell.HDR

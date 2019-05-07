@@ -7,4 +7,5 @@ public enum Cell {
 	MTL,   	// case metal(non-diggable)
 	LAD,    // case ladder
 	HDR,    // case handrope
+	TLP	    // case téléporteur
 }

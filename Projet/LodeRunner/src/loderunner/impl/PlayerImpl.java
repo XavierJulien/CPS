@@ -6,6 +6,7 @@ import loderunner.data.Cell;
 import loderunner.data.Command;
 import loderunner.data.Coord;
 import loderunner.data.Hole;
+import loderunner.data.Teleporteur;
 import loderunner.services.EngineService;
 import loderunner.services.PlayerService;
 
@@ -34,6 +35,19 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 			    engine.getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.HDR) &&
 				engine.getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() == null) {
 				super.goDown();
+				if(getEngine().getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.TLP) {
+					for(Teleporteur tel : getEngine().getTeleporteurs()) {
+						if(tel.getPosB().getX() == getWdt() && tel.getPosB().getY() == getHgt()-1) {
+							setWdt(tel.getPosA().getX());
+							setHgt(tel.getPosA().getY()+1);
+							break;
+						}
+						if(tel.getPosA().getX() == getWdt() && tel.getPosA().getY() == getHgt()-1) {
+							setWdt(tel.getPosB().getX());
+							setHgt(tel.getPosB().getY()+1);
+						}
+					}
+				}
 				getEnvi().getCellContent(engine.getPlayer().getWdt(), engine.getPlayer().getHgt()).setCharacter(this);
 				return;
 			}
@@ -63,8 +77,22 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 			case NEUTRAL :
 				break;
 		}
-		getEnvi().getCellContent(engine.getPlayer().getWdt(), engine.getPlayer().getHgt()).setCharacter(this);
-		
+		System.out.println("pos avant check teleporteur :"+getWdt()+","+getHgt());
+		if(getEngine().getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.TLP) {
+			for(Teleporteur tel : getEngine().getTeleporteurs()) {
+				if(tel.getPosB().getX() == getWdt() && tel.getPosB().getY() == getHgt()-1) {
+					setWdt(tel.getPosA().getX());
+					setHgt(tel.getPosA().getY()+1);
+					break;
+				}
+				if(tel.getPosA().getX() == getWdt() && tel.getPosA().getY() == getHgt()-1) {
+					setWdt(tel.getPosB().getX());
+					setHgt(tel.getPosB().getY()+1);
+				}
+			}
+		}
+		System.out.println("pos apres check teleporteur :"+getWdt()+","+getHgt());
+		getEnvi().getCellContent(getWdt(),getHgt()).setCharacter(this);
 	}
 	
 	@Override
@@ -84,7 +112,7 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 				edit.setNature(i, j, engine.getEnvi().getCellNature(i, j));
 			}
 		}
-		engContract.init(edit, new Coord(getWdt(), getHgt()), getEngine().getGuardsCoord(), getEngine().getTreasures());
+		engContract.init(edit, new Coord(getWdt(), getHgt()), getEngine().getGuardsCoord(), getEngine().getTreasures(),getEngine().getTeleporteurs());
 		p.init(engContract, new Coord(this.getWdt(), this.getHgt()));
 		return p;
 	}
@@ -101,7 +129,7 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 				edit.setNature(i, j, getEngine().getEnvi().getCellNature(i, j));
 			}
 		}
-		engContract.init(edit, new Coord(getWdt(), getHgt()), getEngine().getGuardsCoord(), getEngine().getTreasures());
+		engContract.init(edit, new Coord(getWdt(), getHgt()), getEngine().getGuardsCoord(), getEngine().getTreasures(),getEngine().getTeleporteurs());
 		p.init(engContract, new Coord(this.getWdt(), this.getHgt()));
 		return p;
 	}

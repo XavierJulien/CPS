@@ -1,11 +1,16 @@
 package loderunner.contracts;
 
+import java.util.ArrayList;
+
 import loderunner.data.Cell;
 import loderunner.data.Command;
+import loderunner.data.Coord;
 import loderunner.data.Item;
 import loderunner.errors.InvariantError;
 import loderunner.errors.PostconditionError;
 import loderunner.errors.PreconditionError;
+import loderunner.impl.EditableScreenImpl;
+import loderunner.impl.EngineImplClone;
 import loderunner.impl.GuardImpl;
 import loderunner.services.EngineService;
 import loderunner.services.GuardService;
@@ -44,7 +49,8 @@ public class GuardContractClone extends CharacterContract implements GuardServic
 		if (getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD) {
 			if (getHgt() < getTarget().getHgt()) {
 				if ((getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && 
-					 getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
+					 getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL &&
+					 getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.TLP &&
 					 getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() == null) && 
 					(Math.abs(getTarget().getHgt()-getHgt()) > Math.abs(getTarget().getWdt()-getWdt()))) {
 					if (getBehaviour() != Command.UP)
@@ -69,6 +75,7 @@ public class GuardContractClone extends CharacterContract implements GuardServic
 			if (getHgt() > getTarget().getHgt()) {
 				if ((getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && 
 					 getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
+					 getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.TLP &&
 					 getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() == null) &&
 					 (Math.abs(getTarget().getHgt()-getHgt()) > Math.abs(getTarget().getWdt()-getWdt()))) {
 						if (getBehaviour() != Command.DOWN)
@@ -102,13 +109,15 @@ public class GuardContractClone extends CharacterContract implements GuardServic
 			(getTarget().getWdt() < getWdt()) && 
 			((getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && 
 			  getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
+			  getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.TLP &&
 			  getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() == null) && 
 			Math.abs(getTarget().getWdt()-getWdt()) > Math.abs(getTarget().getHgt()-getHgt()))) 
 			||
 			((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HOL || 
-			  getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL || 
-			  getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT || 
-			  getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null) && 
+			  (getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL && getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD) || 
+			  (getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT && getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD) || 
+			  (getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.TLP && getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD) || 
+			  (getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null && getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD)) && 
 			 getTarget().getWdt() < getWdt())) {
 				if (getBehaviour() != Command.LEFT)
 					throw new InvariantError("Le behaviour ne renvoie pas LEFT alors qu'il devrait");
@@ -139,12 +148,14 @@ public class GuardContractClone extends CharacterContract implements GuardServic
 		if ((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD && (getTarget().getWdt() > getWdt()) && 
 			((getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && 
 			  getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
+			  getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.TLP && 
 			  getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() == null) && 
 			 Math.abs(getTarget().getWdt()-getWdt()) > Math.abs(getTarget().getHgt()-getHgt())))
 			||
 			((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HOL || 
 			  getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL || 
-			  getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT || 
+			  getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT ||
+			  getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.TLP ||
 			  getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null) && 
 			getTarget().getWdt() > getWdt())) {
 				if (getBehaviour() != Command.RIGHT)
@@ -161,11 +172,11 @@ public class GuardContractClone extends CharacterContract implements GuardServic
 		 * 		
 		 * 		implies getBehaviour() == NEUTRAL
 		**/
-		if((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HOL || 
-			getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HDR ||
+		if((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HDR ||
 			getEnvi().getCellNature(getWdt(), getHgt()) == Cell.EMP) &&
 		   (getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL || 
 			getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT || 
+			getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.TLP ||
 			getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null) &&
 		   getTarget().getWdt() == getWdt()) {
 			if(getBehaviour() != Command.NEUTRAL) throw new InvariantError("Le bahaviour ne renvoie pas NEUTRAL alors qu'il devrait");
@@ -175,7 +186,8 @@ public class GuardContractClone extends CharacterContract implements GuardServic
 		 */
 		if(getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HDR) {
 			if(getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL || 
-			   getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT || 
+			   getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT ||
+			   getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.TLP ||
 			   getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null ||
 			   Math.abs(getTarget().getWdt()-getWdt()) > Math.abs(getTarget().getHgt()-getHgt())){
 				if (getTarget().getWdt() < getWdt()) {
@@ -192,7 +204,8 @@ public class GuardContractClone extends CharacterContract implements GuardServic
 				}
 			}
 			if(getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
-			   getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && 
+			   getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT &&
+			   getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.TLP &&
 			   getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() == null) {
 				if(Math.abs(getTarget().getWdt()-getWdt()) > Math.abs(getTarget().getHgt()-getHgt())){
 					if (getTarget().getWdt() < getWdt()) {
@@ -297,11 +310,13 @@ public class GuardContractClone extends CharacterContract implements GuardServic
 		//inv
 		checkInvariants();
 		//post
-		if (getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.PLT 
-			&& getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.MTL) {
-			if (getEnvi().getCellNature(wdt_atpre-1, hgt_atpre+1) != Cell.PLT 
-				&& getEnvi().getCellNature(wdt_atpre-1, hgt_atpre+1) != Cell.MTL) {
-				if (getEnvi().getCellContent(wdt_atpre-1, hgt_atpre+1).getCharacter() == null) {
+		if (getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.PLT && 
+			getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.MTL &&
+			getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.TLP) {
+			if (getEnvi().getCellNature(wdt_atpre-1, hgt_atpre+1) != Cell.PLT && 
+				getEnvi().getCellNature(wdt_atpre-1, hgt_atpre+1) != Cell.MTL &&
+				getEnvi().getCellNature(wdt_atpre-1, hgt_atpre+1) != Cell.TLP) {
+				if (getEnvi().getCellContent(wdt_atpre-1, hgt_atpre+1).getGuard() == null) {
 					if (getWdt() != wdt_atpre-1 || getHgt() != hgt_atpre+1)
 						throw new PostconditionError("climbLeft : le guard n'a pas correctement grimpé à gauche");
 				}
@@ -324,11 +339,13 @@ public class GuardContractClone extends CharacterContract implements GuardServic
 		//inv
 		checkInvariants();
 		//post
-		if (getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.PLT 
-			&& getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.MTL) {
-			if (getEnvi().getCellNature(wdt_atpre+1, hgt_atpre+1) != Cell.PLT 
-				&& getEnvi().getCellNature(wdt_atpre+1, hgt_atpre+1) != Cell.MTL) {
-				if (getEnvi().getCellContent(wdt_atpre+1, hgt_atpre+1).getCharacter() == null) {
+		if (getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.PLT && 
+			getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.MTL &&
+			getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.TLP) {
+			if (getEnvi().getCellNature(wdt_atpre+1, hgt_atpre+1) != Cell.PLT && 
+				getEnvi().getCellNature(wdt_atpre+1, hgt_atpre+1) != Cell.MTL &&
+				getEnvi().getCellNature(wdt_atpre+1, hgt_atpre+1) != Cell.TLP) {
+				if (getEnvi().getCellContent(wdt_atpre+1, hgt_atpre+1).getGuard() == null) {
 					if (getWdt() != wdt_atpre+1 || getHgt() != hgt_atpre+1)
 						throw new PostconditionError("climbRight : le guard n'a pas correctement grimpé à droite");
 				}
@@ -343,22 +360,40 @@ public class GuardContractClone extends CharacterContract implements GuardServic
 		//inv
 		checkInvariants();
 		//captures
-		GuardContractClone capture_self = this;
-		EngineService engine_atpre = getEngine();
+		EngineService engine_atpre = new EngineImplClone();
+		ArrayList<Coord> guards_atpre_without_self = new ArrayList<>();
+		for(int i = 0;i<getEngine().getGuards().size();i++) {
+			if(getEngine().getGuards().get(i).getId() != getId()) {
+				guards_atpre_without_self.add(new Coord(getEngine().getGuards().get(i).getWdt(),getEngine().getGuards().get(i).getHgt()));
+			}
+		}
+		EditableScreenImpl edit = new EditableScreenImpl();
+		edit.init(getEngine().getEnvi().getWidth(), getEngine().getEnvi().getHeight());
+		for(int i  = 0;i<edit.getWidth();i++) {
+			for(int j = 0;j<edit.getHeight();j++) {
+				edit.setNature(i, j, getEngine().getEnvi().getCellNature(i, j));
+			}
+		}
+		engine_atpre.init(edit, new Coord(getEngine().getPlayer().getWdt(),getEngine().getPlayer().getHgt()), guards_atpre_without_self, getEngine().getTreasures(),getEngine().getTeleporteurs());
 		PlayerService target_atpre = getTarget();
 		GuardService guard_atpre = new GuardImpl(getId());
+		for(int i = 0;i<engine_atpre.getGuards().size();i++) {
+			if(engine_atpre.getGuards().get(i).getId() == getId()) {
+				engine_atpre.getGuards().remove(i);
+			}
+		}
 		guard_atpre.init(engine_atpre, getWdt(), getHgt(), target_atpre);
 		int time_atpre = getTimeInHole();
-
+		for(int i = 0;i<time_atpre;i++) {
+			guard_atpre.waitInHole();
+		}
 		//appel
-		
 		getEngine().getEnvi().getCellContent(getWdt(), getHgt()).setGuard(null);
 		delegate.step();
-		getEngine().getEnvi().getCellContent(getWdt(), getHgt()).setGuard(capture_self);
-
+		getEngine().getEnvi().getCellContent(getWdt(), getHgt()).setGuard(this);
 		
 		//inv
-		checkInvariants();
+		//checkInvariants();
 		
 		//post
 		if (guard_atpre.willFall()) {
@@ -368,12 +403,7 @@ public class GuardContractClone extends CharacterContract implements GuardServic
 			if (getTimeInHole() != time_atpre)
 				throw new PostconditionError("step de Guard : willFall pb timeInHole");
 		}
-		if (guard_atpre.willWaitInHole()) {
-			if (getWdt()!=guard_atpre.getWdt() || getHgt()!=guard_atpre.getHgt())
-				throw new PostconditionError("step de Guard : le garde devait rester sur place dans le trou");
-			if (time_atpre+guard_atpre.getTimeInHole() != time_atpre+timeEpsilon)
-				throw new PostconditionError("step de Guard : willWaitInHole pb incr timeInHole");
-		}
+		
 		if (guard_atpre.willClimbLeft()) {
 			guard_atpre.climbLeft();
 			if (getWdt()!=guard_atpre.getWdt() || getHgt()!=guard_atpre.getHgt())
@@ -394,7 +424,14 @@ public class GuardContractClone extends CharacterContract implements GuardServic
 			if (getTimeInHole()!= guard_atpre.getTimeInHole())
 				throw new PostconditionError("step de Guard : willclimbneutral pb timeInHole");
 		}
-		
+		if (guard_atpre.willWaitInHole()) {
+			guard_atpre.waitInHole();
+			if (getWdt()!=guard_atpre.getWdt() || getHgt()!=guard_atpre.getHgt())
+				throw new PostconditionError("step de Guard : le garde devait rester sur place dans le trou");
+			if (guard_atpre.getTimeInHole() != time_atpre+timeEpsilon) {
+				throw new PostconditionError("step de Guard : willWaitInHole pb incr timeInHole");				
+			}
+		}
 	}
 
 	@Override

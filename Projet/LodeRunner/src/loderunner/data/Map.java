@@ -10,12 +10,14 @@ public class Map {
 	private Coord player;
 	private ArrayList<Item> treasures;
 	private ArrayList<Coord> guards;
+	private ArrayList<Teleporteur> teleporteurs;
 
-	public Map(EditableScreenContract edit,Coord player,ArrayList<Item> treasures,ArrayList<Coord> guards) {
+	public Map(EditableScreenContract edit,Coord player,ArrayList<Item> treasures,ArrayList<Coord> guards,ArrayList<Teleporteur> teleporteurs) {
 		this.edit = edit;
 		this.player = player;
 		this.treasures = treasures;
 		this.guards = guards;
+		this.teleporteurs = teleporteurs; 
 	}
 	
 	public EditableScreenContract getEdit() {
@@ -31,5 +33,9 @@ public class Map {
 	}
 	public ArrayList<Coord> getGuards() {
 		return guards;
+	}
+	
+	public ArrayList<Teleporteur> getTeleporteurs() {
+		return teleporteurs;
 	}
 }

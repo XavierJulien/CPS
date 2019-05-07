@@ -51,7 +51,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 	@Override
 	public void setTreasure(Item treasure) {
 		//1.pre 
-		if(treasure == null) throw new PreconditionError("setTreasure : tr�sor � null");
+		if(treasure == null) throw new PreconditionError("setTreasure : trésor à null");
 		//2.run
 		this.treasure = treasure;
 	}
@@ -65,7 +65,9 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			case EMP : {
 				if (nat_under==Cell.PLT || 
 					nat_under==Cell.MTL ||
+					nat_under==Cell.TLP ||
 					getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null){
+						System.out.println("sur une "+nat_under);
 								if(target.getWdt()-getWdt() > 0) return Command.RIGHT;
 								if(target.getWdt()-getWdt() < 0) return Command.LEFT;
 								if(target.getWdt()-getWdt() == 0) return Command.NEUTRAL;
@@ -88,6 +90,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			case LAD :{
 				if(nat_under==Cell.PLT || 
 				   nat_under==Cell.MTL || 
+				   nat_under==Cell.TLP ||
 				   getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null) {
 					if (Math.abs(target.getWdt()-getWdt()) > Math.abs(target.getHgt()-getHgt())){
 						//suivre l'axe  horizontal
@@ -218,6 +221,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			//nothing to do ?
 		}else {
 			Command behaviour = getBehaviour();
+			System.out.println(behaviour);
 			switch (behaviour) {
 				case LEFT:
 					goLeft();

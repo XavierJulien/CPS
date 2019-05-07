@@ -61,29 +61,51 @@ public class GuardImplClone extends CharacterImpl implements GuardService {
 	public Command getBehaviour() {
 		Cell nat = getEnvi().getCellNature(getWdt(), getHgt());
 		Cell nat_under = getEnvi().getCellNature(getWdt(), getHgt()-1);
-		if (nat==Cell.LAD && 
-			(nat_under==Cell.PLT || 
-			 nat_under==Cell.MTL || 
-			 getEnvi().getCellContent(getWdt(), getHgt()-1).getCharacter() != null || 
-			 getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null)) {
-			if (Math.abs(target.getWdt()-getWdt()) > Math.abs(target.getHgt()-getHgt())){
-				//suivre l'axe  horizontal
-				if(target.getWdt()-getWdt() > 0) return Command.RIGHT;
-				if(target.getWdt()-getWdt() < 0) return Command.LEFT;
-				if(target.getWdt()-getWdt() == 0) return Command.NEUTRAL;
-			}else{
-				//suivre l'axe vertical
-				if(target.getHgt()-getHgt() > 0) return Command.UP;
-				if(target.getHgt()-getHgt() < 0) return Command.DOWN;
-				if(target.getHgt()-getHgt() == 0) return Command.NEUTRAL;
+		switch(nat) {
+			case EMP : {
+				if (nat_under==Cell.PLT || 
+					nat_under==Cell.MTL ||
+					nat_under==Cell.TLP ||
+					getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null){
+								if(target.getWdt()-getWdt() > 0) return Command.RIGHT;
+								if(target.getWdt()-getWdt() < 0) return Command.LEFT;
+								if(target.getWdt()-getWdt() == 0) return Command.NEUTRAL;
+					}
+				if(nat_under==Cell.LAD) {
+					if (Math.abs(target.getWdt()-getWdt()) > Math.abs(target.getHgt()-getHgt())){
+						//suivre l'axe  horizontal
+						if(target.getWdt()-getWdt() > 0) return Command.RIGHT;
+						if(target.getWdt()-getWdt() < 0) return Command.LEFT;
+						if(target.getWdt()-getWdt() == 0) return Command.NEUTRAL;
+					}else{
+						//suivre l'axe vertical
+						if(target.getHgt()-getHgt() > 0) return Command.UP;
+						if(target.getHgt()-getHgt() < 0) return Command.DOWN;
+						if(target.getHgt()-getHgt() == 0) return Command.NEUTRAL;
+					}
+				}
+				return Command.DOWN;
 			}
-		}else{
-			if (nat == Cell.LAD) {
-				if (target.getHgt()>getHgt()) return Command.UP;
-				if (target.getHgt()<getHgt()) return Command.DOWN;
-				if (target.getHgt()==getHgt()) return Command.NEUTRAL;
-			}else{
-				if (nat==Cell.HDR && nat_under==Cell.EMP) {
+			case LAD :{
+				if(nat_under==Cell.PLT || 
+				   nat_under==Cell.MTL || 
+				   nat_under==Cell.TLP ||
+				   getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null) {
+					if (Math.abs(target.getWdt()-getWdt()) > Math.abs(target.getHgt()-getHgt())){
+						//suivre l'axe  horizontal
+						if(target.getWdt()-getWdt() > 0) return Command.RIGHT;
+						if(target.getWdt()-getWdt() < 0) return Command.LEFT;
+						if(target.getWdt()-getWdt() == 0) return Command.NEUTRAL;
+					}else{
+						//suivre l'axe vertical
+						if(target.getHgt()-getHgt() > 0) return Command.UP;
+						if(target.getHgt()-getHgt() < 0) {
+							if(target.getWdt()-getWdt() > 0) return Command.RIGHT;
+							if(target.getWdt()-getWdt() < 0) return Command.LEFT;
+						}
+						if(target.getHgt()-getHgt() == 0) return Command.NEUTRAL;
+					}
+				}else {
 					if (Math.abs(target.getWdt()-getWdt()) > Math.abs(target.getHgt()-getHgt())){
 						//suivre l'axe  horizontal
 						if(target.getWdt()-getWdt() > 0) return Command.RIGHT;
@@ -96,20 +118,9 @@ public class GuardImplClone extends CharacterImpl implements GuardService {
 						if(target.getHgt()-getHgt() == 0) return Command.NEUTRAL;
 					}
 				}
-				if (nat==Cell.HOL || 
-					nat==Cell.HDR || 
-					nat_under==Cell.MTL || 
-					nat_under==Cell.PLT || 
-					getEnvi().getCellContent(getWdt(), getHgt()-1).getCharacter() != null ||
-					getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null) {
-					if (target.getWdt()>getWdt()) return Command.RIGHT;
-					if (target.getWdt()<getWdt()) return Command.LEFT;
-					if (target.getWdt()==getWdt()) return Command.NEUTRAL;
-				}
-				if (nat!=Cell.LAD &&
-					(nat_under == Cell.LAD ||
-					 nat_under == Cell.HDR ||
-					 nat_under == Cell.HOL)) {
+			}
+			case HDR : {
+				if(nat_under == Cell.EMP || nat_under == Cell.LAD) {
 					if (Math.abs(target.getWdt()-getWdt()) > Math.abs(target.getHgt()-getHgt())){
 						//suivre l'axe  horizontal
 						if(target.getWdt()-getWdt() > 0) return Command.RIGHT;
@@ -121,11 +132,21 @@ public class GuardImplClone extends CharacterImpl implements GuardService {
 						if(target.getHgt()-getHgt() < 0) return Command.DOWN;
 						if(target.getHgt()-getHgt() == 0) return Command.NEUTRAL;
 					}
-					
 				}
+				if (target.getWdt()>getWdt()) return Command.RIGHT;
+				if (target.getWdt()<getWdt()) return Command.LEFT;
+				if (target.getWdt()==getWdt()) return Command.NEUTRAL;
+			}
+			case HOL : {
+				if (target.getWdt()>getWdt()) return Command.RIGHT;
+				if (target.getWdt()<getWdt()) return Command.LEFT;
+				if (target.getWdt()==getWdt()) return Command.LEFT;
+			}
+			default : 
+				return Command.NEUTRAL;
+		
 		}
-		}
-		return Command.NEUTRAL;
+		
 	}
 
 	@Override

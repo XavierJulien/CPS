@@ -32,26 +32,26 @@ public interface GuardService extends CharacterService {
 	/**
 	 * inv : getEnvi().getCellNature(getWdt(),getHgt()) == LAD
 	 * 			&& getHgt() < getTarget().getHgt()
-	 * 			&& (getEnvi().getCellNature(getWdt(),getHgt()-1) \in {PLT,MTL}
+	 * 			&& (getEnvi().getCellNature(getWdt(),getHgt()-1) \in {PLT,MTL,TLP}
 	 * 				|| getEnvi().getCellContent(getWdt(),getHgt()-1).getGuard() != null
 	 * 				implies Math.abs(getTarget().getHgt()-getHgt()) < Math.abs(getTarget().getWdt()-getWdt())
 	 * 			implies getBehaviour() == UP 
 	 *
 	 * inv : getEnvi().getCellNature(getWdt(),getHgt()) == LAD
 	 * 			&& getHgt() > getTarget().getHgt()
-	 * 			&& (getEnvi().getCellNature(getWdt(),getHgt()-1) \in {PLT,MTL}
+	 * 			&& (getEnvi().getCellNature(getWdt(),getHgt()-1) \in {PLT,MTL,TLP}
 	 * 				|| getEnvi().getCellContent(getWdt(),getHgt()-1).getGuard() != null
 	 * 				implies Math.abs(getTarget().getHgt()-getHgt()) < Math.abs(getTarget().getWdt()-getWdt())
 	 * 			implies getBehaviour() == DOWN 
 	 * 
 	 * inv : (getEnvi().getCellNature(getWdt(),getHgt()) == LAD
 	 * 			&& getTarget().getWdt() < getWdt()
-	 * 			&& (getEnvi().getCellNature(getWdt(),getHgt()-1) \in {PLT,MTL}
+	 * 			&& (getEnvi().getCellNature(getWdt(),getHgt()-1) \in {PLT,MTL,TLP}
 	 * 				|| getEnvi().getCellContent(getWdt(),getHgt()-1).getGuard() != null
 	 * 				implies Math.abs(getTarget().getWdt()-getWdt()) < Math.abs(getTarget().getHgt()-getHgt())))
 	 * 		||
 	 * 		((getEnvi().getCellNature(getWdt(),getHgt()) \in {HOL,HDR}
-	 * 			|| getEnvi().getCellNature(getWdt(),getHgt()-1) \in {MTL,PLT}
+	 * 			|| getEnvi().getCellNature(getWdt(),getHgt()-1) \in {MTL,PLT,TLP}
 	 * 			|| getEnvi().getCellContent(getWdt(),getHgt()-1) != null)
 	 * 			&& getTarget().getWdt() < getWdt())
 	 * 		implies getBehaviour() == LEFT
@@ -59,19 +59,19 @@ public interface GuardService extends CharacterService {
 	 * 
 	 * inv : (getEnvi().getCellNature(getWdt(),getHgt()) == LAD
 	 * 			&& getTarget().getWdt() > getWdt()
-	 * 			&& (getEnvi().getCellNature(getWdt(),getHgt()-1) \in {PLT,MTL}
+	 * 			&& (getEnvi().getCellNature(getWdt(),getHgt()-1) \in {PLT,MTL,TLP}
 	 * 				|| getEnvi().getCellContent(getWdt(),getHgt()-1).getGuard() != null
 	 * 				implies Math.abs(getTarget().getWdt()-getWdt()) < Math.abs(getTarget().getHgt()-getHgt())))
 	 * 		||
 	 * 		((getEnvi().getCellNature(getWdt(),getHgt()) \in {HOL,HDR}
-	 * 			|| getEnvi().getCellNature(getWdt(),getHgt()-1) \in {MTL,PLT}
+	 * 			|| getEnvi().getCellNature(getWdt(),getHgt()-1) \in {MTL,PLT,TLP}
 	 * 			|| getEnvi().getCellContent(getWdt(),getHgt()-1) != null)
 	 * 			&& getTarget().getWdt() > getWdt())
 	 * 		implies getBehaviour() == RIGHT
 	 * 
 	 * 
 	 *  inv :((getEnvi().getCellNature(getWdt(),getHgt()) \in {HOL,HDR}
-		 * 			|| getEnvi().getCellNature(getWdt(),getHgt()-1) \in {MTL,PLT}
+		 * 			|| getEnvi().getCellNature(getWdt(),getHgt()-1) \in {MTL,PLT,TLP}
 		 * 			|| getEnvi().getCellContent(getWdt(),getHgt()-1) != null)
 		 * 		&& getTarget().getWdt() == getWdt())
 		 * 		||
@@ -201,8 +201,8 @@ public interface GuardService extends CharacterService {
 	 * pre : climbLeft() require getEnvi().getCellNature(getWdt(),getHgt()) == HOL 
 	 */
 	/**
-	 * post : getEnvi().getCellNature(getWdt()@pre,getHdt()@pre+1) \not \in {PTL,MTL}
-	 * 			&& getEnvi().getCellNature(getWdt()@pre-1,getHdt()@pre+1) \not \in {PTL,MTL} 
+	 * post : getEnvi().getCellNature(getWdt()@pre,getHdt()@pre+1) \not \in {PTL,MTL,TLP}
+	 * 			&& getEnvi().getCellNature(getWdt()@pre-1,getHdt()@pre+1) \not \in {PTL,MTL,TLP} 
 	 * 			&& getEnvi().getCellContent(getWdt()@pre-1,getHgt()@pre+1).getCharacter() == null
 	 * 			implies getHgt()==getHgt()@pre+1 && getWdt()==getWdt()@pre-1 && getTimeInHole()==0
 	 */
@@ -212,8 +212,8 @@ public interface GuardService extends CharacterService {
 	 * pre : climbRight() require getEnvi().getCellNature(getWdt(),getHgt()) == HOL 
 	 */
 	/**
-	 * post : getEnvi().getCellNature(getWdt()@pre,getHdt()@pre+1) \not \in {PTL,MTL}
-	 * 			&& getEnvi().getCellNature(getWdt()@pre+1,getHdt()@pre+1) \not \in {PTL,MTL} 
+	 * post : getEnvi().getCellNature(getWdt()@pre,getHdt()@pre+1) \not \in {PTL,MTL,TLP}
+	 * 			&& getEnvi().getCellNature(getWdt()@pre+1,getHdt()@pre+1) \not \in {PTL,MTL,TLP} 
 	 * 			&& getEnvi().getCellContent(getWdt()@pre+1,getHgt()@pre+1).getCharacter() == null
 	 * 			implies getHgt()==getHgt()@pre+1 && getWdt()==getWdt()@pre+1 && getTimeInHole()==0
 	 */

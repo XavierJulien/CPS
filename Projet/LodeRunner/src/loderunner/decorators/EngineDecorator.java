@@ -8,6 +8,7 @@ import loderunner.data.Coord;
 import loderunner.data.GameState;
 import loderunner.data.Hole;
 import loderunner.data.Item;
+import loderunner.data.Teleporteur;
 import loderunner.services.EditableScreenService;
 import loderunner.services.EngineService;
 import loderunner.services.EnvironnementService;
@@ -71,10 +72,15 @@ public class EngineDecorator implements EngineService{
 	public ArrayList<Coord> getGuardsCoord() {
 		return delegate.getGuardsCoord();
 	}
+
+	@Override
+	public ArrayList<Teleporteur> getTeleporteurs() {
+		return delegate.getTeleporteurs();
+	}
 	
 	@Override
-	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Item> treasures) {
-		delegate.init(e, player, guards, treasures);
+	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Item> treasures,List<Teleporteur> teleporteurs) {
+		delegate.init(e, player, guards, treasures,teleporteurs);
 		
 	}
 
