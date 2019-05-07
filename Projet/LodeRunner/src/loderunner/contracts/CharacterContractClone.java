@@ -113,8 +113,8 @@ public class CharacterContractClone extends CharacterDecorator {
 				}
 			}
 		}
-		if(getEnvi().getCellContent(wdt_capture-1, hgt_capture).getGuard() != null) {
-			if(getWdt() != wdt_capture) throw new PostconditionError("goLeft : le personnage à traversé un personnage");
+		if(getId() != -1 && getEnvi().getCellContent(wdt_capture-1, hgt_capture).getGuard() != null) {
+			if(getWdt() != wdt_capture) throw new PostconditionError("goLeft : le guard à traversé un guard");
 		}
 		if(wdt_capture != 0) {
 			if(getEnvi().getCellNature(wdt_capture-1, hgt_capture) != Cell.MTL && 
@@ -171,7 +171,7 @@ public class CharacterContractClone extends CharacterDecorator {
 				}
 			}
 		}
-		if(getId() != 1 && getEnvi().getCellContent(wdt_capture+1, hgt_capture).getGuard() != null) {
+		if(getId() != -1 && getEnvi().getCellContent(wdt_capture+1, hgt_capture).getGuard() != null) {
 			if(getWdt() != wdt_capture) throw new PostconditionError("goRight : le guard à traversé un guard");
 		}
 		if(wdt_capture != getEnvi().getWidth()-1) {

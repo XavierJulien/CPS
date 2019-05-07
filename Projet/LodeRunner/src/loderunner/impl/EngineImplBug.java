@@ -33,6 +33,7 @@ public class EngineImplBug implements EngineService{
 	protected int score;
 	
 	protected ArrayList<Teleporteur> teleporteurs;
+	protected Item gauntlet;
 	
 	@Override
 	public EnvironnementService getEnvi() {
@@ -90,7 +91,17 @@ public class EngineImplBug implements EngineService{
 	}
 	
 	@Override
-	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Item> treasures,List<Teleporteur> teleporteurs) {
+	public Item getGauntlet() {
+		return gauntlet;
+	}
+	
+	@Override
+	public void init(EditableScreenService e, 
+					 Coord player, 
+					 List<Coord> guards, 
+					 List<Item> treasures,
+					 List<Teleporteur> teleporteurs,
+			         Item gauntlet) {
 		envi = new EnvironnementContract(new EnvironnementImpl());
 		for(Teleporteur t : teleporteurs) {
 			e.setNature(t.getPosA().getX(), t.getPosA().getY(), Cell.TLP);
@@ -164,7 +175,6 @@ public class EngineImplBug implements EngineService{
 			for(GuardService guard : guards) {
 				if(guard.willClimbLeft() || guard.willClimbRight()) {
 					if(getEnvi().getCellContent(guard.getWdt(), guard.getHgt()+1).getCharacter() != null) {
-						System.out.println("fin");
 						status = GameState.Loss;
 						return;
 					}

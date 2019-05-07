@@ -30,9 +30,10 @@ public class EngineImpl implements EngineService{
 	protected GameState status;
 	protected ArrayList<Command> commands;
 	protected ArrayList<Hole> holes;
-	protected int score;
+	protected int score;	
 	
 	protected ArrayList<Teleporteur> teleporteurs;
+	protected Item gauntlet;
 	
 	@Override
 	public EnvironnementService getEnvi() {
@@ -85,8 +86,12 @@ public class EngineImpl implements EngineService{
 	
 	@Override
 	public ArrayList<Teleporteur> getTeleporteurs() {
-		System.out.println(teleporteurs.size());
 		return teleporteurs;
+	}
+	
+	 @Override
+	public Item getGauntlet() {
+		return gauntlet;
 	}
 	
 	@Override
@@ -94,7 +99,8 @@ public class EngineImpl implements EngineService{
 			         Coord player, 
 			         List<Coord> guards, 
 			         List<Item> treasures,
-			         List<Teleporteur> teleporteurs) {
+			         List<Teleporteur> teleporteurs,
+			         Item gauntlet) {
 		envi = new EnvironnementContract(new EnvironnementImpl());
 		for(Teleporteur t : teleporteurs) {
 			e.setNature(t.getPosA().getX(), t.getPosA().getY(), Cell.TLP);
@@ -126,7 +132,7 @@ public class EngineImpl implements EngineService{
 		for(Item i : treasures) {
 			envi.getCellContent(i.getCol(), i.getHgt()).setItem(new Item(i.getCol(), i.getHgt(), ItemType.Treasure));;
 		}
-		
+		envi.getCellContent(gauntlet.getCol(), gauntlet.getHgt()).setItem(gauntlet);
 		score = 0;
 	}
 
@@ -160,6 +166,12 @@ public class EngineImpl implements EngineService{
 		if(status == GameState.Playing) {
 			//step du player
 			player.step();
+			if(envi.getCellContent(player.getWdt(), player.getHgt()).getItem() != null &&
+			   envi.getCellContent(player.getWdt(), player.getHgt()).getItem().getNature() == ItemType.Gauntlet) {
+				player.setGauntlet(envi.getCellContent(player.getWdt(), player.getHgt()).getItem());
+				System.out.println("player has gauntlet");
+				envi.getCellContent(player.getWdt(), player.getHgt()).setItem(null);
+			}
 			if(getEnvi().getCellContent(player.getWdt(), player.getHgt()).getGuard() != null) {
 				status = GameState.Loss;
 				return;
@@ -168,7 +180,6 @@ public class EngineImpl implements EngineService{
 			for(GuardService guard : guards) {
 				if(guard.willClimbLeft() || guard.willClimbRight()) {
 					if(getEnvi().getCellContent(guard.getWdt(), guard.getHgt()+1).getCharacter() != null) {
-						System.out.println("fin");
 						status = GameState.Loss;
 						return;
 					}
@@ -179,7 +190,8 @@ public class EngineImpl implements EngineService{
 					return;
 				}
 			}
-			if(envi.getCellContent(player.getWdt(), player.getHgt()).getItem() != null) {
+			if(envi.getCellContent(player.getWdt(), player.getHgt()).getItem() != null && 
+			   envi.getCellContent(player.getWdt(), player.getHgt()).getItem().getNature() == ItemType.Treasure) {
 				envi.getCellContent(player.getWdt(), player.getHgt()).setItem(null);
 				for(int i = 0;i<treasures.size();i++) {
 					if(treasures.get(i).getCol() == player.getWdt() && treasures.get(i).getHgt() == player.getHgt()) {
@@ -190,7 +202,9 @@ public class EngineImpl implements EngineService{
 			}
 			for(int i = 0;i<treasures.size();i++) {
 				for(GuardService g : guards) {
-					if(treasures.get(i).getCol() == g.getWdt() && treasures.get(i).getHgt() == g.getHgt() && !g.hasItem()) {
+					if(treasures.get(i).getCol() == g.getWdt() && 
+					   treasures.get(i).getHgt() == g.getHgt() &&
+					   !g.hasItem()) {
 						envi.getCellContent(treasures.get(i).getCol(), treasures.get(i).getHgt()).setItem(null);
 						g.setTreasure(treasures.remove(i));
 					}

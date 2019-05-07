@@ -6,13 +6,16 @@ import loderunner.data.Cell;
 import loderunner.data.Command;
 import loderunner.data.Coord;
 import loderunner.data.Hole;
+import loderunner.data.Item;
 import loderunner.data.Teleporteur;
 import loderunner.services.EngineService;
+import loderunner.services.GuardService;
 import loderunner.services.PlayerService;
 
 public class PlayerImpl extends CharacterImpl implements PlayerService{
 
 	private EngineService engine;
+	private Item gauntlet;
 	
 	@Override
 	public EngineService getEngine() {
@@ -22,6 +25,7 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 	@Override
 	public void init(EngineService e,Coord player) {
 		this.engine = e;
+		this.gauntlet = e.getGauntlet();
 		super.init(e.getEnvi(), player.getX(), player.getY(),-1);
 	}
 	
@@ -76,8 +80,13 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 				break;	
 			case NEUTRAL :
 				break;
+			case HITL : 
+				hitLeft();
+				break;
+			case HITR : 
+				hitRight();
+				break;
 		}
-		System.out.println("pos avant check teleporteur :"+getWdt()+","+getHgt());
 		if(getEngine().getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.TLP) {
 			for(Teleporteur tel : getEngine().getTeleporteurs()) {
 				if(tel.getPosB().getX() == getWdt() && tel.getPosB().getY() == getHgt()-1) {
@@ -91,7 +100,6 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 				}
 			}
 		}
-		System.out.println("pos apres check teleporteur :"+getWdt()+","+getHgt());
 		getEnvi().getCellContent(getWdt(),getHgt()).setCharacter(this);
 	}
 	
@@ -112,7 +120,7 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 				edit.setNature(i, j, engine.getEnvi().getCellNature(i, j));
 			}
 		}
-		engContract.init(edit, new Coord(getWdt(), getHgt()), getEngine().getGuardsCoord(), getEngine().getTreasures(),getEngine().getTeleporteurs());
+		engContract.init(edit, new Coord(getWdt(), getHgt()), getEngine().getGuardsCoord(), getEngine().getTreasures(),getEngine().getTeleporteurs(),getEngine().getGauntlet());
 		p.init(engContract, new Coord(this.getWdt(), this.getHgt()));
 		return p;
 	}
@@ -129,10 +137,57 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 				edit.setNature(i, j, getEngine().getEnvi().getCellNature(i, j));
 			}
 		}
-		engContract.init(edit, new Coord(getWdt(), getHgt()), getEngine().getGuardsCoord(), getEngine().getTreasures(),getEngine().getTeleporteurs());
+		engContract.init(edit, new Coord(getWdt(), getHgt()), getEngine().getGuardsCoord(), getEngine().getTreasures(),getEngine().getTeleporteurs(),getEngine().getGauntlet());
 		p.init(engContract, new Coord(this.getWdt(), this.getHgt()));
 		return p;
 	}
 
+	@Override
+	public boolean hasGauntlet() {
+		if(gauntlet == null) return false;
+		return true;
+	}
+	
+	@Override
+	public Item getGauntlet() {
+		return gauntlet;
+	}
 
+	@Override
+	public void setGauntlet(Item gauntlet) {
+		this.gauntlet = gauntlet;
+	}
+
+	@Override
+	public void hitRight() {
+		for(int i = getWdt(); i<getEnvi().getWidth();i++) {
+			System.out.println(i+","+getHgt());
+			if(getEnvi().getCellContent(i, getHgt()).getGuard() != null) {
+				GuardService g = getEnvi().getCellContent(i, getHgt()).getGuard();
+				getEnvi().getCellContent(i, getHgt()).setGuard(null);
+				System.out.println(getEngine().getGuards().size());
+				getEngine().getGuards().remove(g);
+				System.out.println(getEngine().getGuards().size());
+				getEnvi().getCellContent(i, getHgt()).setItem(g.getTreasure());
+				setGauntlet(null);
+				break;
+			}
+		}
+	}
+	
+	@Override
+	public void hitLeft() {
+		System.out.println("hitleft");
+		for(int i = getWdt(); i>=0;i--) {
+			System.out.println(i+","+getHgt());
+			if(getEnvi().getCellContent(i, getHgt()).getGuard() != null) {
+				GuardService g = getEnvi().getCellContent(i, getHgt()).getGuard();
+				getEnvi().getCellContent(i, getHgt()).setGuard(null);
+				getEngine().getGuards().remove(g);
+				getEnvi().getCellContent(i, getHgt()).setItem(g.getTreasure());
+				setGauntlet(null);
+				break;
+			}
+		}
+	}
 }

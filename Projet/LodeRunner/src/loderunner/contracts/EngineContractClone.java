@@ -16,6 +16,7 @@ import loderunner.decorators.EngineDecorator;
 import loderunner.errors.InvariantError;
 import loderunner.errors.PostconditionError;
 import loderunner.errors.PreconditionError;
+import loderunner.impl.EngineImplClone;
 import loderunner.services.EditableScreenService;
 import loderunner.services.EngineService;
 import loderunner.services.EnvironnementService;
@@ -31,18 +32,29 @@ public class EngineContractClone extends EngineDecorator{
 		this.delegate = delegate;
 	}
 
+	public EngineImplClone getDelegate() {
+		return (EngineImplClone)delegate;
+	}
+	
 	public void checkInvariants() {
 		CellContent cell_check = getEnvi().getCellContent(getPlayer().getWdt(), getPlayer().getHgt());
 		if(!cell_check.getCharacter().equals(getPlayer())) throw new InvariantError("checkInvariants : Le player aux position du player n'est pas le player");
 		for(GuardService g : getGuards()) {
 			cell_check = getEnvi().getCellContent(g.getWdt(), g.getHgt());
 			if(!cell_check.getGuard().equals(g)) throw new InvariantError("checkInvariants : Le guard aux position du guard n'est pas le guard");
-			
+			for(Item t : getTreasures()) {
+				cell_check = getEnvi().getCellContent(t.getCol(), t.getHgt());
+				if(cell_check.getItem() != null && t.getCol() == g.getWdt() && t.getHgt() == g.getHgt() && !g.hasItem()) throw new InvariantError("checkInvariants : il ne devrait plus y avoir de tr�sor � cette case : ["+g.getWdt()+","+g.getHgt()+"]");
+				
+			}
 		}
 		for(Item t : getTreasures()) {
 			cell_check = getEnvi().getCellContent(t.getCol(), t.getHgt());
 			if(cell_check.getItem().getNature() != ItemType.Treasure) throw new InvariantError("checkInvariants : Il devrait y avoir un tr�sor en ("+t.getCol()+","+t.getHgt()+")");
-			
+			for(GuardService g : getGuards()) {
+				if(cell_check.getItem() == null && (t.getCol() != g.getWdt() || t.getHgt() != g.getHgt())) throw new InvariantError("checkInvariants : il devrait y avoir un tr�sor � cette case : ["+t.getCol()+","+t.getHgt()+"]");
+				
+			}
 		}
 	}
 	
@@ -122,7 +134,12 @@ public class EngineContractClone extends EngineDecorator{
 	}
 	
 	@Override
-	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Item> treasures,List<Teleporteur> teleporteurs) {
+	public Item getGauntlet() {
+		return super.getGauntlet();
+	}
+	 
+	@Override
+	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Item> treasures,List<Teleporteur> teleporteurs,Item gauntlet) {
 		//1.pre
 		//if(!e.isPlayable()) throw new PreconditionError("init : l'ecran n'est pas d�fini comme jouable");
 		for(Item treasure : treasures) {
@@ -160,7 +177,7 @@ public class EngineContractClone extends EngineDecorator{
 		//3.captures
 		//none
 		//4.run
-		super.init(e, player, guards, treasures,teleporteurs);
+		super.init(e, player, guards, treasures,teleporteurs,gauntlet);
 		//5.checkInvariants
 		checkInvariants();
 		//6.post
@@ -184,6 +201,10 @@ public class EngineContractClone extends EngineDecorator{
 					}
 				}
 			}
+		}
+		for(Teleporteur teleporteur : teleporteurs) {
+			if(e.getCellNature(teleporteur.getPosA().getX(), teleporteur.getPosA().getY()) != Cell.TLP || 
+			   e.getCellNature(teleporteur.getPosB().getX(), teleporteur.getPosB().getY()) != Cell.TLP) throw new PreconditionError("un teleporteur n'est pas init correctement");
 		}
 	}
 
@@ -225,7 +246,14 @@ public class EngineContractClone extends EngineDecorator{
 		//si l'on est a proximit� d'un guard on doit mourrir et changer le gamestate
 		//idem si on as ramass� tous les tr�sors 
 		if(getTreasures().size() == 0) {
-			if (getStatus() != GameState.Win) throw new PostconditionError("le joueur � ramass� tous les tr�sors, il aurait du gagn�");
+			for(int i = 0;i<getGuards().size();i++) {
+				if(i == getGuards().size()-1 && !getGuards().get(i).hasItem()) {
+					if (getStatus() != GameState.Win) throw new PostconditionError("le joueur à ramassé tous les trésors, il aurait du gagné");
+				}
+				if(!getGuards().get(i).hasItem()) {
+					break;
+				}
+			}
 		}else {
 			if (getStatus() == GameState.Win) throw new PostconditionError("le joueur n'as pas tout ramass�");
 		}

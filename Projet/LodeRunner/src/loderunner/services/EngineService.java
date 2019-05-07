@@ -23,6 +23,7 @@ public interface EngineService {
 	public ArrayList<Coord> getGuardsCoord();
 	public ArrayList<Command> getCommands();
 	public ArrayList<Teleporteur> getTeleporteurs();
+	public Item getGauntlet();
 	
 	/* Constructors */
 	/**
@@ -43,7 +44,8 @@ public interface EngineService {
 					 Coord player,
 					 List<Coord> guards,
 					 List<Item> treasures,
-					 List<Teleporteur> teleporteurs);
+					 List<Teleporteur> teleporteurs,
+					 Item gauntlet);
 	/* Invariant */
 	/**
 	 *pre : step() require c : CellContent \def getEnvi().getCellContent(getPlayer.getWdt(),getPlayer().getHgt())

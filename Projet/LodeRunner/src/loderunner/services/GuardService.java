@@ -17,6 +17,7 @@ public interface GuardService extends CharacterService {
 	public boolean hasItem();
 	public void waitInHole();
 	public void setTreasure(Item treasure);
+	public Item getTreasure();
 	
 	/* Constructor */
 	/**

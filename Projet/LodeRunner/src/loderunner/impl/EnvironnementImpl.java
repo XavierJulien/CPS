@@ -2,6 +2,7 @@ package loderunner.impl;
 
 import loderunner.data.Cell;
 import loderunner.data.CellContent;
+import loderunner.data.ItemType;
 import loderunner.services.EditableScreenService;
 import loderunner.services.EnvironnementService;
 
@@ -37,7 +38,10 @@ public class EnvironnementImpl extends ScreenImpl implements EnvironnementServic
 			return "o";
 		}
 		if (c.getCharacter() != null) return "♀";
-		if (c.getItem() != null) return "@";
+		if (c.getItem() != null) {
+			if(c.getItem().getNature() == ItemType.Treasure) return "@";
+			if(c.getItem().getNature() == ItemType.Gauntlet) return "€";
+		}
 		return "";
 	}
 	
@@ -70,12 +74,6 @@ public class EnvironnementImpl extends ScreenImpl implements EnvironnementServic
 			}
 			s+= "\n";
 		}
-		/*for(int i = height-1; i >= 0;i--) {
-			for(int j = 0;j < width;j++) {
-				s+=" "+cellcont(getCellContent(j, i))+" ";
-			}
-			s+= "\n";
-		}*/
 		return s;
 	}
 }

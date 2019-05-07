@@ -34,6 +34,7 @@ public class EditableScreenImpl extends ScreenImpl implements EditableScreenServ
 			case MTL : return "M";
 			case LAD : return "L";
 			case HDR : return "R";
+			case TLP : return "T";
 		}
 		return null;
 	}

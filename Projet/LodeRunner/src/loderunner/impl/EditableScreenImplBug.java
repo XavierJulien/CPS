@@ -24,6 +24,7 @@ public class EditableScreenImplBug extends ScreenImpl implements EditableScreenS
 			case MTL : return "M";
 			case LAD : return "L";
 			case HDR : return "R";
+			case TLP : return "T";
 		}
 		return null;
 	}

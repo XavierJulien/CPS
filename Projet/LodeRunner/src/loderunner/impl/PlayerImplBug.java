@@ -6,12 +6,15 @@ import loderunner.data.Cell;
 import loderunner.data.Command;
 import loderunner.data.Coord;
 import loderunner.data.Hole;
+import loderunner.data.Item;
 import loderunner.services.EngineService;
+import loderunner.services.GuardService;
 import loderunner.services.PlayerService;
 
 public class PlayerImplBug extends CharacterImpl implements PlayerService{
 
 	private EngineService engine;
+	private Item gauntlet;
 	
 	@Override
 	public EngineService getEngine() {
@@ -21,6 +24,7 @@ public class PlayerImplBug extends CharacterImpl implements PlayerService{
 	@Override
 	public void init(EngineService e,Coord player) {
 		this.engine = e;
+		this.gauntlet = null;
 		super.init(e.getEnvi(), player.getX(), player.getY(),-1);
 	}
 	
@@ -62,6 +66,12 @@ public class PlayerImplBug extends CharacterImpl implements PlayerService{
 				break;	
 			case NEUTRAL :
 				break;
+			case HITL : 
+				hitLeft();
+				break;
+			case HITR : 
+				hitRight();
+				break;
 		}
 		getEnvi().getCellContent(engine.getPlayer().getWdt(), engine.getPlayer().getHgt()).setCharacter(this);
 		
@@ -84,7 +94,7 @@ public class PlayerImplBug extends CharacterImpl implements PlayerService{
 				edit.setNature(i, j, engine.getEnvi().getCellNature(i, j));
 			}
 		}
-		engContract.init(edit, new Coord(getWdt(), getHgt()), getEngine().getGuardsCoord(), getEngine().getTreasures(),getEngine().getTeleporteurs());
+		engContract.init(edit, new Coord(getWdt(), getHgt()), getEngine().getGuardsCoord(), getEngine().getTreasures(),getEngine().getTeleporteurs(),getEngine().getGauntlet());
 		p.init(engContract, new Coord(this.getWdt(), this.getHgt()));
 		return p;
 	}
@@ -101,10 +111,49 @@ public class PlayerImplBug extends CharacterImpl implements PlayerService{
 				edit.setNature(i, j, getEngine().getEnvi().getCellNature(i, j));
 			}
 		}
-		engContract.init(edit, new Coord(getWdt(), getHgt()), getEngine().getGuardsCoord(), getEngine().getTreasures(),getEngine().getTeleporteurs());
+		engContract.init(edit, new Coord(getWdt(), getHgt()), getEngine().getGuardsCoord(), getEngine().getTreasures(),getEngine().getTeleporteurs(),getEngine().getGauntlet());
 		p.init(engContract, new Coord(this.getWdt(), this.getHgt()));
 		return p;
 	}
 
 
+	@Override
+	public boolean hasGauntlet() {
+		if(gauntlet == null) return false;
+		return true;
+	}
+	
+	@Override
+	public Item getGauntlet() {
+		return gauntlet;
+	}
+	
+	@Override
+	public void setGauntlet(Item gauntlet) {
+		this.gauntlet = gauntlet;
+	}
+	
+	@Override
+	public void hitRight() {
+		for(int i = getWdt(); i<getEnvi().getWidth();i++) {
+			if(getEnvi().getCellContent(i, getHgt()).getGuard() != null) {
+				GuardService g = getEnvi().getCellContent(i, getHgt()).getGuard();
+				getEnvi().getCellContent(i, getHgt()).setGuard(null);
+				getEngine().getGuards().remove(g);
+				break;
+			}
+		}
+	}
+	
+	@Override
+	public void hitLeft() {
+		for(int i = getWdt(); i>=0;i--) {
+			if(getEnvi().getCellContent(i, getHgt()).getGuard() != null) {
+				GuardService g = getEnvi().getCellContent(i, getHgt()).getGuard();
+				getEnvi().getCellContent(i, getHgt()).setGuard(null);
+				getEngine().getGuards().remove(g);
+				break;
+			}
+		}
+	}
 }

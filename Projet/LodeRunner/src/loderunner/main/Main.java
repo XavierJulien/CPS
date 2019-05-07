@@ -33,16 +33,15 @@ public class Main{
 			MapBuilder m = new MapBuilder(edit);
 			Map map = m.buildMap(filenames.get(i));
 			EngineContract engineContract = new EngineContract(engine);
-			System.out.println(map.getTeleporteurs());
-			engineContract.init(map.getEdit(), map.getPlayer(), map.getGuards(), map.getTreasures(),map.getTeleporteurs());
-			System.out.println("-------MAP N�"+i+"--------");
+			engineContract.init(map.getEdit(), map.getPlayer(), map.getGuards(), map.getTreasures(),map.getTeleporteurs(),map.getGauntlet());
+			System.out.println("-------MAP N°"+i+"--------");
 			System.out.println(engineContract.getEnvi().toString());
 			System.out.println("---------------------------");
 			System.out.println("---LIVES : "+lives+"---SCORE : "+engineContract.getScore()+"---");
 			while(true) {
 				if(engineContract.getStatus() == GameState.Win) {System.out.println("--------WELLPLAYED--------");break;}
 				if(engineContract.getStatus() == GameState.Loss){System.out.println("--------YOU LOOSE--------");break;}
-				System.out.println("Veuillez saisir un d�placement(UP,DOWN,LEFT,RIGHT) : ");
+				System.out.println("Veuillez saisir un déplacement(UP,DOWN,LEFT,RIGHT) : ");
 				String s = sc.nextLine();
 				if(s.equals("STOP")) break;
 				switch (s) {
@@ -52,6 +51,8 @@ public class Main{
 				case "d" : {engineContract.addCommand(Command.RIGHT);break;}
 				case "e" : {engineContract.addCommand(Command.DIGR);break;}
 				case "a" : {engineContract.addCommand(Command.DIGL);break;}
+				case "w" : {engineContract.addCommand(Command.HITL);break;}
+				case "c" : {engineContract.addCommand(Command.HITR);break;}
 				default : {engineContract.addCommand(Command.NEUTRAL);break;}
 				}
 				engineContract.step();

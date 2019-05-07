@@ -43,6 +43,11 @@ public class GuardImplClone extends CharacterImpl implements GuardService {
 	}
 
 	@Override
+	public Item getTreasure() {
+		return treasure;
+	}
+	
+	@Override
 	public boolean hasItem() {
 		if(treasure != null) return true;
 		return false;

@@ -79,8 +79,12 @@ public class EngineDecorator implements EngineService{
 	}
 	
 	@Override
-	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Item> treasures,List<Teleporteur> teleporteurs) {
-		delegate.init(e, player, guards, treasures,teleporteurs);
+	public Item getGauntlet() {
+		return delegate.getGauntlet();
+	}
+	@Override
+	public void init(EditableScreenService e, Coord player, List<Coord> guards, List<Item> treasures,List<Teleporteur> teleporteurs,Item gauntlet) {
+		delegate.init(e, player, guards, treasures,teleporteurs,gauntlet);
 		
 	}
 

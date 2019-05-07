@@ -28,11 +28,7 @@ public class PlayerTest extends CharacterTest{
 	
 	private EngineContract engine;
 	private PlayerService player;
-<<<<<<< HEAD
-	
-=======
->>>>>>> 3bb6dcc4e09729cb18c16ecec113ebf856391afe
-	
+
 	public PlayerTest() {
 		player = null;
 	}

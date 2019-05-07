@@ -35,6 +35,7 @@ public class EditableScreenImplClone extends ScreenImpl implements EditableScree
 			case MTL : return "M";
 			case LAD : return "L";
 			case HDR : return "R";
+			case TLP : return "T";
 		}
 		return null;
 	}

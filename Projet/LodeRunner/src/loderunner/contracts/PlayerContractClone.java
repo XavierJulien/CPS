@@ -1,15 +1,20 @@
 package loderunner.contracts;
 
+import java.util.ArrayList;
+
 import loderunner.data.Cell;
 import loderunner.data.Command;
 import loderunner.data.Coord;
 import loderunner.data.Hole;
+import loderunner.data.Item;
+import loderunner.data.ItemType;
 import loderunner.data.Teleporteur;
 import loderunner.errors.InvariantError;
 import loderunner.errors.PostconditionError;
 import loderunner.errors.PreconditionError;
 import loderunner.main.Creator;
 import loderunner.services.EngineService;
+import loderunner.services.GuardService;
 import loderunner.services.PlayerService;
 
 public class PlayerContractClone extends CharacterContractClone implements PlayerService{
@@ -42,6 +47,41 @@ public class PlayerContractClone extends CharacterContractClone implements Playe
 		return delegate.getEngine();
 	}
 
+	@Override
+	public boolean hasGauntlet() {
+		//1.pre
+		//none
+		//2.run
+		return delegate.hasGauntlet();
+	}
+	
+	@Override
+	public Item getGauntlet() {
+		//1.pre
+		//none
+		//2.run
+		return delegate.getGauntlet();
+	}
+	
+	@Override
+	public void setGauntlet(Item gauntlet) {
+		//1.pre
+		if(gauntlet.getNature() != ItemType.Gauntlet || gauntlet == null) throw new PreconditionError("L'item n'est pas valide");
+		if(hasGauntlet()) throw new PreconditionError("le personnage à déjà un gauntlet");
+		//2.checkInvariants
+		checkInvariants();
+		//3.capture
+		boolean hasGauntlet = hasGauntlet();
+		Item getGauntlet = getGauntlet();
+		//4.run
+		delegate.setGauntlet(gauntlet);
+		//5.checkInvariants
+		checkInvariants();
+		//6.post
+		if(hasGauntlet == hasGauntlet()) throw new PostconditionError("il n'as pas récupéré de gauntlet(has)");
+		if(getGauntlet == getGauntlet()) throw new PostconditionError("il n'as pas récupéré de gauntlet(get)");
+	}
+	
 	@Override
 	public void step() {
 		//1.pre
@@ -95,6 +135,8 @@ public class PlayerContractClone extends CharacterContractClone implements Playe
 				case NEUTRAL : break;
 				case DIGL : {clone.getDelegate().getEnvi().dig(clone.getWdt()-1, clone.getHgt()-1);clone.getEngine().getHoles().add(new Hole(clone.getWdt()-1, clone.getHgt()-1,0));break;}
 				case DIGR : {clone.getDelegate().getEnvi().dig(clone.getWdt()+1, clone.getHgt()-1);clone.getEngine().getHoles().add(new Hole(clone.getWdt()+1, clone.getHgt()-1,0));break;}
+				case HITR : {clone.hitRight();break;}
+				case HITL : {clone.hitLeft();break;}
 			}
 		}
 		if(getEngine().getEnvi().getCellNature(clone.getWdt(), clone.getHgt()-1) == Cell.TLP) {
@@ -199,6 +241,62 @@ public class PlayerContractClone extends CharacterContractClone implements Playe
 	@Override
 	public PlayerService clonePlayer2() {
 		return null;//never used
+	}
+	
+	@Override
+	public void hitLeft() {
+		//1.pre
+		if(!hasGauntlet()) throw new PreconditionError("le joueur n'as pas de gauntlet");
+		//2.checkInvariants
+		checkInvariants();		
+		//3.capture
+		ArrayList<GuardService> guards_atpre = getEngine().getGuards();
+		//4.run
+		delegate.hitLeft();
+		//5.checkInvariants
+		checkInvariants();
+		//6.post
+		for(GuardService g : guards_atpre) {
+			if(g.getWdt() < getWdt() && g.getHgt() == getHgt()) {
+				for(int i = g.getWdt()+1;i<getWdt();i++) {
+					if(getEngine().getEnvi().getCellContent(i, getHgt()).getGuard() == null) {
+						continue;
+					}
+					if(i == getWdt()-1 &&
+					   getEngine().getEnvi().getCellContent(i, getHgt()).getGuard() == null) {
+						if(getEngine().getGuards().contains(g)) throw new PostconditionError("le guard n'as pas été tué à gauche");
+					}
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void hitRight() {
+		//1.pre
+		if(!hasGauntlet()) throw new PreconditionError("le joueur n'as pas de gauntlet");
+		//2.checkInvariants
+		checkInvariants();
+		//3.capture
+		ArrayList<GuardService> guards_atpre = getEngine().getGuards();
+		//4.run
+		delegate.hitRight();
+		//5.checkInvariants
+		checkInvariants();
+		//6.post
+		for(GuardService g : guards_atpre) {
+			if(g.getWdt() > getWdt() && g.getHgt() == getHgt()) {
+				for(int i = g.getWdt()-1;i>getWdt();i--) {
+					if(getEngine().getEnvi().getCellContent(i, getHgt()).getGuard() == null) {
+						continue;
+					}
+					if(i == getWdt()+1 &&
+					   getEngine().getEnvi().getCellContent(i, getHgt()).getGuard() == null) {
+						if(getEngine().getGuards().contains(g)) throw new PostconditionError("le guard n'as pas été tué à droite");
+					}
+				}
+			}
+		}
 	}
 	
 }

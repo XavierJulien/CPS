@@ -49,6 +49,7 @@ public class EnvironnementImplBug extends ScreenImpl implements EnvironnementSer
 			case MTL : return "▩";
 			case LAD : return "H";
 			case HDR : return "─";
+			case TLP : return "▣";
 		}
 		return null;
 	}
@@ -69,12 +70,6 @@ public class EnvironnementImplBug extends ScreenImpl implements EnvironnementSer
 			}
 			s+= "\n";
 		}
-		/*for(int i = height-1; i >= 0;i--) {
-			for(int j = 0;j < width;j++) {
-				s+=" "+cellcont(getCellContent(j, i))+" ";
-			}
-			s+= "\n";
-		}*/
 		return s;
 	}
 }

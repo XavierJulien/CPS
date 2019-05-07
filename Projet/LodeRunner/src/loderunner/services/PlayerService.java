@@ -1,12 +1,14 @@
 package loderunner.services;
 
 import loderunner.data.Coord;
+import loderunner.data.Item;
 
 public interface PlayerService extends CharacterService{
 	
 	/* Observators */
 	public EngineService getEngine();
-	
+	public boolean hasGauntlet();
+	public Item getGauntlet();
 	/* Constructors */
 	/*    EMPTY     */
 	
@@ -14,6 +16,16 @@ public interface PlayerService extends CharacterService{
 	/*   EMPTY   */
 	
 	/* Operators */
+	
+	/**
+	 * pre setGauntlet(g) require 
+	 * 		g != null && 
+	 * 		g.getNature() == ItemType.Gauntlet &&
+	 * 		hasGauntlet() == false
+	 */
+	public void setGauntlet(Item gauntlet);
+	public void hitRight();
+	public void hitLeft();
 	public void init(EngineService e,Coord c);
 	/**
 	 * post :  	getEnvi().getCellNature(player.getWdt()@pre,player.getHgt()@pre) \not \in {LAD,HDR} &&

@@ -1,5 +1,6 @@
 package loderunner.data;
 
 public enum ItemType {
-	Treasure; //Tresor
+	Treasure, //Tresor
+	Gauntlet  //Gant de l'infinité
 }

@@ -29,6 +29,10 @@ public class GuardContract extends CharacterContract implements GuardService {
 		return delegate;
 	}
 	
+	public Item getTreasure() {
+		return delegate.getTreasure();
+	}
+	
 	public void checkInvariants() {
 		super.checkInvariants();
 		
@@ -149,18 +153,20 @@ public class GuardContract extends CharacterContract implements GuardService {
 		 * 		implies getBehaviour() == RIGHT
 		 * 
 		 **/
-		if ((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD && (getTarget().getWdt() > getWdt()) && 
+		if ((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD && 
+		    (getTarget().getWdt() > getWdt()) && 
 			((getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT && 
 			  getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
-			  getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.TLP && 
+			  getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.TLP &&
+			  getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.LAD &&
 			  getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() == null) && 
 			 Math.abs(getTarget().getWdt()-getWdt()) > Math.abs(getTarget().getHgt()-getHgt())))
 			||
 			((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HOL || 
-			  getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL || 
-			  getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT ||
-			  getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.TLP ||
-			  getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null) && 
+			 (getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL && getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD) || 
+			 (getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT && getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD) || 
+			 (getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.TLP && getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD) || 
+			 getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null) && 
 			getTarget().getWdt() > getWdt())) {
 				if (getBehaviour() != Command.RIGHT)
 					throw new InvariantError("Le behaviour ne renvoie pas RIGHT alors qu'il devrait");
@@ -380,7 +386,7 @@ public class GuardContract extends CharacterContract implements GuardService {
 				edit.setNature(i, j, getEngine().getEnvi().getCellNature(i, j));
 			}
 		}
-		engine_atpre.init(edit, new Coord(getEngine().getPlayer().getWdt(),getEngine().getPlayer().getHgt()), guards_atpre_without_self, getEngine().getTreasures(),getEngine().getTeleporteurs());
+		engine_atpre.init(edit, new Coord(getEngine().getPlayer().getWdt(),getEngine().getPlayer().getHgt()), guards_atpre_without_self, getEngine().getTreasures(),getEngine().getTeleporteurs(),getEngine().getGauntlet());
 		PlayerService target_atpre = getTarget();
 		GuardService guard_atpre = new GuardImpl(getId());
 		for(int i = 0;i<engine_atpre.getGuards().size();i++) {

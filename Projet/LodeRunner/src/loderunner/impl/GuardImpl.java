@@ -43,6 +43,11 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 	}
 
 	@Override
+	public Item getTreasure() {
+		return treasure;
+	}
+	
+	@Override
 	public boolean hasItem() {
 		if(treasure != null) return true;
 		return false;
@@ -67,10 +72,9 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 					nat_under==Cell.MTL ||
 					nat_under==Cell.TLP ||
 					getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null){
-						System.out.println("sur une "+nat_under);
-								if(target.getWdt()-getWdt() > 0) return Command.RIGHT;
-								if(target.getWdt()-getWdt() < 0) return Command.LEFT;
-								if(target.getWdt()-getWdt() == 0) return Command.NEUTRAL;
+						if(target.getWdt()-getWdt() > 0) return Command.RIGHT;
+						if(target.getWdt()-getWdt() < 0) return Command.LEFT;
+						if(target.getWdt()-getWdt() == 0) return Command.NEUTRAL;
 					}
 				if(nat_under==Cell.LAD) {
 					if (Math.abs(target.getWdt()-getWdt()) > Math.abs(target.getHgt()-getHgt())){
@@ -173,8 +177,6 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 					setWdt(getWdt()-1);
 					setHgt(getHgt()+1);
 					timeInHole=0;
-					if(getEnvi().getCellContent(getWdt(), getHgt()+1).getCharacter() != null) {
-					}
 				}
 			}
 		}
@@ -221,7 +223,6 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			//nothing to do ?
 		}else {
 			Command behaviour = getBehaviour();
-			System.out.println(behaviour);
 			switch (behaviour) {
 				case LEFT:
 					goLeft();

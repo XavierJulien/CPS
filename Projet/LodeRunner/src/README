@@ -1,3 +1,25 @@
-Du coup il reste a faire : 
--terminer le jeu de base
--Faire le rapport
+Commandes de Bases : 
+
+Pour entrer une commande faire <commande> puis <Entrée>.
+
+-Déplacement :
+--Z : haut
+--S : bas
+--Q : gauche
+--D : droite
+
+-Creuser :
+--A : creuser à droite
+--E : creuser à gauche
+
+
+Edition de niveau :
+4 3 	-> width et height
+.... -|
+====  | -> cellnature de chaque case
+XXXX -| 
+2 2  	-> position du player
+0,2;1,2 -> position des trésors séparés par wdt,hgt;wdt,hgt
+3,2 	-> position des guardes séparés par wdt,hgt;wdt,hgt
+0,1;2,2 -> position des téléporteurs (idem) mais fonctionne par paires
+2 2 	-> Gant de l'infinité : permet de bloquer 

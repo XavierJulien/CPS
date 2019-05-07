@@ -25,6 +25,10 @@ public class GuardContractClone extends CharacterContract implements GuardServic
 		this.delegate = delegate;
 	}
 	
+	public Item getTreasure() {
+		return delegate.getTreasure();
+	}
+	
 	public void checkInvariants() {
 		super.checkInvariants();
 		
@@ -374,7 +378,7 @@ public class GuardContractClone extends CharacterContract implements GuardServic
 				edit.setNature(i, j, getEngine().getEnvi().getCellNature(i, j));
 			}
 		}
-		engine_atpre.init(edit, new Coord(getEngine().getPlayer().getWdt(),getEngine().getPlayer().getHgt()), guards_atpre_without_self, getEngine().getTreasures(),getEngine().getTeleporteurs());
+		engine_atpre.init(edit, new Coord(getEngine().getPlayer().getWdt(),getEngine().getPlayer().getHgt()), guards_atpre_without_self, getEngine().getTreasures(),getEngine().getTeleporteurs(),getEngine().getGauntlet());
 		PlayerService target_atpre = getTarget();
 		GuardService guard_atpre = new GuardImpl(getId());
 		for(int i = 0;i<engine_atpre.getGuards().size();i++) {
