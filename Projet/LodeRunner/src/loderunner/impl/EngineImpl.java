@@ -101,7 +101,6 @@ public class EngineImpl implements EngineService{
 		for(Coord co : guards) {
 			GuardContract guard = new GuardContract(new GuardImpl(-1));
 			guard.init(this, co.getX(), co.getY(), getPlayer());
-			
 			envi.getCellContent(co.getX(), co.getY()).setGuard(guard);		
 			this.guards.add(guard);
 			

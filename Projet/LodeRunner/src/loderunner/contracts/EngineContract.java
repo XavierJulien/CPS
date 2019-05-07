@@ -233,14 +233,17 @@ public class EngineContract extends EngineDecorator{
 			for(Item treasure : treasure_capture) {
 				if(treasure.getCol() == getPlayer().getWdt() && treasure.getHgt() == getPlayer().getHgt()) throw new PostconditionError("un trésor aurait du disparaître");
 			}
+			for(Item treasure : treasure_capture) {
+				for(GuardService g : getGuards()){
+					if((treasure.getCol() != getPlayer().getWdt() || 
+						treasure.getHgt() != getPlayer().getHgt() ||
+						treasure.getCol() != g.getWdt() || 
+						treasure.getHgt() != g.getHgt()) && !getTreasures().contains(treasure)) throw new PostconditionError("un trésor aurait du rester");
+				}
+				
+			}
 		}
 		//verifier que les tresors ne disparaissent pas ceux qui ne doivent pas 
-		/*for(GuardService g : getGuards()) {
-			if(g.getWdt()-getPlayer().getWdt() == -1 || g.getHgt()-getPlayer().getHgt() == -1 || 
-			   g.getWdt()-getPlayer().getWdt() == 1 || g.getHgt()-getPlayer().getHgt() == 1) {
-				if(getStatus() != GameState.Loss) throw new PostconditionError("le player aurait du mourir");
-			}
-		}*/
 	}
 	
 }

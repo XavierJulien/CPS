@@ -9,6 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import loderunner.contracts.CharacterContract;
 import loderunner.contracts.EditableScreenContract;
 import loderunner.contracts.EngineContract;
 import loderunner.contracts.PlayerContract;
@@ -22,36 +23,40 @@ import loderunner.impl.PlayerImpl;
 import loderunner.services.EditableScreenService;
 import loderunner.services.PlayerService;
 
-public class PlayerTest {
+public class PlayerTest extends CharacterTest{
 	
 	private EngineContract engine;
 	private PlayerService player;
-	private EditableScreenService edit;
+	private EditableScreenService es;
 	
-	
-	
+	public PlayerTest() {
+		player = null;
+	}
+		
 	@Before
 	public void beforeTests() {
 		engine = new EngineContract(new EngineImpl());
-		//engine.init(builder.buildMapTestPlayer("src/loderunner/maps/test0.txt"), null,null,null);
-		edit = new EditableScreenContract(new EditableScreenImpl());
+		System.out.println("passé par la ");
+		es = new EditableScreenContract(new EditableScreenImpl());
 		player = new PlayerContract(new PlayerImpl());
-		edit.init(5, 3);
-		for(int i = 0;i<edit.getWidth();i++) {
-				edit.setNature(i, 0, Cell.MTL);
-				edit.setNature(i, 1, Cell.PLT);
+		es.init(15, 10);
+		for(int i = 0;i<es.getWidth();i++) {
+				es.setNature(i, 0, Cell.MTL);
+				es.setNature(i, 1, Cell.PLT);
 		}
-		engine.init(edit, new Coord(2,2), new ArrayList<>(), new ArrayList<>());
+		engine.init(es, new Coord(2,2), new ArrayList<>(), new ArrayList<>());
+		c = (CharacterContract)player;
+		envi = engine.getEnvi();
 	}
 	
 	@After
 	public final void afterTests() {
 		engine = null;
-		edit = null;
+		es = null;
 		player = null;
 	}
 	
-	public void checkinv() {
+	public void checkinvP() {
 		assertTrue(player.getEngine().getEnvi().getCellNature(player.getWdt(), player.getHgt()) == Cell.EMP
 				|| player.getEngine().getEnvi().getCellNature(player.getWdt(), player.getHgt()) == Cell.HOL
 				|| player.getEngine().getEnvi().getCellNature(player.getWdt(), player.getHgt()) == Cell.LAD
@@ -84,7 +89,7 @@ public class PlayerTest {
 	public void preInitFail() {
 		//Conditions Initiales : None
 		//Opération(s)
-		player.init(engine, new Coord(5,5));
+		player.init(engine, new Coord(15,5));
 		//Oracle : Error
 	}
 	
@@ -93,7 +98,7 @@ public class PlayerTest {
 	 */
 	
 	@Test
-	public void StepPass() {
+	public void transitionStep() {
 		//Conditions Initiales  
 		engine.addCommand(Command.DIGL);
 		player = engine.getDelegate().getPlayer();
@@ -101,11 +106,11 @@ public class PlayerTest {
 		player.step();
 		//Oracle 
 		assertTrue(engine.getEnvi().getCellNature(player.getWdt()-1, player.getHgt()-1) == Cell.HOL);
-		checkinv();
+		checkinvP();
 	}
 	
 	@Test
-	public void StepPass2() {
+	public void transitionStep2() {
 		//Conditions Initiales
 		engine.addCommand(Command.DIGR);
 		player = engine.getDelegate().getPlayer();
@@ -113,11 +118,11 @@ public class PlayerTest {
 		player.step();
 		//Oracle 
 		assertTrue(engine.getEnvi().getCellNature(player.getWdt()+1, player.getHgt()-1) == Cell.HOL);
-		checkinv();
+		checkinvP();
 	}
 	
 	@Test
-	public void StepPass3() {
+	public void transitionStep3() {
 		//Conditions Initiales
 		engine.addCommand(Command.DOWN);
 		player = engine.getDelegate().getPlayer();
@@ -128,11 +133,11 @@ public class PlayerTest {
 		//Oracle 
 		assertEquals(wdt_capture, player.getWdt());
 		assertEquals(hgt_capture, player.getHgt());
-		checkinv();
+		checkinvP();
 	}
 	
 	@Test
-	public void StepPass4() {
+	public void transitionStep4() {
 		//Conditions Initiales
 		engine.addCommand(Command.UP);
 		player = engine.getDelegate().getPlayer();
@@ -143,11 +148,11 @@ public class PlayerTest {
 		//Oracle 
 		assertEquals(wdt_capture, player.getWdt());
 		assertEquals(hgt_capture, player.getHgt());
-		checkinv();
+		checkinvP();
 	}
 	
 	@Test
-	public void StepPass5() {
+	public void transitionStep5() {
 		//Conditions Initiales
 		engine.addCommand(Command.LEFT);
 		player = engine.getDelegate().getPlayer();
@@ -158,11 +163,11 @@ public class PlayerTest {
 		//Oracle 
 		assertEquals(wdt_capture-1, player.getWdt());
 		assertEquals(hgt_capture, player.getHgt());
-		checkinv();
+		checkinvP();
 	}
 	
 	@Test
-	public void StepPass6() {
+	public void transitionStep6() {
 		//Conditions Initiales
 		engine.addCommand(Command.RIGHT);
 		player = engine.getDelegate().getPlayer();
@@ -173,7 +178,7 @@ public class PlayerTest {
 		//Oracle 
 		assertEquals(wdt_capture+1, player.getWdt());
 		assertEquals(hgt_capture, player.getHgt());
-		checkinv();
+		checkinvP();
 	}
 	
 	/**
@@ -181,7 +186,7 @@ public class PlayerTest {
 	 */
 	
 	@Test
-	public void StepStepPass() {
+	public void paireStepStep() {
 		//Conditions Initiales
 		engine.addCommand(Command.RIGHT);
 		engine.addCommand(Command.LEFT);
@@ -194,11 +199,11 @@ public class PlayerTest {
 		//Oracle 
 		assertEquals(wdt_capture, player.getWdt());
 		assertEquals(hgt_capture, player.getHgt());
-		checkinv();
+		checkinvP();
 	}
 	
 	@Test
-	public void StepStepPass2() {
+	public void paireStepStep2() {
 		//Conditions Initiales
 		engine.addCommand(Command.DOWN);
 		engine.addCommand(Command.UP);
@@ -211,11 +216,11 @@ public class PlayerTest {
 		//Oracle 
 		assertEquals(wdt_capture, player.getWdt());
 		assertEquals(hgt_capture, player.getHgt());
-		checkinv();
+		checkinvP();
 	}
 	
 	@Test
-	public void StepStepPass3() {
+	public void paireStepStep3() {
 		//Conditions Initiales
 		engine.addCommand(Command.LEFT);
 		engine.addCommand(Command.LEFT);
@@ -228,11 +233,11 @@ public class PlayerTest {
 		//Oracle 
 		assertEquals(wdt_capture-2, player.getWdt());
 		assertEquals(hgt_capture, player.getHgt());
-		checkinv();
+		checkinvP();
 	}
 	
 	@Test
-	public void StepStepPass4() {
+	public void paireStepStep4() {
 		//Conditions Initiales
 		engine.addCommand(Command.DIGL);
 		engine.addCommand(Command.LEFT);
@@ -246,11 +251,11 @@ public class PlayerTest {
 		assertEquals(wdt_capture-1, player.getWdt());
 		assertEquals(hgt_capture, player.getHgt());
 		assertEquals(Cell.HOL, engine.getEnvi().getCellNature(player.getWdt()-1, player.getHgt()-1));
-		checkinv();
+		checkinvP();
 	}
 	
 	@Test
-	public void StepStepPass5() {
+	public void paireStepStep5() {
 		//Conditions Initiales
 		engine.addCommand(Command.DIGL);
 		engine.addCommand(Command.DIGR);
@@ -265,14 +270,14 @@ public class PlayerTest {
 		assertEquals(hgt_capture, player.getHgt());
 		assertEquals(Cell.HOL, engine.getEnvi().getCellNature(player.getWdt()-1, player.getHgt()-1));
 		assertEquals(Cell.HOL, engine.getEnvi().getCellNature(player.getWdt()+1, player.getHgt()-1));
-		checkinv();
+		checkinvP();
 	}
 	/**
 	* ETATS REMARQUABLES
 	*/
 	
 	@Test
-	public void EtatRemarquable() {
+	public void etatRemarquableFallInHol() {
 		//Conditions Initiales
 		engine.addCommand(Command.NEUTRAL);
 		engine.addCommand(Command.LEFT);
@@ -288,7 +293,7 @@ public class PlayerTest {
 		assertEquals(wdt_capture-1, player.getWdt());
 		assertEquals(hgt_capture-1, player.getHgt());
 		assertEquals(Cell.HOL, engine.getEnvi().getCellNature(player.getWdt(), player.getHgt()));
-		checkinv();
+		checkinvP();
 	}
 
 	/**
@@ -296,7 +301,7 @@ public class PlayerTest {
 	 */
 	
 	@Test
-	public void Scenario() {
+	public void scenario() {
 		//Conditions Initiales
 		engine.addCommand(Command.NEUTRAL);
 		engine.addCommand(Command.RIGHT);
@@ -330,7 +335,7 @@ public class PlayerTest {
 		assertEquals(Cell.HOL, engine.getEnvi().getCellNature(player.getWdt()-3, player.getHgt()));
 		assertEquals(Cell.HOL, engine.getEnvi().getCellNature(player.getWdt(), player.getHgt()));
 		
-		checkinv();
+		checkinvP();
 	}
 	
 }
