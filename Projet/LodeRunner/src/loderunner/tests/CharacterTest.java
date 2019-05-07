@@ -16,13 +16,14 @@ import loderunner.impl.CharacterImpl;
 import loderunner.impl.EditableScreenImpl;
 import loderunner.impl.EnvironnementImpl;
 import loderunner.services.CharacterService;
+import loderunner.services.EditableScreenService;
 import loderunner.services.EnvironnementService;
 
 public class CharacterTest {
 		
 	protected CharacterService c;
 	protected EnvironnementService envi;
-	protected EditableScreenContract es;
+	protected EditableScreenService es;
 	
 
 	@Before

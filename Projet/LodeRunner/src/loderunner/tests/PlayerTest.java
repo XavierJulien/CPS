@@ -20,19 +20,17 @@ import loderunner.errors.PreconditionError;
 import loderunner.impl.EditableScreenImpl;
 import loderunner.impl.EngineImpl;
 import loderunner.impl.PlayerImpl;
-import loderunner.services.EditableScreenService;
 import loderunner.services.PlayerService;
 
 public class PlayerTest extends CharacterTest{
 	
 	private EngineContract engine;
 	private PlayerService player;
-	private EditableScreenService es;
+	
 	
 	public PlayerTest() {
 		player = null;
 	}
-		
 	@Before
 	public void beforeTests() {
 		engine = new EngineContract(new EngineImpl());
