@@ -16,6 +16,8 @@ import loderunner.contracts.PlayerContract;
 import loderunner.data.Cell;
 import loderunner.data.Command;
 import loderunner.data.Coord;
+import loderunner.data.Item;
+import loderunner.data.ItemType;
 import loderunner.errors.PreconditionError;
 import loderunner.impl.EditableScreenImpl;
 import loderunner.impl.EngineImpl;
@@ -26,7 +28,10 @@ public class PlayerTest extends CharacterTest{
 	
 	private EngineContract engine;
 	private PlayerService player;
+<<<<<<< HEAD
 	
+=======
+>>>>>>> 3bb6dcc4e09729cb18c16ecec113ebf856391afe
 	
 	public PlayerTest() {
 		player = null;
@@ -42,9 +47,14 @@ public class PlayerTest extends CharacterTest{
 				es.setNature(i, 0, Cell.MTL);
 				es.setNature(i, 1, Cell.PLT);
 		}
-		engine.init(es, new Coord(2,2), new ArrayList<>(), new ArrayList<>());
-		c = (CharacterContract)player;
+		ArrayList<Coord> g_list = new ArrayList<>();
+		ArrayList<Item> item_list = new ArrayList<>();
+		g_list.add(new Coord(8, 2));
+		item_list.add(new Item(14,2,ItemType.Treasure));
+		engine.init(es, new Coord(2,2), g_list, item_list);
 		envi = engine.getEnvi();
+		player = engine.getPlayer();
+		c = (CharacterContract)player;
 	}
 	
 	@After
@@ -99,7 +109,7 @@ public class PlayerTest extends CharacterTest{
 	public void transitionStep() {
 		//Conditions Initiales  
 		engine.addCommand(Command.DIGL);
-		player = engine.getDelegate().getPlayer();
+		player = engine.getPlayer();
 		//Opération(s)
 		player.step();
 		//Oracle 
@@ -111,7 +121,6 @@ public class PlayerTest extends CharacterTest{
 	public void transitionStep2() {
 		//Conditions Initiales
 		engine.addCommand(Command.DIGR);
-		player = engine.getDelegate().getPlayer();
 		//Opération(s)
 		player.step();
 		//Oracle 
@@ -123,7 +132,6 @@ public class PlayerTest extends CharacterTest{
 	public void transitionStep3() {
 		//Conditions Initiales
 		engine.addCommand(Command.DOWN);
-		player = engine.getDelegate().getPlayer();
 		int wdt_capture = player.getWdt();
 		int hgt_capture = player.getHgt();
 		//Opération(s)
@@ -138,7 +146,6 @@ public class PlayerTest extends CharacterTest{
 	public void transitionStep4() {
 		//Conditions Initiales
 		engine.addCommand(Command.UP);
-		player = engine.getDelegate().getPlayer();
 		int wdt_capture = player.getWdt();
 		int hgt_capture = player.getHgt();
 		//Opération(s)
@@ -153,7 +160,6 @@ public class PlayerTest extends CharacterTest{
 	public void transitionStep5() {
 		//Conditions Initiales
 		engine.addCommand(Command.LEFT);
-		player = engine.getDelegate().getPlayer();
 		int wdt_capture = player.getWdt();
 		int hgt_capture = player.getHgt();
 		//Opération(s)
@@ -168,7 +174,6 @@ public class PlayerTest extends CharacterTest{
 	public void transitionStep6() {
 		//Conditions Initiales
 		engine.addCommand(Command.RIGHT);
-		player = engine.getDelegate().getPlayer();
 		int wdt_capture = player.getWdt();
 		int hgt_capture = player.getHgt();
 		//Opération(s)
@@ -188,7 +193,6 @@ public class PlayerTest extends CharacterTest{
 		//Conditions Initiales
 		engine.addCommand(Command.RIGHT);
 		engine.addCommand(Command.LEFT);
-		player = engine.getDelegate().getPlayer();
 		int wdt_capture = player.getWdt();
 		int hgt_capture = player.getHgt();
 		//Opération(s)
@@ -205,7 +209,6 @@ public class PlayerTest extends CharacterTest{
 		//Conditions Initiales
 		engine.addCommand(Command.DOWN);
 		engine.addCommand(Command.UP);
-		player = engine.getDelegate().getPlayer();
 		int wdt_capture = player.getWdt();
 		int hgt_capture = player.getHgt();
 		//Opération(s)
@@ -222,7 +225,6 @@ public class PlayerTest extends CharacterTest{
 		//Conditions Initiales
 		engine.addCommand(Command.LEFT);
 		engine.addCommand(Command.LEFT);
-		player = engine.getDelegate().getPlayer();
 		int wdt_capture = player.getWdt();
 		int hgt_capture = player.getHgt();
 		//Opération(s)
@@ -239,7 +241,6 @@ public class PlayerTest extends CharacterTest{
 		//Conditions Initiales
 		engine.addCommand(Command.DIGL);
 		engine.addCommand(Command.LEFT);
-		player = engine.getDelegate().getPlayer();
 		int wdt_capture = player.getWdt();
 		int hgt_capture = player.getHgt();
 		//Opération(s)
@@ -257,7 +258,6 @@ public class PlayerTest extends CharacterTest{
 		//Conditions Initiales
 		engine.addCommand(Command.DIGL);
 		engine.addCommand(Command.DIGR);
-		player = engine.getDelegate().getPlayer();
 		int wdt_capture = player.getWdt();
 		int hgt_capture = player.getHgt();
 		//Opération(s)
@@ -273,6 +273,13 @@ public class PlayerTest extends CharacterTest{
 	/**
 	* ETATS REMARQUABLES
 	*/
+	//rencontre un autre guard
+	//rencontre le joueur
+	//rencontre un trésor : le ramasse
+	
+	//arrive sur un teleporteur
+	
+	
 	
 	@Test
 	public void etatRemarquableFallInHol() {
@@ -280,7 +287,6 @@ public class PlayerTest extends CharacterTest{
 		engine.addCommand(Command.NEUTRAL);
 		engine.addCommand(Command.LEFT);
 		engine.addCommand(Command.DIGL);
-		player = engine.getDelegate().getPlayer();
 		int wdt_capture = player.getWdt();
 		int hgt_capture = player.getHgt();
 		//Opération(s)
@@ -312,7 +318,6 @@ public class PlayerTest extends CharacterTest{
 		engine.addCommand(Command.RIGHT);
 		engine.addCommand(Command.LEFT);
 		engine.addCommand(Command.LEFT);
-		player = engine.getDelegate().getPlayer();
 		int wdt_capture = player.getWdt();
 		int hgt_capture = player.getHgt();
 		//Opération(s)

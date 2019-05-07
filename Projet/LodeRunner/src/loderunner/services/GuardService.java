@@ -85,47 +85,6 @@ public interface GuardService extends CharacterService {
 	 */
 	  
 	  
-	 /**
-	 * Si le garde est sur LAD et que la cible est strictement au-dessus, la commande du garde est d'aller vers le haut
-	 */
-	// ((getCellNature(getEnvi(G),getWdt(G),getHgt(G)==LAD)) \and (getHgt(getTarget(G)) > getHgt(G))) => getBehaviour()==UP
-	/**
-	 * Si le garde est sur LAD et que la cible est strictement en-dessous, la commande du garde est d'aller vers le bas
-	 */
-	// ((getCellNature(getEnvi(G),getWdt(G),getHgt(G)==LAD)) \and (getHgt(getTarget(G)) < getHgt(G))) => getBehaviour()==DOWN
-	/**
-	 * Si le garde est sur HOL/HDR ou au-dessus d'une case vide, sa commande est :										 - 
-	 */
-	/**
-	 * - LEFT si la cible est strictement à gauche
-	 */
-	// ((getCellNature(getEnvi(G),getWdt(G),getHgt(G)) \in {HOL/HDR}
-	//   \or (getCellNature(getEnvi(G),getWdt(G),getHgt(G)-1)==EMP 
-	//   \or \not \exists Character c \in getCharacters(getCellContent(getEnvi(G),getWdt(G),getHgt(G)-1)) 
-	//   \and (getWdt(getTarget(G)) < getWdt(G)))) => getBehaviour()==LEFT
-	/**
-	 * - RIGHT si la cible est strictement à droite
-	 */
-	// ((getCellNature(getEnvi(G),getWdt(G),getHgt(G)) \in {HOL/HDR}
-	//   \or (getCellNature(getEnvi(G),getWdt(G),getHgt(G)-1)==EMP 
-	//   \or \not \exists Character c \in getCharacters(getCellContent(getEnvi(G),getWdt(G),getHgt(G)-1)) 
-	//   \and (getWdt(getTarget(G)) > getWdt(G)))) => getBehaviour()==RIGHT
-	/**
-	 * - NEUTRAL sinon
-	 */
-	// ((getCellNature(getEnvi(G),getWdt(G),getHgt(G)) \in {HOL/HDR}
-	//   \or (getCellNature(getEnvi(G),getWdt(G),getHgt(G)-1)==EMP 
-	//   \or \not \exists Character c \in getCharacters(getCellContent(getEnvi(G),getWdt(G),getHgt(G)-1)) 
-	//   \and (getWdt(getTarget(G)) == getWdt(G)))) => getBehaviour()==NEUTRAL
-	/**
-	 * Si le garde est sur LAD et que la case en-dessous est non-libre alors sa
-	 * commande se fait sur l'axe sur lequel la distance à la cible est la plus courte
-	 */
-	// ((getCellNature(getEnvi(G),getWdt(G),getHgt(G)) == LAD) 
-	//   \and ((getCellNature(getEnvi(G),getWdt(G),getHgt(G)-1) \not \in {EMP,LAD,HDR,HOL} 
-	//   \or \exists Character c \in getCharacter(getCellContent(getEnvi(G),getWdt(G),getHgt(G)-1)))))
-	//   \and 
-	//   => 
 
 
 
