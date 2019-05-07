@@ -24,12 +24,10 @@ public class CharacterTest {
 	protected CharacterService c;
 	protected EnvironnementService envi;
 	protected EditableScreenService es;
-
 	
 
 	@Before
 	public void beforeTests() {
-		System.out.println("passé");
 		c = new CharacterContract(new CharacterImpl());
 		envi = new EnvironnementContract(new EnvironnementImpl());
 		es = new EditableScreenContract(new EditableScreenImpl());
@@ -48,7 +46,7 @@ public class CharacterTest {
 		es = null;
 	}
 	
-	public void checkinvC() {
+	public void checkinv() {
 		assertTrue(c.getEnvi().getCellNature(c.getWdt(), c.getHgt()) == Cell.EMP
 				|| c.getEnvi().getCellNature(c.getWdt(), c.getHgt()) == Cell.HOL
 				|| c.getEnvi().getCellNature(c.getWdt(), c.getHgt()) == Cell.LAD
@@ -64,7 +62,6 @@ public class CharacterTest {
 	 **/
 	@Test
 	public void preInitPass() {
-
 		//Conditions Initiales :
 		//Opération(s)
 		c.init(envi,5,2,-1);
@@ -90,7 +87,7 @@ public class CharacterTest {
 		//ORACLE
 		/*post*/
 		/*inv*/
-		checkinvC();
+		checkinv();
 	}
 	
 	@Test
@@ -137,7 +134,7 @@ public class CharacterTest {
 			}
 		}
 		/*inv*/
-		checkinvC();
+		checkinv();
 	}
 	
 	@Test
@@ -184,7 +181,7 @@ public class CharacterTest {
 			}
 		}
 		/*inv*/
-		checkinvC();
+		checkinv();
 	}
 	
 	@Test
@@ -216,7 +213,7 @@ public class CharacterTest {
 			}
 		}
 		/*inv*/
-		checkinvC();
+		checkinv();
 	}
 	
 	@Test
@@ -251,7 +248,7 @@ public class CharacterTest {
 			}
 		}
 		/*inv*/
-		checkinvC();
+		checkinv();
 	}
 	
 	
@@ -271,10 +268,10 @@ public class CharacterTest {
 		//op
 		c.goLeft();
 		//Oracle :
-		// est ce qu'il faut tout réécrire ou seulement ces deux ligne plus le checkinvCariant suffit ?
+		// est ce qu'il faut tout réécrire ou seulement ces deux ligne plus le checkinvariant suffit ?
 		assertTrue(c.getWdt() == wdt_capture-1);
 		assertTrue(c.getHgt() == hgt_capture);
-		checkinvC();
+		checkinv();
 	}
 	
 	//Le caractère a de la place pour se déplacer à gauche
@@ -287,10 +284,10 @@ public class CharacterTest {
 		//op
 		c.goLeft();
 		//Oracle :
-		// est ce qu'il faut tout réécrire ou seulement ces deux ligne plus le checkinvCariant suffit ?
+		// est ce qu'il faut tout réécrire ou seulement ces deux ligne plus le checkinvariant suffit ?
 		assertTrue(c.getWdt() == wdt_capture+1);
 		assertTrue(c.getHgt() == hgt_capture);
-		checkinvC();
+		checkinv();
 	}
 	
 	/**
@@ -308,7 +305,7 @@ public class CharacterTest {
 		//ORACLE
 		assertTrue(c.getWdt() == wdt_capture);
 		assertTrue(c.getHgt() == hgt_capture);
-		checkinvC();
+		checkinv();
 	}
 	
 	@Test
@@ -323,7 +320,7 @@ public class CharacterTest {
 		//ORACLE
 		assertTrue(c.getWdt() == wdt_capture);
 		assertTrue(c.getHgt() == hgt_capture);
-		checkinvC();
+		checkinv();
 	}
 	
 	@Test
@@ -341,7 +338,7 @@ public class CharacterTest {
 		//ORACLE 
 		assertTrue(c.getWdt() == wdt_capture+1);
 		assertTrue(c.getHgt() == hgt_capture+1);
-		checkinvC();
+		checkinv();
 	}
 	
 	@Test
@@ -359,7 +356,7 @@ public class CharacterTest {
 		//ORACLE 
 		assertTrue(c.getWdt() == wdt_capture);
 		assertTrue(c.getHgt() == hgt_capture);
-		checkinvC();
+		checkinv();
 	}
 	
 	@Test
@@ -377,7 +374,12 @@ public class CharacterTest {
 		//ORACLE 
 		assertTrue(c.getWdt() == wdt_capture);
 		assertTrue(c.getHgt() == hgt_capture);
-		checkinvC();
+		checkinv();
 	}
+	
+	
+		
+
+
 
 }
