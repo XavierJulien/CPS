@@ -48,15 +48,11 @@ public class ScreenContract extends ScreenDecorator {
 		//1.pre
 		if(width<0) throw new PreconditionError("init : width est inférieur à 0.");
 		if(height<0) throw new PreconditionError("init : height est inférieur à 0.");
-		//2.checkInvariants
-		//none
-		//3.capture
-		//none
-		//4.run
+		//2.run
 		super.init(width, height);
-		//5.checkInvariants
-		//none
-		//6.post
+		//3.checkInvariants
+		checkInvariants();
+		//4.post
 		if(getHeight() != height) throw new PostconditionError("init : height est différent de getHeight()");
 		if(getWidth() != width) throw new PostconditionError("init : width est différent de getWidth()");
 		for(int i = 0;i<getWidth();i++) {
@@ -72,7 +68,7 @@ public class ScreenContract extends ScreenDecorator {
 		//1.pre
 		if(getCellNature(x, y) != Cell.PLT) throw new PreconditionError("dig : la case n'est pas un Cell.PLT");
 		//2.checkInvariants
-		//none
+		checkInvariants();
 		//3.capture
 		Cell[][] screen_capture = new Cell[getWidth()][getHeight()];
 		for(int i = 0;i<getWidth();i++) {
@@ -82,11 +78,10 @@ public class ScreenContract extends ScreenDecorator {
 				}
 			}
 		}
-		//none
 		//4.run
 		super.dig(x, y);
 		//5.checkInvariants
-		//none
+		checkInvariants();
 		//6.post
 		for(int i = 0;i<getWidth();i++) {
 			for(int j = 0;j<getHeight();j++) {
@@ -107,7 +102,7 @@ public class ScreenContract extends ScreenDecorator {
 		//1.pre
 		if(getCellNature(x, y) != Cell.HOL) throw new PreconditionError("dig : la case n'est pas un Cell.HOL");
 		//2.checkInvariants
-		//none
+		checkInvariants();
 		//3.capture
 		Cell[][] screen_capture = new Cell[getWidth()][getHeight()];
 		for(int i = 0;i<getWidth();i++) {
@@ -120,7 +115,7 @@ public class ScreenContract extends ScreenDecorator {
 		//4.run
 		super.fill(x, y);
 		//5.checkInvariants
-		//none
+		checkInvariants();
 		//6.post
 		for(int i = 0;i<getWidth();i++) {
 			for(int j = 0;j<getHeight();j++) {

@@ -34,6 +34,9 @@ public class EditableScreenContract extends ScreenContract implements EditableSc
 	
 	@Override
 	public boolean isPlayable() {
+		//1.pre
+		//none
+		//2.run
 		return delegate.isPlayable();
 	}
 
