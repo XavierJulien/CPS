@@ -372,6 +372,8 @@ public class EngineContract extends EngineDecorator{
 		for (GuardService g : getGuards()) {
 			GuardService newguard = new GuardImpl(g.getId());
 			newguard.init(this, g.getWdt(), g.getHgt(), player_capture);
+			if (g.hasItem())
+				newguard.setTreasure(g.getTreasure());
 			guards_capture.add(newguard);
 
 		}
@@ -409,17 +411,30 @@ public class EngineContract extends EngineDecorator{
 			}
 			for (GuardService g : getGuards()) {
 				if (i.getCol() == g.getWdt() && i.getHgt() == g.getHgt()) {
-					staying = false;
-					for (Item t : getTreasures()) {
-						if (i.equals(t))
-							throw new PostconditionError("un trésor n'a pas disparu de la liste alors qu'un garde est dans la même case");
+					GuardService gua = null;
+					for (GuardService gpre : guards_capture) {
+						if (g.getId() == gpre.getId()) {
+							System.out.println("inside");
+							gua = gpre;
+						}
+					}
+					if (!gua.hasItem()) {
+						System.out.println("HEREE");
+						System.out.println(gua.hasItem());
+						staying = false;
+						for (Item t : getTreasures()) {
+							if (i.equals(t))
+								throw new PostconditionError("un trésor n'a pas disparu de la liste alors qu'un garde sans trésor sur lui, est dans la même case");
+						}
+					}else {
+						System.out.println("Le garde a déjà un item");
 					}
 				}
 			}
 			if (staying) {
 				boolean ok = false;
 				for (Item t : getTreasures()) {
-					if (t.getCol() == i.getCol() && t.getHgt() == i.getHgt()) {
+					if (t.equals(i)) {
 						ok=true;
 						break;
 					}

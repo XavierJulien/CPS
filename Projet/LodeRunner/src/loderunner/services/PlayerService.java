@@ -10,10 +10,10 @@ public interface PlayerService extends CharacterService{
 	public boolean hasGauntlet();
 	public Item getGauntlet();
 	/* Constructors */
-	/*    EMPTY     */
+	/*    see contract     */
 	
 	/* Invariant */
-	/*   EMPTY   */
+	/*   see contract   */
 	
 	/* Operators */
 	
