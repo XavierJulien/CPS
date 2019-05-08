@@ -104,7 +104,7 @@ public class PlayerImplBug extends CharacterImpl implements PlayerService{
 		PlayerImplClone p = new PlayerImplClone();
 		EngineImplClone eng = new EngineImplClone();
 		EngineContractClone engContract = new EngineContractClone(eng);
-		EditableScreenImplClone edit = new EditableScreenImplClone();
+		EditableScreenImpl edit = new EditableScreenImpl();
 		edit.init(getEngine().getEnvi().getWidth(), getEngine().getEnvi().getHeight());
 		for(int i  = 0;i<edit.getWidth();i++) {
 			for(int j = 0;j<edit.getHeight();j++) {

@@ -12,11 +12,11 @@ public class EditableScreenImpl extends ScreenImpl implements EditableScreenServ
 			if(super.getCellNature(i, 0)!=Cell.MTL) {
 				 return false;
 			}
-		for(int j = 1;j<super.getHeight();j++) {
-			if(super.getCellNature(i, j)==Cell.HOL) {
-				 return false;
+			for(int j = 1;j<super.getHeight();j++) {
+				if(super.getCellNature(i, j)==Cell.HOL) {
+					 return false;
+				}
 			}
-		}
 		}
 		return true;
 	}
