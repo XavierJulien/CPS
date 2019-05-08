@@ -11,22 +11,22 @@ import loderunner.services.GuardService;
 import loderunner.services.PlayerService;
 
 public class GuardImpl extends CharacterImpl implements GuardService {
-	private static final AtomicInteger cpt = new AtomicInteger(0); 
-	
+	private static final AtomicInteger cpt = new AtomicInteger(0);
+
 	private final int id;
 	private PlayerService target;
 	private int timeInHole = 0;
 	private EngineService engine;
 	private Item treasure = null;
-	
+
 	public GuardImpl(int id) {
-		if (id==-1) {			
+		if (id==-1) {
 			this.id = cpt.incrementAndGet();
-		}else{			
+		}else{
 			this.id = id;
 		}
 	}
-	
+
 	@Override
 	public int getId() {
 		return id;
@@ -46,29 +46,29 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 	public Item getTreasure() {
 		return treasure;
 	}
-	
+
 	@Override
 	public boolean hasItem() {
 		if(treasure != null) return true;
 		return false;
 	}
-	
+
 	@Override
 	public void setTreasure(Item treasure) {
-		//1.pre 
+		//1.pre
 		if(treasure == null) throw new PreconditionError("setTreasure : trésor à null");
 		//2.run
 		this.treasure = treasure;
 	}
-	
-	
+
+
 	@Override
 	public Command getBehaviour() {
 		Cell nat = getEnvi().getCellNature(getWdt(), getHgt());
 		Cell nat_under = getEnvi().getCellNature(getWdt(), getHgt()-1);
 		switch(nat) {
 			case EMP : {
-				if (nat_under==Cell.PLT || 
+				if (nat_under==Cell.PLT ||
 					nat_under==Cell.MTL ||
 					nat_under==Cell.TLP ||
 					getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null){
@@ -92,8 +92,8 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 				return Command.DOWN;
 			}
 			case LAD :{
-				if(nat_under==Cell.PLT || 
-				   nat_under==Cell.MTL || 
+				if(nat_under==Cell.PLT ||
+				   nat_under==Cell.MTL ||
 				   nat_under==Cell.TLP ||
 				   getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null) {
 					if (Math.abs(target.getWdt()-getWdt()) > Math.abs(target.getHgt()-getHgt())){
@@ -147,18 +147,18 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 				if (target.getWdt()<getWdt()) return Command.LEFT;
 				if (target.getWdt()==getWdt()) return Command.LEFT;
 			}
-			default : 
+			default :
 				return Command.NEUTRAL;
-		
+
 		}
-		
+
 	}
 
 	@Override
 	public int getTimeInHole() {
 		return timeInHole;
 	}
-	
+
 
 	@Override
 	public void init(EngineService e, int x, int y, PlayerService target) {
@@ -169,9 +169,9 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 
 	@Override
 	public void climbLeft() {
-		if (getEnvi().getCellNature(getWdt(), getHgt()+1) != Cell.PLT 
+		if (getEnvi().getCellNature(getWdt(), getHgt()+1) != Cell.PLT
 			&& getEnvi().getCellNature(getWdt(), getHgt()+1) != Cell.MTL) {
-			if (getEnvi().getCellNature(getWdt()-1, getHgt()+1) != Cell.PLT 
+			if (getEnvi().getCellNature(getWdt()-1, getHgt()+1) != Cell.PLT
 				&& getEnvi().getCellNature(getWdt()-1, getHgt()+1) != Cell.MTL) {
 				if (getEnvi().getCellContent(getWdt()-1, getHgt()+1).getGuard() == null) {
 					setWdt(getWdt()-1);
@@ -184,9 +184,9 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 
 	@Override
 	public void climbRight() {
-		if (getEnvi().getCellNature(getWdt(), getHgt()+1) != Cell.PLT 
+		if (getEnvi().getCellNature(getWdt(), getHgt()+1) != Cell.PLT
 			&& getEnvi().getCellNature(getWdt(), getHgt()+1) != Cell.MTL) {
-			if (getEnvi().getCellNature(getWdt()+1, getHgt()+1) != Cell.PLT 
+			if (getEnvi().getCellNature(getWdt()+1, getHgt()+1) != Cell.PLT
 				&& getEnvi().getCellNature(getWdt()+1, getHgt()+1) != Cell.MTL) {
 				if (getEnvi().getCellContent(getWdt()+1, getHgt()+1).getGuard() == null) {
 					setWdt(getWdt()+1);
@@ -197,7 +197,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		}
 	}
 
-	
+
 	@Override
 	public void step() {
 		getEngine().getEnvi().getCellContent(getWdt(), getHgt()).setGuard(null);
@@ -238,7 +238,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 						treasure.setHgt(this.getHgt());
 					}
 					break;
-				case DOWN : 
+				case DOWN :
 					goDown();
 					if(treasure != null) {
 						treasure.setCol(this.getWdt());
@@ -255,7 +255,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 				default:
 					break;
 			}}}}}}
-		getEngine().getEnvi().getCellContent(getWdt(), getHgt()).setGuard(this);	
+		getEngine().getEnvi().getCellContent(getWdt(), getHgt()).setGuard(this);
 	}
 
 	@Override

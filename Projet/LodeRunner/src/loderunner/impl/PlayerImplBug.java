@@ -58,11 +58,11 @@ public class PlayerImplBug extends CharacterImpl implements PlayerService{
 				break;
 			case DIGL :
 				super.getEnvi().dig(super.getWdt()+1, super.getHgt()-1);
-				engine.getHoles().add(new Hole(super.getWdt()-1, super.getHgt()-1,0));
+				engine.getHoles().add(new Hole(super.getWdt()-1, super.getHgt()-1,0,-1));
 				break;
 			case DIGR : 
 				super.getEnvi().dig(super.getWdt()-1, super.getHgt()-1);
-				engine.getHoles().add(new Hole(super.getWdt()+1, super.getHgt()-1,0));
+				engine.getHoles().add(new Hole(super.getWdt()+1, super.getHgt()-1,0,-1));
 				break;	
 			case NEUTRAL :
 				break;

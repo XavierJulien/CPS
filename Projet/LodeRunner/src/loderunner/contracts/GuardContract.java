@@ -168,6 +168,8 @@ public class GuardContract extends CharacterContract implements GuardService {
 			 (getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.TLP && getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD) || 
 			 getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null) && 
 			getTarget().getWdt() > getWdt())) {
+				System.out.println("dans checkinv = le guard est x="+getWdt()+" y="+getHgt());
+				System.out.println("dans checkinv = le player est x="+getTarget().getWdt()+" y="+getTarget().getHgt());
 				if (getBehaviour() != Command.RIGHT)
 					throw new InvariantError("Le behaviour ne renvoie pas RIGHT alors qu'il devrait");
 			}
@@ -453,7 +455,17 @@ public class GuardContract extends CharacterContract implements GuardService {
 
 	@Override
 	public void setTreasure(Item treasure) {
+		//1.pre 
+		if(treasure == null) throw new PreconditionError("setTreasure : tr�sor � null");
+		if(hasItem()) throw new PreconditionError("setTreasure : le guard a déja un item en sa possession");
+		//2.checkInvariants
+		checkInvariants();
+		//3.run
 		delegate.setTreasure(treasure);
+		//4.checkInvariants
+		checkInvariants();
+		//post
+		if (!hasItem()) throw new PostconditionError("setTreasure : le trésor n'a pas été set");
 	}
 
 	@Override

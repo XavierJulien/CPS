@@ -22,22 +22,21 @@ import loderunner.services.PlayerService;
 
 public class EngineImpl implements EngineService{
 
-	protected EnvironnementService envi;
+	protected final EnvironnementService envi = new EnvironnementContract(new EnvironnementImpl());
+	protected final ArrayList<GuardService> guards_at_init = new ArrayList<>();
 	protected PlayerService player;
 	protected ArrayList<GuardService> guards;
-	protected ArrayList<GuardService> guards_at_init;
 	protected ArrayList<Item> treasures;
 	protected GameState status;
 	protected ArrayList<Command> commands;
 	protected ArrayList<Hole> holes;
-	protected int score;	
-	
+	protected int score;
+
 	protected ArrayList<Teleporteur> teleporteurs;
 	protected Item gauntlet;
-	
+
 	@Override
 	public EnvironnementService getEnvi() {
-		
 		return envi;
 	}
 
@@ -50,15 +49,19 @@ public class EngineImpl implements EngineService{
 	public ArrayList<GuardService> getGuards() {
 		return guards;
 	}
-	
+
 	@Override
 	public ArrayList<Item> getTreasures() {
 		return treasures;
 	}
-	
+
 	@Override
 	public GameState getStatus() {
 		return status;
+	}
+
+	public ArrayList<Command> getCommands() {
+		return commands;
 	}
 
 	@Override
@@ -70,7 +73,7 @@ public class EngineImpl implements EngineService{
 	public ArrayList<Hole> getHoles() {
 		return holes;
 	}
-	
+
 	public ArrayList<Coord> getGuardsCoord(){
 		ArrayList<Coord> res = new ArrayList<>();
 		for(GuardService g: guards) {
@@ -83,33 +86,31 @@ public class EngineImpl implements EngineService{
 	public int getScore() {
 		return score;
 	}
-	
+
 	@Override
 	public ArrayList<Teleporteur> getTeleporteurs() {
 		return teleporteurs;
 	}
-	
+
 	 @Override
 	public Item getGauntlet() {
 		return gauntlet;
 	}
-	
+
 	@Override
-	public void init(EditableScreenService e, 
-			         Coord player, 
-			         List<Coord> guards, 
+	public void init(EditableScreenService e,
+			         Coord player,
+			         List<Coord> guards,
 			         List<Item> treasures,
 			         List<Teleporteur> teleporteurs,
 			         Item gauntlet) {
-		envi = new EnvironnementContract(new EnvironnementImpl());
 		for(Teleporteur t : teleporteurs) {
 			e.setNature(t.getPosA().getX(), t.getPosA().getY(), Cell.TLP);
 			e.setNature(t.getPosB().getX(), t.getPosB().getY(), Cell.TLP);
 		}
 		envi.init(e);
-		
+
 		this.guards = new ArrayList<>();
-		this.guards_at_init = new ArrayList<>();
 		this.status = GameState.Playing;
 		this.treasures = (ArrayList<Item>) treasures;
 		this.player = new PlayerContract(new PlayerImpl());
@@ -121,7 +122,7 @@ public class EngineImpl implements EngineService{
 		for(Coord co : guards) {
 			GuardContract guard = new GuardContract(new GuardImpl(-1));
 			guard.init(this, co.getX(), co.getY(), getPlayer());
-			envi.getCellContent(co.getX(), co.getY()).setGuard(guard);		
+			envi.getCellContent(co.getX(), co.getY()).setGuard(guard);
 			this.guards.add(guard);
 		}
 		for(GuardService g : this.guards) {
@@ -130,7 +131,7 @@ public class EngineImpl implements EngineService{
 			this.guards_at_init.add(guardcopy);
 		}
 		for(Item i : treasures) {
-			envi.getCellContent(i.getCol(), i.getHgt()).setItem(new Item(i.getCol(), i.getHgt(), ItemType.Treasure));;
+			envi.getCellContent(i.getCol(), i.getHgt()).setItem(i);;
 		}
 		envi.getCellContent(gauntlet.getCol(), gauntlet.getHgt()).setItem(gauntlet);
 		score = 0;
@@ -198,7 +199,7 @@ public class EngineImpl implements EngineService{
 					return;
 				}
 			}
-			if(envi.getCellContent(player.getWdt(), player.getHgt()).getItem() != null && 
+			if(envi.getCellContent(player.getWdt(), player.getHgt()).getItem() != null &&
 			   envi.getCellContent(player.getWdt(), player.getHgt()).getItem().getNature() == ItemType.Treasure) {
 				envi.getCellContent(player.getWdt(), player.getHgt()).setItem(null);
 				for(int i = 0;i<treasures.size();i++) {
@@ -210,7 +211,7 @@ public class EngineImpl implements EngineService{
 			}
 			for(int i = 0;i<treasures.size();i++) {
 				for(GuardService g : guards) {
-					if(treasures.get(i).getCol() == g.getWdt() && 
+					if(treasures.get(i).getCol() == g.getWdt() &&
 					   treasures.get(i).getHgt() == g.getHgt() &&
 					   !g.hasItem()) {
 						envi.getCellContent(treasures.get(i).getCol(), treasures.get(i).getHgt()).setItem(null);
@@ -234,9 +235,10 @@ public class EngineImpl implements EngineService{
 		commands.add(0,c);
 	}
 
-	@Override
-	public ArrayList<Command> getCommands() {
-		return commands;
+
+	public void setPlayer(PlayerService player) {
+		this.player = player;
 	}
+
 
 }

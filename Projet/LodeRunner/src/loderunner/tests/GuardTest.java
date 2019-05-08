@@ -422,7 +422,38 @@ public class GuardTest extends CharacterTest {
 		guard = engine.getGuards().get(0);
 		c = (CharacterContract)guard;
 		System.out.println("guard: x="+guard.getWdt()+" y="+guard.getHgt());
-		//System.out.println("est ce qu'il y a un item dans (8,2)? : "+engine.getTreasures().get(0).get);
+		System.out.println("est ce qu'il y a un item dans (8,2)? : "+engine.getTreasures().get(0).getCol()+engine.getTreasures().get(0).getHgt());
+		int wdt_capture = guard.getWdt();
+		int hgt_capture = guard.getHgt();
+		//Opération :
+		guard.step();
+		//Oracle :
+		/*post*/
+		assertTrue(guard.getWdt() == wdt_capture-1);
+		assertTrue(guard.getHgt() == hgt_capture);
+		assertTrue(guard.getTimeInHole() == 0);
+		assertTrue(guard.hasItem());
+		/*inv*/
+		checkinvG();
+	}
+	
+	// le garde croise un trésor alors qu'il en a deja un sur lui
+	@Test
+	public void etatRemarquableADejaItem() {
+		//Conditions initiales
+		ArrayList<Coord> g_list = new ArrayList<>();
+		ArrayList<Item> item_list = new ArrayList<>();
+		g_list.add(new Coord(8, 2));
+		item_list.add(new Item(7,2,ItemType.Treasure));
+		item_list.add(new Item(6,2, ItemType.Treasure));
+		engine.init(es, new Coord(2,2), g_list, item_list);
+		envi = engine.getEnvi();
+		player = engine.getPlayer();
+		guard = engine.getGuards().get(0);
+		c = (CharacterContract)guard;
+		
+		System.out.println("guard: x="+guard.getWdt()+" y="+guard.getHgt());
+		guard.step();
 		int wdt_capture = guard.getWdt();
 		int hgt_capture = guard.getHgt();
 		//Opération :
@@ -437,8 +468,6 @@ public class GuardTest extends CharacterTest {
 		/*inv*/
 		checkinvG();
 	}
-	
-	// le garde croise un trésor alors qu'il en a deja un sur lui
 	// le garde croise le joueur 
 	// le garde croise un autre garde
 	// le garde portant un trésor tombe dans un trou

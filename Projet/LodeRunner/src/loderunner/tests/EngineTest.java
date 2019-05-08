@@ -40,6 +40,11 @@ public class EngineTest {
 				es.setNature(i, 0, Cell.MTL);
 				es.setNature(i, 1, Cell.PLT);
 		}
+		ArrayList<Coord> g_list = new ArrayList<>();
+		ArrayList<Item> item_list = new ArrayList<>();
+		g_list.add(new Coord(8, 2));
+		item_list.add(new Item(10,2,ItemType.Treasure));
+		engine.init(es, new Coord(5,2), g_list, item_list);
 	}
 	
 	@After
@@ -53,7 +58,7 @@ public class EngineTest {
 		assertTrue(cell_check.getCharacter().equals(engine.getPlayer())); 
 		for(GuardService g : engine.getGuards()) {
 			cell_check = engine.getEnvi().getCellContent(g.getWdt(), g.getHgt());
-			if(!cell_check.getGuard().equals(g)) throw new InvariantError("checkInvariants : Le guard aux position du guard n'est pas le guard");
+			assertEquals(cell_check.getGuard(),g);
 			for(Item t : engine.getTreasures()) {
 				cell_check = engine.getEnvi().getCellContent(t.getCol(), t.getHgt());
 				assertTrue(cell_check.getItem() != null && (t.getCol() != g.getWdt() || t.getHgt() != g.getHgt()) && !g.hasItem());
@@ -89,9 +94,81 @@ public class EngineTest {
 
 	@Test(expected = PreconditionError.class)
 	public void preInitFail() {
+		//Conditions Initiales :
+		es.init(15, 10);
+		ArrayList<Coord> guards = new ArrayList<>();
+		guards.add(new Coord(5,2));
+		guards.add(new Coord(10,2));
+		ArrayList<Item> treasures = new ArrayList<>();
+		treasures.add(new Item(0,2,ItemType.Treasure));
+		treasures.add(new Item(1,2,ItemType.Treasure));
+		//Opération(s)
+		engine.init(es, new Coord(2,2), guards, treasures);
+		//Oracle : Error
+	}
+	
+	@Test(expected = PreconditionError.class)
+	public void preInitFail2() {
 		//Conditions Initiales : None
 		//Opération(s)
 		engine.init(es, new Coord(20,2), new ArrayList<>(), new ArrayList<>());
+		//Oracle : Error
+	}
+	
+	@Test(expected = PreconditionError.class)
+	public void preInitFail3() {
+		//Conditions Initiales : None
+		ArrayList<Coord> guards = new ArrayList<>();
+		guards.add(new Coord(2,2));
+		guards.add(new Coord(10,2));
+		ArrayList<Item> treasures = new ArrayList<>();
+		treasures.add(new Item(0,2,ItemType.Treasure));
+		treasures.add(new Item(1,2,ItemType.Treasure));
+		//Opération(s)
+		engine.init(es, new Coord(2,2), guards, treasures);
+		//Oracle : Error
+	}
+	
+	@Test(expected = PreconditionError.class)
+	public void preInitFail4() {
+		//Conditions Initiales : None
+		ArrayList<Coord> guards = new ArrayList<>();
+		guards.add(new Coord(10,2));
+		guards.add(new Coord(10,2));
+		ArrayList<Item> treasures = new ArrayList<>();
+		treasures.add(new Item(0,2,ItemType.Treasure));
+		treasures.add(new Item(1,2,ItemType.Treasure));
+		//Opération(s)
+		engine.init(es, new Coord(2,2), guards, treasures);
+		//Oracle : Error
+	}
+	
+	@Test(expected = PreconditionError.class)
+	public void preInitFail5() {
+		//Conditions Initiales : None
+		ArrayList<Coord> guards = new ArrayList<>();
+		guards.add(new Coord(5,2));
+		guards.add(new Coord(10,2));
+		ArrayList<Item> treasures = new ArrayList<>();
+		treasures.add(new Item(1,2,ItemType.Treasure));
+		treasures.add(new Item(1,2,ItemType.Treasure));
+		//Opération(s)
+		engine.init(es, new Coord(2,2), guards, treasures);
+		//Oracle : Error
+	}
+	
+	
+	@Test(expected = PreconditionError.class)
+	public void preInitFail6() {
+		//Conditions Initiales : None
+		ArrayList<Coord> guards = new ArrayList<>();
+		guards.add(new Coord(5,2));
+		guards.add(new Coord(10,2));
+		ArrayList<Item> treasures = new ArrayList<>();
+		treasures.add(new Item(2,2,ItemType.Treasure));
+		treasures.add(new Item(1,2,ItemType.Treasure));
+		//Opération(s)
+		engine.init(es, new Coord(2,2), guards, treasures);
 		//Oracle : Error
 	}
 	
