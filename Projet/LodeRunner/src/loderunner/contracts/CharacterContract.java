@@ -136,10 +136,9 @@ public class CharacterContract extends CharacterDecorator {
 			if(getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.PLT && 
 			   getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.MTL && 
 			   getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.LAD && 
-			   getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.TLP) {
-				if(getEnvi().getCellContent(wdt_capture-1, hgt_capture).getGuard() != null) {
+			   getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.TLP &&
+			   getEnvi().getCellContent(wdt_capture, hgt_capture-1).getGuard() == null) {
 					if(getWdt() != wdt_capture) throw new PostconditionError("goLeft : le personnage n'était pas censé se déplacer");
-				}
 			}
 		}
 		if(getEnvi().getCellContent(wdt_capture-1, hgt_capture).getGuard() != null) {
@@ -155,7 +154,7 @@ public class CharacterContract extends CharacterDecorator {
 				   (getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.PLT || 
 				    getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL || 
 				    getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.LAD ||
-				    getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.PLT)
+				    getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.TLP)
 				   ||
 				   (getEnvi().getCellContent(wdt_capture, hgt_capture-1).getGuard() != null)) {
 					  if(getId() == -1 ||  getEnvi().getCellContent(wdt_capture-1, hgt_capture).getGuard() == null) {
@@ -169,6 +168,7 @@ public class CharacterContract extends CharacterDecorator {
 	@Override
 	public void goRight() {
 		//1.pre
+		//2.none
 		//2.checkInvariants
 		checkInvariants();
 		//3.capture
@@ -194,26 +194,25 @@ public class CharacterContract extends CharacterDecorator {
 			if(getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.PLT && 
 			   getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.MTL && 
 			   getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.LAD && 
-			   getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.TLP) {
-				if(getEnvi().getCellContent(wdt_capture, hgt_capture-1).getGuard() == null) {
+			   getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.TLP &&
+			   getEnvi().getCellContent(wdt_capture, hgt_capture-1).getGuard() == null) {
 					if(getWdt() != wdt_capture) throw new PostconditionError("goRight : le personnage n'était pas censé se déplacer");
-				}
 			}
 		}
-		if(getId() != 1 && getEnvi().getCellContent(wdt_capture+1, hgt_capture).getGuard() != null) {
-			if(getWdt() != wdt_capture) throw new PostconditionError("goRight : le guard à traversé un guard");
+		if(getEnvi().getCellContent(wdt_capture+1, hgt_capture).getGuard() != null) {
+			if(getWdt() != wdt_capture) throw new PostconditionError("goRight : le personnage à traversé un personnage");
 		}
 		if(wdt_capture != getEnvi().getWidth()-1) {
 			if(getEnvi().getCellNature(wdt_capture+1, hgt_capture) != Cell.MTL && 
 			   getEnvi().getCellNature(wdt_capture+1, hgt_capture) != Cell.PLT &&
 			   getEnvi().getCellNature(wdt_capture+1, hgt_capture) != Cell.TLP) {
 				if((getEnvi().getCellNature(wdt_capture, hgt_capture) == Cell.LAD || 
-					getEnvi().getCellNature(wdt_capture, hgt_capture) == Cell.HDR ) 
+					getEnvi().getCellNature(wdt_capture, hgt_capture) == Cell.HDR)
 				   ||
 				   (getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.PLT || 
 				    getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL || 
 				    getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.LAD ||
-				    getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.TLP) 
+				    getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.TLP)
 				   ||
 				   (getEnvi().getCellContent(wdt_capture, hgt_capture-1).getGuard() != null)) {
 					  if(getId() == -1 ||  getEnvi().getCellContent(wdt_capture+1, hgt_capture).getGuard() == null) {
@@ -240,11 +239,15 @@ public class CharacterContract extends CharacterDecorator {
 		if (getWdt() != wdt_capture) throw new PostconditionError("goUp : la largeur du personnage a changé");
 		if (hgt_capture == getEnvi().getHeight()-1) {
 			if (getHgt() != hgt_capture) throw new PostconditionError("goUp : le personnage a dépassé le plafond");
-			return;
+			//return;
 		}
 		if (getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.LAD) {
 			if (getHgt() != hgt_capture) throw new PostconditionError("goUp : le personnage est monté sans échelle");
 		}else {
+			if(getId() < -1 && getEnvi().getCellContent(wdt_capture, hgt_capture+1).getGuard() != null) {
+				if(getHgt() != hgt_capture)
+					throw new PostconditionError("goUp : le joueur est monté alors qu'il y avait un guard");
+			}
 			if ((getId() == -1 || getEnvi().getCellContent(wdt_capture, hgt_capture+1).getGuard() == null)
 			    &&
 			    getEnvi().getCellNature(wdt_capture, hgt_capture+1) != Cell.MTL &&
@@ -272,14 +275,14 @@ public class CharacterContract extends CharacterDecorator {
 		if (getWdt() != wdt_capture) throw new PostconditionError("goDown : la largeur du personnage a été modifiée");
 		if (hgt_capture == 1) {//peut etre pas utile car on le verifie en dessous avec le metal
 			if (getHgt() != hgt_capture) throw new PostconditionError("goDown : le personnage est descendu alors qu'il ne pouvais pas");
-			return;
+			//return;
 		}
 		if(getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.PLT ||
 		   getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL ||
-		   getEnvi().getCellNature(wdt_capture, hgt_capture-1) != Cell.TLP) {
+		   getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.TLP) {
 			if (getHgt() != hgt_capture) throw new PostconditionError("goDown : le personnage a pu descendre à travers la matière");
 		}
-		if(getEnvi().getCellContent(wdt_capture, hgt_capture-1).getGuard() != null) {
+		if(getId() < -1 && getEnvi().getCellContent(wdt_capture, hgt_capture-1).getGuard() != null) {
 			if(getHgt() != hgt_capture)
 				throw new PostconditionError("goDown : le joueur est descendu alors qu'il y avait un personnage");
 		}

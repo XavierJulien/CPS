@@ -157,10 +157,18 @@ public class EngineImpl implements EngineService{
 							envi.getCellContent(g.getWdt(), g.getHgt()).setGuard(guardcopy);
 						}
 					}
+					Item item = null;
+					if(envi.getCellContent(h.getX(), h.getY()+1).getItem() != null) {
+						item = envi.getCellContent(h.getX(), h.getY()+1).getItem();
+						envi.getCellContent(h.getX(), h.getY()+1).setItem(null);
+					}
 					envi.getCellContent(h.getX(), h.getY()).setGuard(null);
+					envi.fill(h.getX(), h.getY());
+					if(item != null) envi.getCellContent(h.getX(), h.getY()+1).setItem(item);
+				}else {
+					envi.fill(h.getX(), h.getY());
 				}
 				//pour les gardes
-				envi.fill(h.getX(), h.getY());
 			}
 		}
 		if(status == GameState.Playing) {
