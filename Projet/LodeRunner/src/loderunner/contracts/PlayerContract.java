@@ -178,9 +178,11 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 			}
 		}
 		if (command_capture == Command.DIGL) {
-			if(digl_capture == Cell.PLT && clone.getEngine().getEnvi().getCellNature(wdt_capture-1, hgt_capture-1) != Cell.HOL) throw new PostconditionError("player step : une case aurait du etre creuser a gauche coté contract");
+			if(digl_capture == Cell.PLT && (clone.getEngine().getEnvi().getCellNature(wdt_capture-1, hgt_capture-1) != Cell.HOL || 
+										    getEngine().getEnvi().getCellNature(wdt_capture-1, hgt_capture-1) != Cell.HOL)) throw new PostconditionError("player step : une case aurait du etre creuser a gauche coté contract");
 			if (getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.PLT||
 				getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL||
+				getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.LAD||
 				getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.TLP||
 				getEnvi().getCellContent(wdt_capture, hgt_capture-1) != null) {
 				if (getEnvi().getCellNature(wdt_capture-1, hgt_capture) == Cell.EMP ||
@@ -195,15 +197,17 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 			}
 		}
 		if (command_capture == Command.DIGR) {
-			if(digr_capture == Cell.PLT && clone.getEngine().getEnvi().getCellNature(wdt_capture+1, hgt_capture-1) != Cell.HOL) throw new PostconditionError("player step : une case aurait du etre creuser a droite coté contract");
+			if(digr_capture == Cell.PLT && (clone.getEngine().getEnvi().getCellNature(wdt_capture+1, hgt_capture-1) != Cell.HOL || 
+					   						getEngine().getEnvi().getCellNature(wdt_capture+1, hgt_capture-1) != Cell.HOL)) throw new PostconditionError("player step : une case aurait du etre creuser a droite coté contract");
 			if (getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.PLT ||
 				getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL ||
-				getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.MTL ||
+				getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.LAD ||
+				getEnvi().getCellNature(wdt_capture, hgt_capture-1) == Cell.TLP ||
 				getEnvi().getCellContent(wdt_capture, hgt_capture-1) != null ) {
-				if (getEnvi().getCellNature(wdt_capture+1, hgt_capture) == Cell.EMP
-						||getEnvi().getCellNature(wdt_capture+1, hgt_capture) == Cell.LAD
-						||getEnvi().getCellNature(wdt_capture+1, hgt_capture) == Cell.HDR
-						||getEnvi().getCellNature(wdt_capture+1, hgt_capture) == Cell.HOL) {
+				if (getEnvi().getCellNature(wdt_capture+1, hgt_capture) == Cell.EMP ||
+					getEnvi().getCellNature(wdt_capture+1, hgt_capture) == Cell.LAD ||
+					getEnvi().getCellNature(wdt_capture+1, hgt_capture) == Cell.HDR ||
+					getEnvi().getCellNature(wdt_capture+1, hgt_capture) == Cell.HOL) {
 					if (getEnvi().getCellNature(wdt_capture+1, hgt_capture-1) == Cell.PLT &&
 						getEnvi().getCellNature(wdt_capture+1, hgt_capture-1) != Cell.HOL) {
 							throw new PostconditionError("player step : le joueur devait creuser à gauche");

@@ -46,36 +46,24 @@ public class CharacterContract extends CharacterDecorator {
 		return super.getHgt();
 	}
 
+	
 	@Override
-	public void setWdt(int wdt) {
+	public void setPos(int wdt,int hgt) {
 		//1.pre
+		if(hgt>getEnvi().getHeight()-1 || hgt<0) throw new PreconditionError("hgt n'est pas bon");
 		if(wdt>getEnvi().getWidth()-1 || wdt<0) throw new PreconditionError("wdt n'est pas bon");
 		//2.checkInvariants
 		checkInvariants();
 		//3.capture
 		int wdt_capture = getWdt();
-		//4.run		
-		super.setWdt(wdt);
-		//5.checkInvariants
-		checkInvariants();
-		//6.post
-		if(wdt_capture == getWdt()) throw new PostconditionError("wdt n'as pas été changé");
-	}
-	
-	@Override
-	public void setHgt(int hgt) {
-		//1.pre
-		if(hgt>getEnvi().getHeight()-1 || hgt<0) throw new PreconditionError("hgt n'est pas bon");
-		//2.checkInvariants
-		checkInvariants();
-		//3.capture
 		int hgt_capture = getHgt();
 		//4.run
-		super.setHgt(hgt);
+		super.setPos(wdt,hgt);
 		//5.checkInvariants
 		checkInvariants();
 		//6.post
 		if(hgt_capture == getHgt()) throw new PostconditionError("hgt n'as pas été changé");
+		if(wdt_capture == getWdt()) throw new PostconditionError("wdt n'as pas été changé");
 		
 	}
 	

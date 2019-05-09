@@ -53,6 +53,26 @@ public class CharacterContractClone extends CharacterDecorator {
 	}
 	
 	@Override
+	public void setPos(int wdt,int hgt) {
+		//1.pre
+		if(hgt>getEnvi().getHeight()-1 || hgt<0) throw new PreconditionError("hgt n'est pas bon");
+		if(wdt>getEnvi().getWidth()-1 || wdt<0) throw new PreconditionError("wdt n'est pas bon");
+		//2.checkInvariants
+		checkInvariants();
+		//3.capture
+		int wdt_capture = getWdt();
+		int hgt_capture = getHgt();
+		//4.run
+		super.setPos(wdt,hgt);
+		//5.checkInvariants
+		checkInvariants();
+		//6.post
+		if(hgt_capture == getHgt()) throw new PostconditionError("hgt n'as pas été changé");
+		if(wdt_capture == getWdt()) throw new PostconditionError("wdt n'as pas été changé");
+		
+	}
+	
+	@Override
 	public void init(ScreenService s, int x, int y,int id) {
 		//1.pre
 		/*if(s.getCellNature(x, y) != Cell.EMP) {
