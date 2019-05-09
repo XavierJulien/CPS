@@ -194,7 +194,7 @@ public class EngineContract extends EngineDecorator{
 				throw new PreconditionError("init : un trésor n'a pas les bons coordonnées pour rentrer dans l'environnnement");
 			if(treasure.getCol() == player.getX() && treasure.getHgt() == player.getY())
 				throw new PreconditionError("un trésor est sur la même case que le player");
-			if(e.getCellNature(treasure.getCol(), treasure.getHgt()) != Cell.EMP ||
+			if(e.getCellNature(treasure.getCol(), treasure.getHgt()) != Cell.EMP &&
 			   (e.getCellNature(treasure.getCol(), treasure.getHgt()-1) != Cell.PLT ||
 			    e.getCellNature(treasure.getCol(), treasure.getHgt()-1) != Cell.MTL)) {
 				throw new PreconditionError("init : un trésor ne peut pas être init dans une case de l'envi non Cell.EMP");
