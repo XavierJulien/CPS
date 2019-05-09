@@ -15,8 +15,6 @@ public interface GuardService extends CharacterService {
 	public int getTimeInHole();
 	public EngineService getEngine();
 	public boolean hasItem();
-	public void waitInHole();
-	public void setTreasure(Item treasure);
 	public Item getTreasure();
 	
 	/* Constructor */
@@ -91,6 +89,8 @@ public interface GuardService extends CharacterService {
 
 	/* Operators */
 	
+	public void waitInHole();
+	public void setTreasure(Item treasure);
 
 	
 	default boolean willFall() {
@@ -125,7 +125,6 @@ public interface GuardService extends CharacterService {
 		return false;
 	}	
 	
-	
 	default boolean willClimbRight() {
 		Cell nat = getEnvi().getCellNature(getWdt(), getHgt());
 		if (nat==Cell.HOL) {
@@ -136,7 +135,6 @@ public interface GuardService extends CharacterService {
 		}
 		return false;
 	}	
-	
 	
 	default boolean willClimbNeutral() {
 		Cell nat = getEnvi().getCellNature(getWdt(), getHgt());
@@ -155,7 +153,7 @@ public interface GuardService extends CharacterService {
 			}
 		return false;
 	}	
-	
+
 	
 	/**
 	 * pre : climbLeft() require getEnvi().getCellNature(getWdt(),getHgt()) == HOL 

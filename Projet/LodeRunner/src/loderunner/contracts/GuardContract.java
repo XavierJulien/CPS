@@ -25,14 +25,6 @@ public class GuardContract extends CharacterContract implements GuardService {
 		this.delegate = delegate;
 	}
 	
-	public GuardService getDelegate() {
-		return delegate;
-	}
-	
-	public Item getTreasure() {
-		return delegate.getTreasure();
-	}
-	
 	public void checkInvariants() {
 		super.checkInvariants();
 		
@@ -166,10 +158,8 @@ public class GuardContract extends CharacterContract implements GuardService {
 			 (getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL && getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD) || 
 			 (getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT && getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD) || 
 			 (getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.TLP && getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD) || 
-			 getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null) && 
+			 (getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null && getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD)) && 
 			getTarget().getWdt() > getWdt())) {
-				System.out.println("dans checkinv = le guard est x="+getWdt()+" y="+getHgt());
-				System.out.println("dans checkinv = le player est x="+getTarget().getWdt()+" y="+getTarget().getHgt());
 				if (getBehaviour() != Command.RIGHT)
 					throw new InvariantError("Le behaviour ne renvoie pas RIGHT alors qu'il devrait");
 			}
@@ -217,7 +207,7 @@ public class GuardContract extends CharacterContract implements GuardService {
 			}
 			if(getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL && 
 			   getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT &&
-			   getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.TLP &&
+			   getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.TLP &&
 			   getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() == null) {
 				if(Math.abs(getTarget().getWdt()-getWdt()) > Math.abs(getTarget().getHgt()-getHgt())){
 					if (getTarget().getWdt() < getWdt()) {
@@ -257,6 +247,19 @@ public class GuardContract extends CharacterContract implements GuardService {
 			if(!getEnvi().getCellContent(getWdt(), getHgt()).getGuard().equals(this))
 			throw new InvariantError("le joueur dans la case de notre joueur n'est pas lui-même");
 		}
+	}
+	
+	public GuardService getDelegate() {
+		return delegate;
+	}
+	
+	public Item getTreasure() {
+		return delegate.getTreasure();
+	}
+	
+	@Override
+	public boolean hasItem() {
+		return delegate.hasItem();
 	}
 	
 	@Override
@@ -367,7 +370,6 @@ public class GuardContract extends CharacterContract implements GuardService {
 
 	}
 
-
 	@Override
 	public void step() {
 		//pre : rien
@@ -446,11 +448,6 @@ public class GuardContract extends CharacterContract implements GuardService {
 				throw new PostconditionError("step de Guard : willWaitInHole pb incr timeInHole");				
 			}
 		}
-	}
-
-	@Override
-	public boolean hasItem() {
-		return delegate.hasItem();
 	}
 
 	@Override

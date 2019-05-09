@@ -50,5 +50,4 @@ public interface PlayerService extends CharacterService{
 	public void step();
 	
 	public PlayerService clonePlayer();
-	public PlayerService clonePlayer2();
 }
