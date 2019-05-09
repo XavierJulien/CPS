@@ -168,8 +168,6 @@ public class GuardContract extends CharacterContract implements GuardService {
 			 (getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.TLP && getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD) || 
 			 getEnvi().getCellContent(getWdt(), getHgt()-1).getGuard() != null) && 
 			getTarget().getWdt() > getWdt())) {
-				System.out.println("dans checkinv = le guard est x="+getWdt()+" y="+getHgt());
-				System.out.println("dans checkinv = le player est x="+getTarget().getWdt()+" y="+getTarget().getHgt());
 				if (getBehaviour() != Command.RIGHT)
 					throw new InvariantError("Le behaviour ne renvoie pas RIGHT alors qu'il devrait");
 			}

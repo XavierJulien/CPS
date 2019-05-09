@@ -102,15 +102,8 @@ public class PlayerContractClone extends CharacterContractClone implements Playe
 			command_capture = Command.DOWN;
 		}
 		PlayerContractClone clone;
-		if(getEngine().getEnvi().getCellNature(getWdt(), getHgt()) == Cell.EMP) {
-			clone = Creator.createPlayerContractClone(delegate.clonePlayer());
-			clone.getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(clone);
-
-		}else {
-			clone = Creator.createPlayerContractClone(delegate.clonePlayer2());
-			clone.getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(clone);
-
-		}
+		clone = Creator.createPlayerContractClone(delegate.clonePlayer());
+		clone.getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(clone);
 		if(getEngine().getPlayer().getWdt() >= 1) {
 			digl_capture = getEngine().getEnvi().getCellNature(wdt_capture-1, hgt_capture-1);
 		}
@@ -235,11 +228,6 @@ public class PlayerContractClone extends CharacterContractClone implements Playe
 
 	@Override
 	public PlayerService clonePlayer() {
-		return null;//never used
-	}
-
-	@Override
-	public PlayerService clonePlayer2() {
 		return null;//never used
 	}
 

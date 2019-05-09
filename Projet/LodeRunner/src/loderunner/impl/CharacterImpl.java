@@ -105,7 +105,7 @@ public class CharacterImpl implements CharacterService{
 		if(hgt != 1) {
 			if(getEnvi().getCellNature(wdt, hgt-1) != Cell.MTL && 
 			   getEnvi().getCellNature(wdt, hgt-1) != Cell.PLT &&
-			   getEnvi().getCellNature(wdt-1, hgt) != Cell.TLP &&
+			   getEnvi().getCellNature(wdt, hgt-1) != Cell.TLP &&
 			   getEnvi().getCellNature(wdt, hgt-1) != Cell.TLP ) {
 					if(id == -1) {
 						if(getEnvi().getCellContent(wdt, hgt-1).getGuard() == null) {

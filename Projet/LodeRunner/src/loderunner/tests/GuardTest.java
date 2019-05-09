@@ -46,7 +46,7 @@ public class GuardTest extends CharacterTest {
 		ArrayList<Item> item_list = new ArrayList<>();
 		g_list.add(new Coord(8, 2));
 		item_list.add(new Item(14,2,ItemType.Treasure));
-		engine.init(es, new Coord(2,2), g_list, item_list);
+		engine.init(es, new Coord(2,2), g_list, item_list,new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
 		envi = engine.getEnvi();
 		player = engine.getPlayer();
 		guard = engine.getGuards().get(0);
@@ -178,7 +178,7 @@ public class GuardTest extends CharacterTest {
 		ArrayList<Item> item_list = new ArrayList<>();
 		g_list.add(new Coord(8, 2));
 		item_list.add(new Item(14,2,ItemType.Treasure));
-		engine.init(es, new Coord(12,2), g_list, item_list);
+		engine.init(es, new Coord(12,2), g_list, item_list,new ArrayList<>(),new Item(0,2,ItemType.Gauntlet));
 		envi = engine.getEnvi();
 		player = engine.getPlayer();
 		guard = engine.getGuards().get(0);
@@ -267,7 +267,7 @@ public class GuardTest extends CharacterTest {
 		ArrayList<Item> item_list = new ArrayList<>();
 		g_list.add(new Coord(8, 2));
 		item_list.add(new Item(14,2,ItemType.Treasure));
-		engine.init(es, new Coord(12,2), g_list, item_list);
+		engine.init(es, new Coord(12,2), g_list, item_list,new ArrayList<>(),new Item(0,2,ItemType.Gauntlet));
 		envi = engine.getEnvi();
 		player = engine.getPlayer();
 		guard = engine.getGuards().get(0);
@@ -321,7 +321,7 @@ public class GuardTest extends CharacterTest {
 		ArrayList<Item> item_list = new ArrayList<>();
 		g_list.add(new Coord(8, 2));
 		item_list.add(new Item(14,2,ItemType.Treasure));
-		engine.init(es, new Coord(12,2), g_list, item_list);
+		engine.init(es, new Coord(12,2), g_list, item_list,new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
 		envi = engine.getEnvi();
 		player = engine.getPlayer();
 		guard = engine.getGuards().get(0);
@@ -350,7 +350,7 @@ public class GuardTest extends CharacterTest {
 		ArrayList<Item> item_list = new ArrayList<>();
 		g_list.add(new Coord(0, 2));
 		item_list.add(new Item(14,2,ItemType.Treasure));
-		engine.init(es, new Coord(3,2), g_list, item_list);
+		engine.init(es, new Coord(3,2), g_list, item_list,new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
 		envi = engine.getEnvi();
 		player = engine.getPlayer();
 		guard = engine.getGuards().get(0);
@@ -384,7 +384,7 @@ public class GuardTest extends CharacterTest {
 		ArrayList<Item> item_list = new ArrayList<>();
 		g_list.add(new Coord(2,5));
 		item_list.add(new Item(14,2,ItemType.Treasure));
-		engine.init(es, new Coord(3,2), g_list, item_list);
+		engine.init(es, new Coord(3,2), g_list, item_list,new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
 		envi = engine.getEnvi();
 		player = engine.getPlayer();
 		guard = engine.getGuards().get(0);
@@ -416,13 +416,11 @@ public class GuardTest extends CharacterTest {
 		ArrayList<Item> item_list = new ArrayList<>();
 		g_list.add(new Coord(8, 2));
 		item_list.add(new Item(7,2,ItemType.Treasure));
-		engine.init(es, new Coord(2,2), g_list, item_list);
+		engine.init(es, new Coord(2,2), g_list, item_list,new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
 		envi = engine.getEnvi();
 		player = engine.getPlayer();
 		guard = engine.getGuards().get(0);
 		c = (CharacterContract)guard;
-		System.out.println("guard: x="+guard.getWdt()+" y="+guard.getHgt());
-		System.out.println("est ce qu'il y a un item dans (8,2)? : "+engine.getTreasures().get(0).getCol()+engine.getTreasures().get(0).getHgt());
 		int wdt_capture = guard.getWdt();
 		int hgt_capture = guard.getHgt();
 		//Opération :
@@ -446,13 +444,12 @@ public class GuardTest extends CharacterTest {
 		g_list.add(new Coord(8, 2));
 		item_list.add(new Item(7,2,ItemType.Treasure));
 		item_list.add(new Item(6,2, ItemType.Treasure));
-		engine.init(es, new Coord(2,2), g_list, item_list);
+		engine.init(es, new Coord(2,2), g_list, item_list,new ArrayList<>(),new Item(0,2,ItemType.Gauntlet));
 		envi = engine.getEnvi();
 		player = engine.getPlayer();
 		guard = engine.getGuards().get(0);
 		c = (CharacterContract)guard;
 		
-		System.out.println("guard: x="+guard.getWdt()+" y="+guard.getHgt());
 		guard.step();
 		int wdt_capture = guard.getWdt();
 		int hgt_capture = guard.getHgt();
@@ -460,7 +457,6 @@ public class GuardTest extends CharacterTest {
 		guard.step();
 		//Oracle :
 		/*post*/
-		System.out.println("apres step guard: x="+guard.getWdt()+" y="+guard.getHgt());
 		assertTrue(guard.getWdt() == wdt_capture-1);
 		assertTrue(guard.getHgt() == hgt_capture);
 		assertTrue(guard.getTimeInHole() == 0);

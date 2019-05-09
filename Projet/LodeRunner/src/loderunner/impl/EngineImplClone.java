@@ -12,7 +12,6 @@ import loderunner.data.Coord;
 import loderunner.data.GameState;
 import loderunner.data.Hole;
 import loderunner.data.Item;
-import loderunner.data.ItemType;
 import loderunner.data.Teleporteur;
 import loderunner.services.EditableScreenService;
 import loderunner.services.EngineService;
@@ -96,30 +95,31 @@ public class EngineImplClone implements EngineService{
 	}
 	
 	@Override
-	public void init(EditableScreenService e, 
-					 Coord player, 
-					 List<Coord> guards, 
-					 List<Item> treasures,
-					 List<Teleporteur> teleporteurs,
+	public void init(EditableScreenService e,
+			         Coord player,
+			         List<Coord> guards,
+			         List<Item> treasures,
+			         List<Teleporteur> teleporteurs,
 			         Item gauntlet) {
-		envi = new EnvironnementContract(new EnvironnementImpl());
 		for(Teleporteur t : teleporteurs) {
 			e.setNature(t.getPosA().getX(), t.getPosA().getY(), Cell.TLP);
+			e.setNature(t.getPosB().getX(), t.getPosB().getY(), Cell.TLP);
 		}
+		envi = new EnvironnementContract(new EnvironnementImpl());
 		envi.init(e);
-		
+
 		this.guards = new ArrayList<>();
 		this.guards_at_init = new ArrayList<>();
 		this.status = GameState.Playing;
 		this.treasures = (ArrayList<Item>) treasures;
-		this.player = new PlayerContractClone(new PlayerImplClone());
+		this.player = new PlayerContractClone(new PlayerImpl());
 		this.teleporteurs = (ArrayList<Teleporteur>) teleporteurs;
 		commands = new ArrayList<>();
 		holes = new ArrayList<>();
-		envi.getCellContent(player.getX(), player.getY()).setCharacter(this.player);		
+		envi.getCellContent(player.getX(), player.getY()).setCharacter(this.player);
 		this.player.init(this,player);
 		for(Coord co : guards) {
-			GuardContractClone guard = new GuardContractClone(new GuardImplClone(-1));
+			GuardContractClone guard = new GuardContractClone(new GuardImpl(-1));
 			guard.init(this, co.getX(), co.getY(), getPlayer());
 			envi.getCellContent(co.getX(), co.getY()).setGuard(guard);
 			this.guards.add(guard);
@@ -130,10 +130,13 @@ public class EngineImplClone implements EngineService{
 			this.guards_at_init.add(guardcopy);
 		}
 		for(Item i : treasures) {
-			envi.getCellContent(i.getCol(), i.getHgt()).setItem(new Item(i.getCol(), i.getHgt(), ItemType.Treasure));;
+			envi.getCellContent(i.getCol(), i.getHgt()).setItem(i);;
 		}
+		this.gauntlet = gauntlet;
+		envi.getCellContent(gauntlet.getCol(), gauntlet.getHgt()).setItem(gauntlet);
 		score = 0;
 	}
+
 
 	@Override
 	public void step() {

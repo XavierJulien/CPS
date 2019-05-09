@@ -256,7 +256,6 @@ public class CharacterTest {
 	/**
 	* ETATS REMARQUABLES
 	*/
-	//askip y en a pas 
 	
 	//Le caractère a de la place pour se déplacer à gauche
 	public void etatRemarquableGauche() {

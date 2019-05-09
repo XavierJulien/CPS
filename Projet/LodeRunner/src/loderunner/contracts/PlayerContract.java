@@ -112,15 +112,8 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 			command_capture = Command.DOWN;
 		}
 		PlayerContractClone clone;
-		if(getEngine().getEnvi().getCellNature(getWdt(), getHgt()) == Cell.EMP) {
-			clone = Creator.createPlayerContractClone(delegate.clonePlayer());
-			clone.getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(clone);
-
-		}else {
-			clone = Creator.createPlayerContractClone(delegate.clonePlayer2());
-			clone.getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(clone);
-
-		}
+		clone = Creator.createPlayerContractClone(delegate.clonePlayer());
+		clone.getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(clone);
 		if(getEngine().getPlayer().getWdt() >= 1) {
 			digl_capture = getEngine().getEnvi().getCellNature(wdt_capture-1, hgt_capture-1);
 		}
@@ -223,20 +216,6 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 
 			}
 		}
-		if(command_capture == Command.HITL) {
-			for(GuardService g : guards_capture) {
-				if(g.getHgt() == getHgt() && g.getWdt() < getWdt()) {
-					if(getEngine().getGuards().size() == guards_capture.size()) throw new PostconditionError("un guard aurait du disparaitre");
-				}
-			}
-		}
-		if(command_capture == Command.HITR) {
-			for(GuardService g : guards_capture) {
-				if(g.getHgt() == getHgt() && g.getWdt() > getWdt()) {
-					if(getEngine().getGuards().size() == guards_capture.size()) throw new PostconditionError("un guard aurait du disparaitre");
-				}
-			}
-		}
 	}
 
 	@Override
@@ -266,37 +245,18 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 	}
 
 	@Override
-	public PlayerService clonePlayer2() {
-		return delegate.clonePlayer2();
-	}
-
-	@Override
 	public void hitLeft() {
-		System.out.println("hitLeft contract");
 		//1.pre
 		if(!hasGauntlet()) throw new PreconditionError("le joueur n'as pas de gauntlet");
 		//2.checkInvariants
 		checkInvariants();
 		//3.capture
-		ArrayList<GuardService> guards_atpre = getEngine().getGuards();
 		//4.run
 		delegate.hitLeft();
 		//5.checkInvariants
 		checkInvariants();
 		//6.post
-		for(GuardService g : guards_atpre) {
-			if(g.getWdt() < getWdt() && g.getHgt() == getHgt()) {
-				for(int i = g.getWdt()+1;i<getWdt();i++) {
-					if(getEngine().getEnvi().getCellContent(i, getHgt()).getGuard() == null) {
-						continue;
-					}
-					if(i == getWdt()-1 &&
-					   getEngine().getEnvi().getCellContent(i, getHgt()).getGuard() == null) {
-						if(getEngine().getGuards().contains(g)) throw new PostconditionError("le guard n'as pas été tué à gauche");
-					}
-				}
-			}
-		}
+		if(hasGauntlet()) throw new PreconditionError("le joueur ne devrait plus avoir de gauntlet");	
 	}
 
 	@Override
@@ -307,24 +267,11 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		//2.checkInvariants
 		checkInvariants();
 		//3.capture
-		ArrayList<GuardService> guards_atpre = getEngine().getGuards();
 		//4.run
 		delegate.hitRight();
 		//5.checkInvariants
 		checkInvariants();
 		//6.post
-		for(GuardService g : guards_atpre) {
-			if(g.getWdt() > getWdt() && g.getHgt() == getHgt()) {
-				for(int i = g.getWdt()-1;i>getWdt();i--) {
-					if(getEngine().getEnvi().getCellContent(i, getHgt()).getGuard() == null) {
-						continue;
-					}
-					if(i == getWdt()+1 &&
-					   getEngine().getEnvi().getCellContent(i, getHgt()).getGuard() == null) {
-						if(getEngine().getGuards().contains(g)) throw new PostconditionError("le guard n'as pas été tué à droite");
-					}
-				}
-			}
-		}
+		if(hasGauntlet()) throw new PreconditionError("le joueur ne devrait plus avoir de gauntlet");
 	}
 }

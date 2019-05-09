@@ -35,7 +35,6 @@ public class PlayerTest extends CharacterTest{
 	@Before
 	public void beforeTests() {
 		engine = new EngineContract(new EngineImpl());
-		System.out.println("passé par la ");
 		es = new EditableScreenContract(new EditableScreenImpl());
 		player = new PlayerContract(new PlayerImpl());
 		es.init(15, 10);
@@ -47,7 +46,7 @@ public class PlayerTest extends CharacterTest{
 		ArrayList<Item> item_list = new ArrayList<>();
 		g_list.add(new Coord(8, 2));
 		item_list.add(new Item(14,2,ItemType.Treasure));
-		engine.init(es, new Coord(2,2), g_list, item_list);
+		engine.init(es, new Coord(2,2), g_list, item_list,new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
 		envi = engine.getEnvi();
 		player = engine.getPlayer();
 		c = (CharacterContract)player;
