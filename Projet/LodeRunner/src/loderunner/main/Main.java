@@ -41,7 +41,7 @@ public class Main{
 			while(true) {
 				if(engineContract.getStatus() == GameState.Win) {System.out.println("--------WELLPLAYED--------");break;}
 				if(engineContract.getStatus() == GameState.Loss){System.out.println("--------YOU LOOSE--------");break;}
-				System.out.println("Veuillez saisir un déplacement(UP,DOWN,LEFT,RIGHT) : ");
+				System.out.println("Veuillez saisir une commande (Cf Manuel d'utilisation)");
 				String s = sc.nextLine();
 				if(s.equals("STOP")) break;
 				switch (s) {

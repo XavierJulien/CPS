@@ -23,6 +23,14 @@
     <!-- Compile the java code from ${src} into ${build} -->
     <javac debug="true" classpath="${jars}/junit.jar" srcdir="${src}" excludes="" destdir="${build}" includeantruntime="false" />
   </target>
+
+  <target name="rungame" depends="compile"
+          description="run the main of the program">
+    <echo>================ Run Object Main ================</echo>
+    <java classname="loderunner.main.Main"
+          classpath="${build}">
+    </java>
+  </target>
 	
   <target name="testScreen" depends="compile"
           description="test of ScreenService">
