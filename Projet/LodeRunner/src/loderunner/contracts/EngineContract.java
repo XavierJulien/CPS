@@ -74,8 +74,9 @@ public class EngineContract extends EngineDecorator{
 				}
 			}
 		}
+
 		/**
-		 *  *  Le jeu est gagne Ì� quand il nâ€™y a plus de tre Ì�sors.
+		 *  *  Le jeu est gagne ́ quand il n’y a plus de tre ́sors.
 		 */
 
 		if (getTreasures().size() == 0) { // plus de tresor sur la map
@@ -87,12 +88,12 @@ public class EngineContract extends EngineDecorator{
 				}
 			}
 			if (!treasureOnGuard) {
-				if (getStatus() != GameState.Win) throw new InvariantError("le joueur a ramassÃ© tous les trÃ©sors, il aurait du gagnÃ©");
+				if (getStatus() != GameState.Win) throw new InvariantError("le joueur a ramassé tous les trésors, il aurait du gagné");
 			}else {
-				if (getStatus() == GameState.Win) throw new InvariantError("statut Ã  WIN alors que le joueur n'as pas tout ramassÃ©");
+				if (getStatus() == GameState.Win) throw new InvariantError("statut à WIN alors que le joueur n'as pas tout ramassé");
 			}
 		} else {
-			if (getStatus() == GameState.Win) throw new InvariantError("statut Ã  WIN alors que le joueur n'as pas tout ramassÃ©");
+			if (getStatus() == GameState.Win) throw new InvariantError("statut à WIN alors que le joueur n'as pas tout ramassé");
 		}
 	}
 
@@ -193,16 +194,13 @@ public class EngineContract extends EngineDecorator{
 				throw new PreconditionError("init : un trésor n'a pas les bons coordonnées pour rentrer dans l'environnnement");
 			if(treasure.getCol() == player.getX() && treasure.getHgt() == player.getY())
 				throw new PreconditionError("un trésor est sur la même case que le player");
-
-			if(e.getCellNature(treasure.getCol(), treasure.getHgt()) != Cell.EMP &&
+			if(e.getCellNature(treasure.getCol(), treasure.getHgt()) != Cell.EMP ||
 			   (e.getCellNature(treasure.getCol(), treasure.getHgt()-1) != Cell.PLT ||
-			    e.getCellNature(treasure.getCol(), treasure.getHgt()-1) != Cell.MTL ||
-			    e.getCellNature(treasure.getCol(), treasure.getHgt()-1) != Cell.TLP)) {
-				throw new PreconditionError("init : un trÃ©sor ne peut pas Ãªtre init dans une case de l'envi non Cell.EMP");
+			    e.getCellNature(treasure.getCol(), treasure.getHgt()-1) != Cell.MTL)) {
+				throw new PreconditionError("init : un trésor ne peut pas être init dans une case de l'envi non Cell.EMP");
 			}
-
-
-			if(treasure.getCol() == gauntlet.getCol() && treasure.getHgt() == gauntlet.getHgt()) throw new PreconditionError("init : un trésor ne peut pas être init dans une case qui contient un gant");
+			if(treasure.getCol() == gauntlet.getCol() && treasure.getHgt() == gauntlet.getHgt())
+				throw new PreconditionError("init : un trésor ne peut pas être init dans une case qui contient un gant");
 			for(Item other : treasures) {
 				if (other.equals(treasure)) {
 					continue;
@@ -228,9 +226,10 @@ public class EngineContract extends EngineDecorator{
 
 			}
 		}
+
 		for(Teleporteur teleporteur : teleporteurs) {
 			if(e.getCellNature(teleporteur.getPosA().getX(), teleporteur.getPosA().getY()) != Cell.PLT ||
-			   e.getCellNature(teleporteur.getPosB().getX(), teleporteur.getPosB().getY()) != Cell.PLT) 
+			   e.getCellNature(teleporteur.getPosB().getX(), teleporteur.getPosB().getY()) != Cell.PLT)
 				throw new PreconditionError("un teleporteur n'est pas init dans une case PLT");
 			if((teleporteur.getPosA().getX() == player.getX() && teleporteur.getPosA().getY() == player.getY()-1)  ||
 					(teleporteur.getPosB().getX() == player.getX() && teleporteur.getPosB().getY() == player.getY()-1))
@@ -339,7 +338,7 @@ public class EngineContract extends EngineDecorator{
 		int commandsSize_capture = getCommands().size();
 		boolean has_gant = getPlayer().hasGauntlet();
 		Command command_capture = getCommands().get(0);
-		
+
 		//4.run
 		super.step();
 		//5.checkInvariants
@@ -390,6 +389,7 @@ public class EngineContract extends EngineDecorator{
 					}
 				}
 			}
+
 		}
 		/**
 		 * Si au début d’un tour, le joueur se trouve sur une case contenant un tre ́sor, ce tre ́sor disparait.
@@ -433,7 +433,7 @@ public class EngineContract extends EngineDecorator{
 				}
 				if (!ok) {
 					throw new PostconditionError("un trésor qui ne devait pas disparaitre a disparu");
-					
+
 				}
 			}
 		}

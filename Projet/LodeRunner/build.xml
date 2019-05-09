@@ -23,24 +23,120 @@
     <!-- Compile the java code from ${src} into ${build} -->
     <javac debug="true" classpath="${jars}/junit.jar" srcdir="${src}" excludes="" destdir="${build}" includeantruntime="false" />
   </target>
-
-  <!--target name="test1" depends="compile"
-          description="test of first implementation">
-    <echo>================ Run first test ================</echo>
+	
+  <target name="testScreen" depends="compile"
+          description="test of ScreenService">
+    <echo>================ Run screen test ================</echo>
     <junit printsummary="yes">
       <classpath>
         <pathelement location="${build}"/>
         <pathelement location="${jars}/junit.jar"/>
-        <pathelement location="${jars}/lift1.jar"/>
       </classpath>
 
       <formatter type="plain"/>
 
-      <test name="lift.test.Lift1Test" outfile="report1"/>
+      <test name="loderunner.tests.ScreenTest" outfile="report1"/>
 
     </junit>
-  </target-->
+  </target>
+	
+	
+  <target name="testEditableScreen" depends="compile"
+          description="test of EditableScreenService">
+    <echo>================ Run editablescreen test ================</echo>
+    <junit printsummary="yes">
+      <classpath>
+        <pathelement location="${build}"/>
+        <pathelement location="${jars}/junit.jar"/>
+      </classpath>
 
+      <formatter type="plain"/>
+
+      <test name="loderunner.tests.EditableScreenTest" outfile="report1"/>
+
+    </junit>
+  </target>
+	
+  <target name="testEnvironnement" depends="compile"
+          description="test of EnvironnementService">
+    <echo>================ Run environnement test ================</echo>
+    <junit printsummary="yes">
+      <classpath>
+        <pathelement location="${build}"/>
+        <pathelement location="${jars}/junit.jar"/>
+      </classpath>
+
+      <formatter type="plain"/>
+
+      <test name="loderunner.tests.EnvironnementTest" outfile="report1"/>
+
+    </junit>
+  </target>
+
+  <target name="testCharacter" depends="compile"
+          description="test of CharacterService">
+    <echo>================ Run character test ================</echo>
+    <junit printsummary="yes">
+      <classpath>
+        <pathelement location="${build}"/>
+        <pathelement location="${jars}/junit.jar"/>
+      </classpath>
+
+      <formatter type="plain"/>
+
+      <test name="loderunner.tests.CharacterTest" outfile="report1"/>
+
+    </junit>
+  </target>
+
+  <target name="testPlayer" depends="compile"
+          description="test of PlayerService">
+    <echo>================ Run player test ================</echo>
+    <junit printsummary="yes">
+      <classpath>
+        <pathelement location="${build}"/>
+        <pathelement location="${jars}/junit.jar"/>
+      </classpath>
+
+      <formatter type="plain"/>
+
+      <test name="loderunner.tests.PlayerTest" outfile="report1"/>
+
+    </junit>
+  </target>
+	
+  <target name="testGuard" depends="compile"
+          description="test of GuardService">
+    <echo>================ Run guard test ================</echo>
+    <junit printsummary="yes">
+      <classpath>
+        <pathelement location="${build}"/>
+        <pathelement location="${jars}/junit.jar"/>
+      </classpath>
+
+      <formatter type="plain"/>
+
+      <test name="loderunner.tests.GuardTest" outfile="report1"/>
+
+    </junit>
+  </target>
+
+  <target name="testEngine" depends="compile"
+          description="test of EngineService">
+    <echo>================ Run engine test ================</echo>
+    <junit printsummary="yes">
+      <classpath>
+        <pathelement location="${build}"/>
+        <pathelement location="${jars}/junit.jar"/>
+      </classpath>
+
+      <formatter type="plain"/>
+
+      <test name="loderunner.tests.EngineTest" outfile="report1"/>
+
+    </junit>
+  </target>
+	
   <target name="dist" depends="init,clean"
         description="Generer la distribution" >
     <!-- tout mettre dans l'archive -->
