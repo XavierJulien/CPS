@@ -133,6 +133,7 @@ public class EngineImpl implements EngineService{
 		for(Item i : treasures) {
 			envi.getCellContent(i.getCol(), i.getHgt()).setItem(i);;
 		}
+		this.gauntlet = gauntlet;
 		envi.getCellContent(gauntlet.getCol(), gauntlet.getHgt()).setItem(gauntlet);
 		score = 0;
 	}
@@ -145,8 +146,15 @@ public class EngineImpl implements EngineService{
 			h.setT(h.getT()+1);
 			if(h.getT() == 15) {
 				holes.remove(h);
+				i = i-1;
 				if(envi.getCellContent(h.getX(), h.getY()).getCharacter() != null) {
+					PlayerContract playercapture = (PlayerContract) envi.getCellContent(h.getX(), h.getY()).getCharacter();
 					status = GameState.Loss;
+					envi.getCellContent(h.getX(), h.getY()).setCharacter(null);
+					envi.fill(h.getX(), h.getY());
+					envi.getCellContent(h.getX(), h.getY()).setCharacter(playercapture);
+					getNextCommand();
+					return;
 				}
 				if(envi.getCellContent(h.getX(), h.getY()).getGuard() != null) {
 					for(GuardService g : guards_at_init) {
@@ -169,7 +177,6 @@ public class EngineImpl implements EngineService{
 				}else {
 					envi.fill(h.getX(), h.getY());
 				}
-				//pour les gardes
 			}
 		}
 		if(status == GameState.Playing) {
@@ -178,7 +185,6 @@ public class EngineImpl implements EngineService{
 			if(envi.getCellContent(player.getWdt(), player.getHgt()).getItem() != null &&
 			   envi.getCellContent(player.getWdt(), player.getHgt()).getItem().getNature() == ItemType.Gauntlet) {
 				player.setGauntlet(envi.getCellContent(player.getWdt(), player.getHgt()).getItem());
-				System.out.println("player has gauntlet");
 				envi.getCellContent(player.getWdt(), player.getHgt()).setItem(null);
 			}
 			if(getEnvi().getCellContent(player.getWdt(), player.getHgt()).getGuard() != null) {
@@ -191,6 +197,12 @@ public class EngineImpl implements EngineService{
 					if(getEnvi().getCellContent(guard.getWdt(), guard.getHgt()+1).getCharacter() != null) {
 						status = GameState.Loss;
 						return;
+					}
+					if(getEnvi().getCellContent(guard.getWdt(), guard.getHgt()+1).getItem() != null && 
+					   getEnvi().getCellContent(guard.getWdt(), guard.getHgt()+1).getItem().getNature() == ItemType.Treasure) {
+						guard.setTreasure(getEnvi().getCellContent(guard.getWdt(), guard.getHgt()+1).getItem());
+						treasures.remove(getEnvi().getCellContent(guard.getWdt(), guard.getHgt()+1).getItem());
+						getEnvi().getCellContent(guard.getWdt(), guard.getHgt()+1).setItem(null);
 					}
 				}
 				guard.step();
@@ -216,6 +228,10 @@ public class EngineImpl implements EngineService{
 					   !g.hasItem()) {
 						envi.getCellContent(treasures.get(i).getCol(), treasures.get(i).getHgt()).setItem(null);
 						g.setTreasure(treasures.remove(i));
+						continue;
+					}
+					if(treasures.get(i).getCol() == g.getWdt() &&
+					   treasures.get(i).getHgt() == g.getHgt()) {
 					}
 				}
 			}

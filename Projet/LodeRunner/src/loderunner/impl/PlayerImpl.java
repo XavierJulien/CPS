@@ -42,13 +42,11 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 				if(getEngine().getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.TLP) {
 					for(Teleporteur tel : getEngine().getTeleporteurs()) {
 						if(tel.getPosB().getX() == getWdt() && tel.getPosB().getY() == getHgt()-1) {
-							setWdt(tel.getPosA().getX());
-							setHgt(tel.getPosA().getY()+1);
+							setPos(tel.getPosA().getX(),tel.getPosA().getY()+1);
 							break;
 						}
 						if(tel.getPosA().getX() == getWdt() && tel.getPosA().getY() == getHgt()-1) {
-							setWdt(tel.getPosB().getX());
-							setHgt(tel.getPosB().getY()+1);
+							setPos(tel.getPosB().getX(),tel.getPosB().getY()+1);
 						}
 					}
 				}
@@ -90,13 +88,11 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 		if(getEngine().getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.TLP) {
 			for(Teleporteur tel : getEngine().getTeleporteurs()) {
 				if(tel.getPosB().getX() == getWdt() && tel.getPosB().getY() == getHgt()-1) {
-					setWdt(tel.getPosA().getX());
-					setHgt(tel.getPosA().getY()+1);
+					setPos(tel.getPosA().getX(),tel.getPosA().getY()+1);
 					break;
 				}
 				if(tel.getPosA().getX() == getWdt() && tel.getPosA().getY() == getHgt()-1) {
-					setWdt(tel.getPosB().getX());
-					setHgt(tel.getPosB().getY()+1);
+					setPos(tel.getPosB().getX(),tel.getPosB().getY()+1);
 				}
 			}
 		}
@@ -110,23 +106,6 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 
 	@Override
 	public PlayerService clonePlayer() {
-		PlayerImplClone p = new PlayerImplClone();
-		EngineImplClone eng = new EngineImplClone();
-		EngineContractClone engContract = new EngineContractClone(eng);
-		EditableScreenImpl edit = new EditableScreenImpl();
-		edit.init(getEngine().getEnvi().getWidth(), getEngine().getEnvi().getHeight());
-		for(int i  = 0;i<edit.getWidth();i++) {
-			for(int j = 0;j<edit.getHeight();j++) {
-				edit.setNature(i, j, engine.getEnvi().getCellNature(i, j));
-			}
-		}
-		engContract.init(edit, new Coord(getWdt(), getHgt()), getEngine().getGuardsCoord(), getEngine().getTreasures(),getEngine().getTeleporteurs(),getEngine().getGauntlet());
-		p.init(engContract, new Coord(this.getWdt(), this.getHgt()));
-		return p;
-	}
-
-	@Override
-	public PlayerService clonePlayer2() {
 		PlayerImplClone p = new PlayerImplClone();
 		EngineImplClone eng = new EngineImplClone();
 		EngineContractClone engContract = new EngineContractClone(eng);
@@ -161,13 +140,15 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 	@Override
 	public void hitRight() {
 		for(int i = getWdt(); i<getEnvi().getWidth();i++) {
-			System.out.println(i+","+getHgt());
+			if(getEnvi().getCellNature(i, getHgt()) == Cell.MTL ||
+			   getEnvi().getCellNature(i, getHgt()) == Cell.PLT ||
+			   getEnvi().getCellNature(i, getHgt()) == Cell.TLP) {
+				break;
+			}
 			if(getEnvi().getCellContent(i, getHgt()).getGuard() != null) {
 				GuardService g = getEnvi().getCellContent(i, getHgt()).getGuard();
 				getEnvi().getCellContent(i, getHgt()).setGuard(null);
-				System.out.println(getEngine().getGuards().size());
 				getEngine().getGuards().remove(g);
-				System.out.println(getEngine().getGuards().size());
 				getEnvi().getCellContent(i, getHgt()).setItem(g.getTreasure());
 				setGauntlet(null);
 				break;
@@ -177,9 +158,12 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 	
 	@Override
 	public void hitLeft() {
-		System.out.println("hitleft");
 		for(int i = getWdt(); i>=0;i--) {
-			System.out.println(i+","+getHgt());
+			if(getEnvi().getCellNature(i, getHgt()) == Cell.MTL ||
+			   getEnvi().getCellNature(i, getHgt()) == Cell.PLT ||
+			   getEnvi().getCellNature(i, getHgt()) == Cell.TLP) {
+				break;
+			}
 			if(getEnvi().getCellContent(i, getHgt()).getGuard() != null) {
 				GuardService g = getEnvi().getCellContent(i, getHgt()).getGuard();
 				getEnvi().getCellContent(i, getHgt()).setGuard(null);

@@ -146,13 +146,11 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 		if(getEngine().getEnvi().getCellNature(clone.getWdt(), clone.getHgt()-1) == Cell.TLP) {
 			for(Teleporteur tel : getEngine().getTeleporteurs()) {
 				if(tel.getPosB().getX() == clone.getWdt() && tel.getPosB().getY() == clone.getHgt()-1) {
-					clone.getDelegate().setWdt(tel.getPosA().getX());
-					clone.getDelegate().setHgt(tel.getPosA().getY()+1);
+					clone.getDelegate().setPos(tel.getPosA().getX(), tel.getPosA().getY()+1);
 					break;
 				}
 				if(tel.getPosA().getX() == clone.getWdt() && tel.getPosA().getY() == clone.getHgt()-1) {
-					clone.getDelegate().setWdt(tel.getPosB().getX());
-					clone.getDelegate().setHgt(tel.getPosB().getY()+1);
+					clone.getDelegate().setPos(tel.getPosB().getX(), tel.getPosB().getY()+1);
 				}
 			}
 		}
@@ -166,8 +164,6 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 
 		//6.post
 		if(clone.getHgt() != getHgt() || clone.getWdt() != getWdt()) {
-			System.out.println("clone : "+clone.getWdt()+","+clone.getHgt());
-			System.out.println("joueur : "+getWdt()+","+getHgt());
 			throw new PostconditionError("Player Step : le joueur n'as pas la bonne position");
 		}
 		if (getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.LAD &&
@@ -216,20 +212,6 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 
 			}
 		}
-		if(command_capture == Command.HITL) {
-			for(GuardService g : guards_capture) {
-				if(g.getHgt() == getHgt() && g.getWdt() < getWdt()) {
-					if(getEngine().getGuards().size() == guards_capture.size()) throw new PostconditionError("un guard aurait du disparaitre");
-				}
-			}
-		}
-		if(command_capture == Command.HITR) {
-			for(GuardService g : guards_capture) {
-				if(g.getHgt() == getHgt() && g.getWdt() > getWdt()) {
-					if(getEngine().getGuards().size() == guards_capture.size()) throw new PostconditionError("un guard aurait du disparaitre");
-				}
-			}
-		}
 	}
 
 	@Override
@@ -260,59 +242,31 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 
 	@Override
 	public void hitLeft() {
-		System.out.println("hitLeft contract");
 		//1.pre
 		if(!hasGauntlet()) throw new PreconditionError("le joueur n'as pas de gauntlet");
 		//2.checkInvariants
 		checkInvariants();
 		//3.capture
-		ArrayList<GuardService> guards_atpre = getEngine().getGuards();
 		//4.run
 		delegate.hitLeft();
 		//5.checkInvariants
 		checkInvariants();
 		//6.post
-		for(GuardService g : guards_atpre) {
-			if(g.getWdt() < getWdt() && g.getHgt() == getHgt()) {
-				for(int i = g.getWdt()+1;i<getWdt();i++) {
-					if(getEngine().getEnvi().getCellContent(i, getHgt()).getGuard() == null) {
-						continue;
-					}
-					if(i == getWdt()-1 &&
-					   getEngine().getEnvi().getCellContent(i, getHgt()).getGuard() == null) {
-						if(getEngine().getGuards().contains(g)) throw new PostconditionError("le guard n'as pas été tué à gauche");
-					}
-				}
-			}
-		}
+		if(hasGauntlet()) throw new PreconditionError("le joueur ne devrait plus avoir de gauntlet");	
 	}
 
 	@Override
 	public void hitRight() {
-		System.out.println("hitRight contract");
 		//1.pre
 		if(!hasGauntlet()) throw new PreconditionError("le joueur n'as pas de gauntlet");
 		//2.checkInvariants
 		checkInvariants();
 		//3.capture
-		ArrayList<GuardService> guards_atpre = getEngine().getGuards();
 		//4.run
 		delegate.hitRight();
 		//5.checkInvariants
 		checkInvariants();
 		//6.post
-		for(GuardService g : guards_atpre) {
-			if(g.getWdt() > getWdt() && g.getHgt() == getHgt()) {
-				for(int i = g.getWdt()-1;i>getWdt();i--) {
-					if(getEngine().getEnvi().getCellContent(i, getHgt()).getGuard() == null) {
-						continue;
-					}
-					if(i == getWdt()+1 &&
-					   getEngine().getEnvi().getCellContent(i, getHgt()).getGuard() == null) {
-						if(getEngine().getGuards().contains(g)) throw new PostconditionError("le guard n'as pas été tué à droite");
-					}
-				}
-			}
-		}
+		if(hasGauntlet()) throw new PreconditionError("le joueur ne devrait plus avoir de gauntlet");
 	}
 }

@@ -19,7 +19,7 @@ import loderunner.data.Coord;
 import loderunner.data.GameState;
 import loderunner.data.Item;
 import loderunner.data.ItemType;
-import loderunner.errors.InvariantError;
+import loderunner.data.Teleporteur;
 import loderunner.errors.PreconditionError;
 import loderunner.impl.EditableScreenImpl;
 import loderunner.impl.EngineImpl;
@@ -44,7 +44,8 @@ public class EngineTest {
 		ArrayList<Item> item_list = new ArrayList<>();
 		g_list.add(new Coord(8, 2));
 		item_list.add(new Item(10,2,ItemType.Treasure));
-		engine.init(es, new Coord(5,2), g_list, item_list);
+		Item gant = new Item(12,2,ItemType.Gauntlet);
+		engine.init(es, new Coord(5,2), g_list, item_list,new ArrayList<Teleporteur>(),gant);
 	}
 	
 	@After
@@ -87,8 +88,9 @@ public class EngineTest {
 		ArrayList<Item> treasures = new ArrayList<>();
 		treasures.add(new Item(0,2,ItemType.Treasure));
 		treasures.add(new Item(1,2,ItemType.Treasure));
+		Item gant = new Item(12,2,ItemType.Gauntlet);
 		//Opération(s)
-		engine.init(es, new Coord(2,2), guards, treasures);
+		engine.init(es, new Coord(2,2), guards, treasures,new ArrayList<>(),gant);
 		//Oracle : None
 	}
 
@@ -102,8 +104,9 @@ public class EngineTest {
 		ArrayList<Item> treasures = new ArrayList<>();
 		treasures.add(new Item(0,2,ItemType.Treasure));
 		treasures.add(new Item(1,2,ItemType.Treasure));
+		Item gant = new Item(12,2,ItemType.Gauntlet);
 		//Opération(s)
-		engine.init(es, new Coord(2,2), guards, treasures);
+		engine.init(es, new Coord(2,2), guards, treasures,null,gant);
 		//Oracle : Error
 	}
 	
@@ -111,7 +114,7 @@ public class EngineTest {
 	public void preInitFail2() {
 		//Conditions Initiales : None
 		//Opération(s)
-		engine.init(es, new Coord(20,2), new ArrayList<>(), new ArrayList<>());
+		engine.init(es, new Coord(20,2), new ArrayList<>(), new ArrayList<>(),new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
 		//Oracle : Error
 	}
 	
@@ -125,7 +128,7 @@ public class EngineTest {
 		treasures.add(new Item(0,2,ItemType.Treasure));
 		treasures.add(new Item(1,2,ItemType.Treasure));
 		//Opération(s)
-		engine.init(es, new Coord(2,2), guards, treasures);
+		engine.init(es, new Coord(2,2), guards, treasures,new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
 		//Oracle : Error
 	}
 	
@@ -139,7 +142,7 @@ public class EngineTest {
 		treasures.add(new Item(0,2,ItemType.Treasure));
 		treasures.add(new Item(1,2,ItemType.Treasure));
 		//Opération(s)
-		engine.init(es, new Coord(2,2), guards, treasures);
+		engine.init(es, new Coord(2,2), guards, treasures,new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
 		//Oracle : Error
 	}
 	
@@ -153,7 +156,7 @@ public class EngineTest {
 		treasures.add(new Item(1,2,ItemType.Treasure));
 		treasures.add(new Item(1,2,ItemType.Treasure));
 		//Opération(s)
-		engine.init(es, new Coord(2,2), guards, treasures);
+		engine.init(es, new Coord(2,2), guards, treasures,new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
 		//Oracle : Error
 	}
 	
@@ -168,7 +171,7 @@ public class EngineTest {
 		treasures.add(new Item(2,2,ItemType.Treasure));
 		treasures.add(new Item(1,2,ItemType.Treasure));
 		//Opération(s)
-		engine.init(es, new Coord(2,2), guards, treasures);
+		engine.init(es, new Coord(2,2), guards, treasures,new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
 		//Oracle : Error
 	}
 	
@@ -179,7 +182,10 @@ public class EngineTest {
 	@Test
 	public void transitionAddCommand() {
 		//Conditions Initiales 
-		engine.init(es, new Coord(2,2), new ArrayList<>(), new ArrayList<>());
+		ArrayList<Item> treasures = new ArrayList<>();
+		treasures.add(new Item(1,2,ItemType.Treasure));
+		treasures.add(new Item(0,2,ItemType.Treasure));
+		engine.init(es, new Coord(2,2), new ArrayList<>(), treasures,new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
 		//Opération(s)
 		engine.addCommand(Command.RIGHT);
 		//Oracle : 
@@ -196,7 +202,7 @@ public class EngineTest {
 		ArrayList<Item> treasures = new ArrayList<>();
 		treasures.add(new Item(0,2,ItemType.Treasure));
 		treasures.add(new Item(1,2,ItemType.Treasure));
-		engine.init(es, new Coord(2,2), guards, treasures);
+		engine.init(es, new Coord(2,2), guards, treasures,new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
 		engine.addCommand(Command.RIGHT);
 		int wdt_capture = engine.getPlayer().getWdt();
 		int hgt_capture = engine.getPlayer().getHgt();
@@ -223,7 +229,7 @@ public class EngineTest {
 		ArrayList<Item> treasures = new ArrayList<>();
 		treasures.add(new Item(0,2,ItemType.Treasure));
 		treasures.add(new Item(1,2,ItemType.Treasure));
-		engine.init(es, new Coord(2,2), guards, treasures);
+		engine.init(es, new Coord(2,2), guards, treasures,new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
 		engine.addCommand(Command.LEFT);
 		int wdt_capture = engine.getPlayer().getWdt();
 		int hgt_capture = engine.getPlayer().getHgt();
@@ -250,7 +256,7 @@ public class EngineTest {
 		ArrayList<Item> treasures = new ArrayList<>();
 		treasures.add(new Item(0,2,ItemType.Treasure));
 		treasures.add(new Item(1,2,ItemType.Treasure));
-		engine.init(es, new Coord(2,2), guards, treasures);
+		engine.init(es, new Coord(2,2), guards, treasures,new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
 		engine.addCommand(Command.UP);
 		int wdt_capture = engine.getPlayer().getWdt();
 		int hgt_capture = engine.getPlayer().getHgt();
@@ -277,7 +283,7 @@ public class EngineTest {
 		ArrayList<Item> treasures = new ArrayList<>();
 		treasures.add(new Item(0,2,ItemType.Treasure));
 		treasures.add(new Item(1,2,ItemType.Treasure));
-		engine.init(es, new Coord(2,2), guards, treasures);
+		engine.init(es, new Coord(2,2), guards, treasures,new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
 		engine.addCommand(Command.DOWN);
 		int wdt_capture = engine.getPlayer().getWdt();
 		int hgt_capture = engine.getPlayer().getHgt();
@@ -303,8 +309,8 @@ public class EngineTest {
 		guards.add(new Coord(10,2));
 		ArrayList<Item> treasures = new ArrayList<>();
 		treasures.add(new Item(0,2,ItemType.Treasure));
-		treasures.add(new Item(1,2,ItemType.Treasure));
-		engine.init(es, new Coord(2,2), guards, treasures);
+		treasures.add(new Item(3,2,ItemType.Treasure));
+		engine.init(es, new Coord(2,2), guards, treasures,new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
 		engine.addCommand(Command.DIGL);
 		int wdt_capture = engine.getPlayer().getWdt();
 		int hgt_capture = engine.getPlayer().getHgt();
@@ -332,7 +338,7 @@ public class EngineTest {
 		ArrayList<Item> treasures = new ArrayList<>();
 		treasures.add(new Item(0,2,ItemType.Treasure));
 		treasures.add(new Item(1,2,ItemType.Treasure));
-		engine.init(es, new Coord(2,2), guards, treasures);
+		engine.init(es, new Coord(2,2), guards, treasures,new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
 		engine.addCommand(Command.DIGR);
 		int wdt_capture = engine.getPlayer().getWdt();
 		int hgt_capture = engine.getPlayer().getHgt();
@@ -364,7 +370,7 @@ public class EngineTest {
 		ArrayList<Item> treasures = new ArrayList<>();
 		treasures.add(new Item(0,2,ItemType.Treasure));
 		treasures.add(new Item(1,2,ItemType.Treasure));
-		engine.init(es, new Coord(2,2), guards, treasures);
+		engine.init(es, new Coord(2,2), guards, treasures,new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
 		engine.addCommand(Command.LEFT);
 		engine.addCommand(Command.LEFT);
 		int wdt_capture = engine.getPlayer().getWdt();
@@ -394,7 +400,7 @@ public class EngineTest {
 		ArrayList<Item> treasures = new ArrayList<>();
 		treasures.add(new Item(0,2,ItemType.Treasure));
 		treasures.add(new Item(1,2,ItemType.Treasure));
-		engine.init(es, new Coord(3,2), guards, treasures);
+		engine.init(es, new Coord(3,2), guards, treasures,new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
 		engine.addCommand(Command.RIGHT);
 		int wdt_capture = engine.getPlayer().getWdt();
 		int hgt_capture = engine.getPlayer().getHgt();
@@ -423,7 +429,7 @@ public class EngineTest {
 		ArrayList<Item> treasures = new ArrayList<>();
 		treasures.add(new Item(0,2,ItemType.Treasure));
 		treasures.add(new Item(1,2,ItemType.Treasure));
-		engine.init(es, new Coord(2,2), guards, treasures);
+		engine.init(es, new Coord(2,2), guards, treasures,new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
 		engine.addCommand(Command.RIGHT);
 		engine.addCommand(Command.RIGHT);
 		int wdt_capture = engine.getPlayer().getWdt();
@@ -451,7 +457,7 @@ public class EngineTest {
 		ArrayList<Item> treasures = new ArrayList<>();
 		treasures.add(new Item(0,2,ItemType.Treasure));
 		treasures.add(new Item(1,2,ItemType.Treasure));
-		engine.init(es, new Coord(3,2), guards, treasures);
+		engine.init(es, new Coord(3,2), guards, treasures,new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
 		engine.addCommand(Command.UP);
 		engine.addCommand(Command.NEUTRAL);
 		int wdt_capture = engine.getPlayer().getWdt();
@@ -479,7 +485,7 @@ public class EngineTest {
 		ArrayList<Item> treasures = new ArrayList<>();
 		treasures.add(new Item(0,2,ItemType.Treasure));
 		treasures.add(new Item(1,2,ItemType.Treasure));
-		engine.init(es, new Coord(2,2), guards, treasures);
+		engine.init(es, new Coord(2,2), guards, treasures,new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
 		engine.addCommand(Command.LEFT);
 		engine.addCommand(Command.NEUTRAL);
 		int wdt_capture = engine.getPlayer().getWdt();
@@ -507,7 +513,7 @@ public class EngineTest {
 		ArrayList<Item> treasures = new ArrayList<>();
 		treasures.add(new Item(0,2,ItemType.Treasure));
 		treasures.add(new Item(1,2,ItemType.Treasure));
-		engine.init(es, new Coord(2,2), guards, treasures);
+		engine.init(es, new Coord(2,2), guards, treasures,new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
 		engine.addCommand(Command.NEUTRAL);
 		engine.addCommand(Command.DIGR);
 		int wdt_capture = engine.getPlayer().getWdt();
@@ -543,7 +549,7 @@ public class EngineTest {
 		es.setNature(3, 3, Cell.LAD);
 		es.setNature(2, 3, Cell.PLT);
 		es.setNature(1, 3, Cell.PLT);
-		engine.init(es, new Coord(2,2), guards, treasures);
+		engine.init(es, new Coord(2,2), guards, treasures,new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
 		engine.addCommand(Command.RIGHT);
 		engine.addCommand(Command.NEUTRAL);
 		engine.addCommand(Command.NEUTRAL);
@@ -561,7 +567,6 @@ public class EngineTest {
 		int guard_wdt_capture = engine.getGuards().get(0).getWdt();
 		int guard_hgt_capture = engine.getGuards().get(0).getHgt();
 		//Opération(s)
-		engine.step();
 		engine.step();
 		engine.step();
 		engine.step();

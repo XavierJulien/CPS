@@ -169,15 +169,13 @@ public class GuardImplBug extends CharacterImpl implements GuardService {
 
 	@Override
 	public void climbLeft() {//bug
-		setWdt(getWdt()-1);
-		setHgt(getHgt()+1);
+		setPos(getWdt()-1,getHgt()+1);
 		timeInHole=0;
 	}
 
 	@Override
 	public void climbRight() {//bug
-		setWdt(getWdt()+1);
-		setHgt(getHgt()+1);
+		setPos(getWdt()-1,getHgt()+1);
 		timeInHole=0;
 	}
 

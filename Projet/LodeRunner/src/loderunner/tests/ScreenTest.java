@@ -43,10 +43,16 @@ public class ScreenTest {
 		//Conditions Initiales : None
 		//Opération(s)
 		screen.init(-2,10);
-		//Oracle : None
+		//Oracle : Error
 	}
-	//il y a encore 1 autre fail pour init non écrit : height < 0
 	
+	@Test(expected = PreconditionError.class)
+	public void preInitFail2() {
+		//Conditions Initiales : None
+		//Opération(s)
+		screen.init(3,-3);
+		//Oracle : Error
+	}
 	
 	@Test(expected = PreconditionError.class)
 	public void preDigFail() {

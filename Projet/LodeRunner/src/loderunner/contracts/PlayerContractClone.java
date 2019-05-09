@@ -102,15 +102,8 @@ public class PlayerContractClone extends CharacterContractClone implements Playe
 			command_capture = Command.DOWN;
 		}
 		PlayerContractClone clone;
-		if(getEngine().getEnvi().getCellNature(getWdt(), getHgt()) == Cell.EMP) {
-			clone = Creator.createPlayerContractClone(delegate.clonePlayer());
-			clone.getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(clone);
-
-		}else {
-			clone = Creator.createPlayerContractClone(delegate.clonePlayer2());
-			clone.getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(clone);
-
-		}
+		clone = Creator.createPlayerContractClone(delegate.clonePlayer());
+		clone.getEnvi().getCellContent(getEngine().getPlayer().getWdt(), getEngine().getPlayer().getHgt()).setCharacter(clone);
 		if(getEngine().getPlayer().getWdt() >= 1) {
 			digl_capture = getEngine().getEnvi().getCellNature(wdt_capture-1, hgt_capture-1);
 		}
@@ -142,13 +135,11 @@ public class PlayerContractClone extends CharacterContractClone implements Playe
 		if(getEngine().getEnvi().getCellNature(clone.getWdt(), clone.getHgt()-1) == Cell.TLP) {
 			for(Teleporteur tel : getEngine().getTeleporteurs()) {
 				if(tel.getPosB().getX() == clone.getWdt() && tel.getPosB().getY() == clone.getHgt()-1) {
-					clone.getDelegate().setWdt(tel.getPosA().getX());
-					clone.getDelegate().setHgt(tel.getPosA().getY()+1);
+					clone.getDelegate().setPos(tel.getPosA().getX(), tel.getPosA().getY()+1);
 					break;
 				}
 				if(tel.getPosA().getX() == clone.getWdt() && tel.getPosA().getY() == clone.getHgt()-1) {
-					clone.getDelegate().setWdt(tel.getPosB().getX());
-					clone.getDelegate().setHgt(tel.getPosB().getY()+1);
+					clone.getDelegate().setPos(tel.getPosB().getX(), tel.getPosB().getY()+1);
 				}
 			}
 		}
@@ -235,11 +226,6 @@ public class PlayerContractClone extends CharacterContractClone implements Playe
 
 	@Override
 	public PlayerService clonePlayer() {
-		return null;//never used
-	}
-
-	@Override
-	public PlayerService clonePlayer2() {
 		return null;//never used
 	}
 

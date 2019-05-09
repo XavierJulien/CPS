@@ -101,23 +101,6 @@ public class PlayerImplClone extends CharacterImpl implements PlayerService{
 	}
 
 	@Override
-	public PlayerService clonePlayer2() {
-		PlayerImplClone p = new PlayerImplClone();
-		EngineImplClone eng = new EngineImplClone();
-		EngineContractClone engContract = new EngineContractClone(eng);
-		EditableScreenImpl edit = new EditableScreenImpl();
-		edit.init(getEngine().getEnvi().getWidth(), getEngine().getEnvi().getHeight());
-		for(int i  = 0;i<edit.getWidth();i++) {
-			for(int j = 0;j<edit.getHeight();j++) {
-				edit.setNature(i, j, getEngine().getEnvi().getCellNature(i, j));
-			}
-		}
-		engContract.init(edit, new Coord(getWdt(), getHgt()), getEngine().getGuardsCoord(), getEngine().getTreasures(),getEngine().getTeleporteurs(),getEngine().getGauntlet());
-		p.init(engContract, new Coord(this.getWdt(), this.getHgt()));
-		return p;
-	}
-
-	@Override
 	public boolean hasGauntlet() {
 		if(gauntlet == null) return false;
 		return true;
@@ -136,10 +119,17 @@ public class PlayerImplClone extends CharacterImpl implements PlayerService{
 	@Override
 	public void hitRight() {
 		for(int i = getWdt(); i<getEnvi().getWidth();i++) {
+			if(getEnvi().getCellNature(i, getHgt()) == Cell.MTL ||
+			   getEnvi().getCellNature(i, getHgt()) == Cell.PLT ||
+			   getEnvi().getCellNature(i, getHgt()) == Cell.TLP) {
+				break;
+			}
 			if(getEnvi().getCellContent(i, getHgt()).getGuard() != null) {
 				GuardService g = getEnvi().getCellContent(i, getHgt()).getGuard();
 				getEnvi().getCellContent(i, getHgt()).setGuard(null);
 				getEngine().getGuards().remove(g);
+				getEnvi().getCellContent(i, getHgt()).setItem(g.getTreasure());
+				setGauntlet(null);
 				break;
 			}
 		}
@@ -148,10 +138,17 @@ public class PlayerImplClone extends CharacterImpl implements PlayerService{
 	@Override
 	public void hitLeft() {
 		for(int i = getWdt(); i>=0;i--) {
+			if(getEnvi().getCellNature(i, getHgt()) == Cell.MTL ||
+			   getEnvi().getCellNature(i, getHgt()) == Cell.PLT ||
+			   getEnvi().getCellNature(i, getHgt()) == Cell.TLP) {
+				break;
+			}
 			if(getEnvi().getCellContent(i, getHgt()).getGuard() != null) {
 				GuardService g = getEnvi().getCellContent(i, getHgt()).getGuard();
 				getEnvi().getCellContent(i, getHgt()).setGuard(null);
 				getEngine().getGuards().remove(g);
+				getEnvi().getCellContent(i, getHgt()).setItem(g.getTreasure());
+				setGauntlet(null);
 				break;
 			}
 		}
