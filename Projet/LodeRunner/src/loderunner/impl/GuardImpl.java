@@ -89,7 +89,8 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 						if(target.getHgt()-getHgt() == 0) return Command.NEUTRAL;
 					}
 				}
-				return Command.DOWN;
+				if(nat_under==Cell.EMP || nat_under==Cell.HDR || nat_under==Cell.HOL) return Command.DOWN;
+				return Command.NEUTRAL;
 			}
 			case LAD :{
 				if(nat_under==Cell.PLT ||
@@ -174,8 +175,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			if (getEnvi().getCellNature(getWdt()-1, getHgt()+1) != Cell.PLT
 				&& getEnvi().getCellNature(getWdt()-1, getHgt()+1) != Cell.MTL) {
 				if (getEnvi().getCellContent(getWdt()-1, getHgt()+1).getGuard() == null) {
-					setWdt(getWdt()-1);
-					setHgt(getHgt()+1);
+					setPos(getWdt()-1,getHgt()+1);
 					timeInHole=0;
 				}
 			}
@@ -189,8 +189,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			if (getEnvi().getCellNature(getWdt()+1, getHgt()+1) != Cell.PLT
 				&& getEnvi().getCellNature(getWdt()+1, getHgt()+1) != Cell.MTL) {
 				if (getEnvi().getCellContent(getWdt()+1, getHgt()+1).getGuard() == null) {
-					setWdt(getWdt()+1);
-					setHgt(getHgt()+1);
+					setPos(getWdt()-1,getHgt()+1);
 					timeInHole=0;
 				}
 			}

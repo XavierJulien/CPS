@@ -176,8 +176,7 @@ public class GuardImplClone extends CharacterImpl implements GuardService {
 				&& getEnvi().getCellNature(getWdt()-1, getHgt()+1) != Cell.MTL) {
 				if (getEnvi().getCellContent(getWdt()-1, getHgt()+1).getGuard() == null) {
 					getEngine().getEnvi().getCellContent(getWdt(), getHgt()).setGuard(null);
-					setWdt(getWdt()-1);
-					setHgt(getHgt()+1);
+					setPos(getWdt()-1,getHgt()+1);
 					timeInHole=0;
 					getEngine().getEnvi().getCellContent(getWdt()-1, getHgt()+1).setGuard(this);
 				}
@@ -194,8 +193,7 @@ public class GuardImplClone extends CharacterImpl implements GuardService {
 				&& getEnvi().getCellNature(getWdt()+1, getHgt()+1) != Cell.MTL) {
 				if (getEnvi().getCellContent(getWdt()+1, getHgt()+1).getGuard() == null) {
 					getEngine().getEnvi().getCellContent(getWdt(), getHgt()).setGuard(null);
-					setWdt(getWdt()+1);
-					setHgt(getHgt()+1);
+					setPos(getWdt()-1,getHgt()+1);
 					timeInHole=0;
 					getEngine().getEnvi().getCellContent(getWdt()-1, getHgt()+1).setGuard(this);
 				}

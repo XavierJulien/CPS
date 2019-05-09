@@ -166,8 +166,6 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 
 		//6.post
 		if(clone.getHgt() != getHgt() || clone.getWdt() != getWdt()) {
-			System.out.println("clone : "+clone.getWdt()+","+clone.getHgt());
-			System.out.println("joueur : "+getWdt()+","+getHgt());
 			throw new PostconditionError("Player Step : le joueur n'as pas la bonne position");
 		}
 		if (getEnvi().getCellNature(wdt_capture, hgt_capture) != Cell.LAD &&
@@ -261,7 +259,6 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 
 	@Override
 	public void hitRight() {
-		System.out.println("hitRight contract");
 		//1.pre
 		if(!hasGauntlet()) throw new PreconditionError("le joueur n'as pas de gauntlet");
 		//2.checkInvariants

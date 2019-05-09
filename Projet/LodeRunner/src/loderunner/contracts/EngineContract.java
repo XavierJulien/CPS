@@ -74,6 +74,26 @@ public class EngineContract extends EngineDecorator{
 				}
 			}
 		}
+		/**
+		 *  *  Le jeu est gagne ́ quand il n’y a plus de tre ́sors.
+		 */
+
+		if (getTreasures().size() == 0) { // plus de tresor sur la map
+			boolean treasureOnGuard = false;
+			for (GuardService g : getGuards()) { // plus de tresor sur aucun garde
+				if (g.hasItem()) {
+					treasureOnGuard = true;
+					break;
+				}
+			}
+			if (!treasureOnGuard) {
+				if (getStatus() != GameState.Win) throw new InvariantError("le joueur a ramassé tous les trésors, il aurait du gagné");
+			}else {
+				if (getStatus() == GameState.Win) throw new InvariantError("statut à WIN alors que le joueur n'as pas tout ramassé");
+			}
+		} else {
+			if (getStatus() == GameState.Win) throw new InvariantError("statut à WIN alors que le joueur n'as pas tout ramassé");
+		}
 	}
 
 	@Override
@@ -321,8 +341,8 @@ public class EngineContract extends EngineDecorator{
 		//5.checkInvariants
 		checkInvariants();
 		//6.post
-		if(getPlayer().hasGauntlet() != has_gant) {
-			if(command_capture == Command.HITR) {
+		if(command_capture == Command.HITR) {
+			if(getPlayer().hasGauntlet() != has_gant) {
 				for(GuardService g : guards_capture) {
 					if(g.getWdt() > getPlayer().getWdt() && g.getHgt() == getPlayer().getHgt()) {
 						for(int i = g.getWdt()-1;i>getPlayer().getWdt();i--) {
@@ -343,7 +363,9 @@ public class EngineContract extends EngineDecorator{
 					}
 				}
 			}
-			if(command_capture == Command.HITL) {
+		}
+		if(command_capture == Command.HITL) {
+			if(getPlayer().hasGauntlet() != has_gant) {
 				for(GuardService g : guards_capture) {
 					if(g.getWdt() < getPlayer().getWdt() && g.getHgt() == getPlayer().getHgt()) {
 						for(int i = g.getWdt()+1;i<getPlayer().getWdt();i++) {
@@ -364,7 +386,6 @@ public class EngineContract extends EngineDecorator{
 					}
 				}
 			}
-			
 		}
 		/**
 		 * Si au début d’un tour, le joueur se trouve sur une case contenant un tre ́sor, ce tre ́sor disparait.

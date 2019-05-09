@@ -20,7 +20,6 @@ import loderunner.data.GameState;
 import loderunner.data.Item;
 import loderunner.data.ItemType;
 import loderunner.data.Teleporteur;
-import loderunner.errors.InvariantError;
 import loderunner.errors.PreconditionError;
 import loderunner.impl.EditableScreenImpl;
 import loderunner.impl.EngineImpl;

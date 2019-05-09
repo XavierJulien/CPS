@@ -32,10 +32,9 @@ public class CharacterImpl implements CharacterService{
 		return id;
 	}
 
-	public void setWdt(int wdt) {
+	@Override
+	public void setPos(int wdt, int hgt) {
 		this.wdt = wdt;
-	}
-	public void setHgt(int hgt) {
 		this.hgt = hgt;
 	}
 	

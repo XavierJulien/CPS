@@ -1,6 +1,7 @@
 package loderunner.tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import loderunner.data.Command;
 import loderunner.data.Coord;
 import loderunner.data.Item;
 import loderunner.data.ItemType;
+import loderunner.data.Teleporteur;
 import loderunner.errors.PreconditionError;
 import loderunner.impl.EditableScreenImpl;
 import loderunner.impl.EngineImpl;
@@ -301,8 +303,6 @@ public class GuardTest extends CharacterTest {
 		//Conditions initiales : none
 		int wdt_capture = guard.getWdt();
 		int hgt_capture = guard.getHgt();
-		System.out.println(guard.getWdt());
-		System.out.println(guard.getHgt());
 		//Opération :
 		guard.step();
 		//Oracle :
@@ -321,7 +321,7 @@ public class GuardTest extends CharacterTest {
 		ArrayList<Item> item_list = new ArrayList<>();
 		g_list.add(new Coord(8, 2));
 		item_list.add(new Item(14,2,ItemType.Treasure));
-		engine.init(es, new Coord(12,2), g_list, item_list,new ArrayList<>(),new Item(12,2,ItemType.Gauntlet));
+		engine.init(es, new Coord(12,2), g_list, item_list,new ArrayList<>(),new Item(13,2,ItemType.Gauntlet));
 		envi = engine.getEnvi();
 		player = engine.getPlayer();
 		guard = engine.getGuards().get(0);
@@ -421,6 +421,8 @@ public class GuardTest extends CharacterTest {
 		player = engine.getPlayer();
 		guard = engine.getGuards().get(0);
 		c = (CharacterContract)guard;
+		engine.addCommand(Command.LEFT);
+		engine.step();
 		int wdt_capture = guard.getWdt();
 		int hgt_capture = guard.getHgt();
 		//Opération :
@@ -449,8 +451,9 @@ public class GuardTest extends CharacterTest {
 		player = engine.getPlayer();
 		guard = engine.getGuards().get(0);
 		c = (CharacterContract)guard;
+		engine.addCommand(Command.NEUTRAL);
 		
-		guard.step();
+		engine.step();
 		int wdt_capture = guard.getWdt();
 		int hgt_capture = guard.getHgt();
 		//Opération :
@@ -464,16 +467,378 @@ public class GuardTest extends CharacterTest {
 		/*inv*/
 		checkinvG();
 	}
-	// le garde croise le joueur 
+	// le garde croise le joueur
+	@Test
+	public void etatRemarquableCroiseUnJoueur() {
+		//Conditions initiales
+		ArrayList<Coord> g_list = new ArrayList<>();
+		ArrayList<Item> item_list = new ArrayList<>();
+		g_list.add(new Coord(3, 2));
+		item_list.add(new Item(7,2,ItemType.Treasure));
+		item_list.add(new Item(6,2, ItemType.Treasure));
+		engine.init(es, new Coord(2,2), g_list, item_list,new ArrayList<>(),new Item(0,2,ItemType.Gauntlet));
+		envi = engine.getEnvi();
+		player = engine.getPlayer();
+		guard = engine.getGuards().get(0);
+		c = (CharacterContract)guard;
+		
+		int wdt_capture = guard.getWdt();
+		int hgt_capture = guard.getHgt();
+		//Opération :
+		guard.step();
+		//Oracle :
+		/*post*/
+		assertTrue(guard.getWdt() == wdt_capture-1);
+		assertTrue(guard.getHgt() == hgt_capture);
+		assertTrue(guard.getTimeInHole() == 0);
+		assertTrue(guard.getWdt() == engine.getPlayer().getWdt());
+		assertTrue(guard.getHgt() == engine.getPlayer().getHgt());
+		/*inv*/
+		checkinvG();
+	}
 	// le garde croise un autre garde
+	@Test
+	public void etatRemarquableRencontreUnGarde() {
+		//Conditions initiales
+		ArrayList<Coord> g_list = new ArrayList<>();
+		ArrayList<Item> item_list = new ArrayList<>();
+		g_list.add(new Coord(3, 2));
+		g_list.add(new Coord(4, 2));
+		item_list.add(new Item(7,2,ItemType.Treasure));
+		item_list.add(new Item(6,2, ItemType.Treasure));
+		engine.init(es, new Coord(2,2), g_list, item_list,new ArrayList<>(),new Item(0,2,ItemType.Gauntlet));
+		envi = engine.getEnvi();
+		player = engine.getPlayer();
+		guard = engine.getGuards().get(0);
+		c = (CharacterContract)guard;
+		
+		int wdt_capture = guard.getWdt();
+		int hgt_capture = guard.getHgt();
+		int wdt_other_capture = engine.getGuards().get(1).getWdt();
+		int hgt_other_capture = engine.getGuards().get(1).getHgt();
+		//Opération :
+		guard.goRight();
+		//Oracle :
+		/*post*/
+		assertTrue(guard.getWdt() == wdt_capture);
+		assertTrue(guard.getHgt() == hgt_capture);
+		assertTrue(engine.getGuards().get(1).getWdt() == wdt_other_capture);
+		assertTrue(engine.getGuards().get(1).getHgt() == hgt_other_capture);
+		/*inv*/
+		checkinvG();
+	}
 	// le garde portant un trésor tombe dans un trou
-	
+	@Test
+	public void etatRemarquableFallInHolWithTreasure() {
+		//Conditions initiales
+		ArrayList<Coord> g_list = new ArrayList<>();
+		ArrayList<Item> item_list = new ArrayList<>();
+		g_list.add(new Coord(3, 2));
+		item_list.add(new Item(7,2,ItemType.Treasure));
+		engine.init(es, new Coord(2,2), g_list, item_list,new ArrayList<>(),new Item(0,2,ItemType.Gauntlet));
+		envi = engine.getEnvi();
+		player = engine.getPlayer();
+		guard = engine.getGuards().get(0);
+		c = (CharacterContract)guard;
+		Item treasure = new Item(3,2,ItemType.Treasure);
+		guard.setTreasure(treasure);
+		int wdt_capture = guard.getWdt();
+		int hgt_capture = guard.getHgt();
+		engine.getEnvi().dig(3, 1);
+		//Opération :
+		guard.step();
+		//Oracle :
+		/*post*/
+		assertTrue(guard.getWdt() == wdt_capture);
+		assertTrue(guard.getHgt() == hgt_capture-1);
+		assertFalse(guard.hasItem());
+		assertEquals(treasure,engine.getEnvi().getCellContent(wdt_capture, hgt_capture).getItem());
+		/*inv*/
+		checkinvG();
+	}
 	// le garde arrive sur une plateforme de teleportation
-	
+	@Test
+	public void etatRemarquableOnTeleport() {
+		//Conditions initiales
+		ArrayList<Coord> g_list = new ArrayList<>();
+		ArrayList<Item> item_list = new ArrayList<>();
+		g_list.add(new Coord(3, 2));
+		item_list.add(new Item(7,2,ItemType.Treasure));
+		ArrayList<Teleporteur> tp_list = new ArrayList<>();
+		tp_list.add(new Teleporteur(new Coord(2,1), new Coord(13,1)));
+		engine.init(es, new Coord(1,2), g_list, item_list,tp_list,new Item(0,2,ItemType.Gauntlet));
+		envi = engine.getEnvi();
+		player = engine.getPlayer();
+		guard = engine.getGuards().get(0);
+		c = (CharacterContract)guard;
+		int wdt_capture = guard.getWdt();
+		int hgt_capture = guard.getHgt();
+		//Opération :
+		guard.step();
+		//Oracle :
+		/*post*/
+		assertTrue(guard.getWdt() == wdt_capture-1);
+		assertTrue(guard.getHgt() == hgt_capture);
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()-1) == Cell.TLP);
+		/*inv*/
+		checkinvG();
+	}
 	/**
 	*  PAIRES DE TRANSITIONS
 	*/
 	// goleft goright goup godown
+	@Test
+	public void pairesgoRightgoUp() {
+		ArrayList<Coord> g_list = new ArrayList<>();
+		ArrayList<Item> item_list = new ArrayList<>();
+		g_list.add(new Coord(3, 2));
+		item_list.add(new Item(7,2,ItemType.Treasure));
+		ArrayList<Teleporteur> tp_list = new ArrayList<>();
+		tp_list.add(new Teleporteur(new Coord(2,1), new Coord(13,1)));
+		engine.init(es, new Coord(1,2), g_list, item_list,tp_list,new Item(0,2,ItemType.Gauntlet));
+		envi = engine.getEnvi();
+		player = engine.getPlayer();
+		guard = engine.getGuards().get(0);
+		c = (CharacterContract)guard;
+		int wdt_capture = guard.getWdt();
+		int hgt_capture = guard.getHgt();
+		//OP
+		guard.goRight();
+		guard.goUp();
+		//ORACLE
+		assertTrue(guard.getWdt() == wdt_capture+1);
+		assertTrue(guard.getHgt() == hgt_capture);
+	}
+	
+	@Test
+	public void pairesgoLeftgoRight() {
+		ArrayList<Coord> g_list = new ArrayList<>();
+		ArrayList<Item> item_list = new ArrayList<>();
+		g_list.add(new Coord(3, 2));
+		item_list.add(new Item(7,2,ItemType.Treasure));
+		ArrayList<Teleporteur> tp_list = new ArrayList<>();
+		tp_list.add(new Teleporteur(new Coord(2,1), new Coord(13,1)));
+		engine.init(es, new Coord(1,2), g_list, item_list,tp_list,new Item(0,2,ItemType.Gauntlet));
+		envi = engine.getEnvi();
+		player = engine.getPlayer();
+		guard = engine.getGuards().get(0);
+		c = (CharacterContract)guard;
+		int wdt_capture = guard.getWdt();
+		int hgt_capture = guard.getHgt();
+		engine.getEnvi().getCellContent(wdt_capture, hgt_capture).setGuard(null);
+		//OP
+		guard.goLeft();
+		guard.goRight();
+		System.out.println(guard.getWdt());
+		//ORACLE
+		assertEquals(engine.getEnvi().getCellContent(wdt_capture, hgt_capture).getGuard(),null);
+		assertTrue(guard.getWdt() == wdt_capture);
+		assertTrue(guard.getHgt() == hgt_capture);
+	}
 	// step climbleft climbright 
+	
+	@Test
+	public void pairesgoDownClimbLeft() {
+		ArrayList<Coord> g_list = new ArrayList<>();
+		ArrayList<Item> item_list = new ArrayList<>();
+		g_list.add(new Coord(3, 2));
+		item_list.add(new Item(7,2,ItemType.Treasure));
+		ArrayList<Teleporteur> tp_list = new ArrayList<>();
+		tp_list.add(new Teleporteur(new Coord(2,1), new Coord(13,1)));
+		engine.init(es, new Coord(1,2), g_list, item_list,tp_list,new Item(0,2,ItemType.Gauntlet));
+		envi = engine.getEnvi();
+		envi.dig(3, 1);
+		player = engine.getPlayer();
+		guard = engine.getGuards().get(0);
+		c = (CharacterContract)guard;
+		int wdt_capture = guard.getWdt();
+		int hgt_capture = guard.getHgt();
+		engine.getEnvi().getCellContent(wdt_capture, hgt_capture).setGuard(null);
+		//OP
+		guard.goDown();
+		guard.climbLeft();
+		System.out.println(guard.getWdt());
+		//ORACLE
+		assertEquals(engine.getEnvi().getCellContent(wdt_capture, hgt_capture).getGuard(),null);
+		assertTrue(guard.getWdt() == wdt_capture-1);
+		assertTrue(guard.getHgt() == hgt_capture);
+	}
+	
+	@Test
+	public void pairesgoDownClimbRight() {
+		ArrayList<Coord> g_list = new ArrayList<>();
+		ArrayList<Item> item_list = new ArrayList<>();
+		g_list.add(new Coord(3, 2));
+		item_list.add(new Item(7,2,ItemType.Treasure));
+		ArrayList<Teleporteur> tp_list = new ArrayList<>();
+		tp_list.add(new Teleporteur(new Coord(2,1), new Coord(13,1)));
+		engine.init(es, new Coord(1,2), g_list, item_list,tp_list,new Item(0,2,ItemType.Gauntlet));
+		envi = engine.getEnvi();
+		envi.dig(3, 1);
+		player = engine.getPlayer();
+		guard = engine.getGuards().get(0);
+		c = (CharacterContract)guard;
+		int wdt_capture = guard.getWdt();
+		int hgt_capture = guard.getHgt();
+		engine.getEnvi().getCellContent(wdt_capture, hgt_capture).setGuard(null);
+		//OP
+		guard.goDown();
+		guard.climbRight();
+		System.out.println(guard.getWdt());
+		//ORACLE
+		assertEquals(engine.getEnvi().getCellContent(wdt_capture, hgt_capture).getGuard(),null);
+		assertTrue(guard.getWdt() == wdt_capture+1);
+		assertTrue(guard.getHgt() == hgt_capture);
+	}
+	/**
+	 * SCENARIO 
+	 */
+	
+	@Test
+	public void scenarioStepMoving() {
+		//CI
+		ArrayList<Coord> g_list = new ArrayList<>();
+		ArrayList<Item> item_list = new ArrayList<>();
+		g_list.add(new Coord(8, 2));
+		item_list.add(new Item(7,2,ItemType.Treasure));
+		ArrayList<Teleporteur> tp_list = new ArrayList<>();
+		engine.init(es, new Coord(1,2), g_list, item_list,tp_list,new Item(0,2,ItemType.Gauntlet));
+		envi = engine.getEnvi();
+		player = engine.getPlayer();
+		guard = engine.getGuards().get(0);
+		c = (CharacterContract)guard;
+		engine.getEnvi().dig(5, 1);
+		int wdt_capture = guard.getWdt();
+		int hgt_capture = guard.getHgt();
+		//OP
+		guard.step();
+		assertTrue(guard.getWdt() == wdt_capture-1);
+		assertTrue(guard.getHgt() == hgt_capture);
+		assertTrue(guard.getBehaviour()==Command.LEFT);
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()) == Cell.EMP);
+		guard.step();
+		assertTrue(guard.getWdt() == wdt_capture-2);
+		assertTrue(guard.getHgt() == hgt_capture);
+		assertTrue(guard.getBehaviour()==Command.LEFT);
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()) == Cell.EMP);
+		guard.step();
+		assertTrue(guard.getWdt() == wdt_capture-3);
+		assertTrue(guard.getHgt() == hgt_capture);
+		assertTrue(guard.getBehaviour()==Command.DOWN);
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()) == Cell.EMP);
+		guard.step();
+		assertTrue(guard.getWdt() == wdt_capture-3);
+		assertTrue(guard.getHgt() == hgt_capture-1);
+		assertTrue(guard.getBehaviour()==Command.LEFT);
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()) == Cell.HOL);
+		guard.step();
+		assertTrue(guard.getWdt() == wdt_capture-3);
+		assertTrue(guard.getHgt() == hgt_capture-1);
+		assertTrue(guard.getBehaviour()==Command.LEFT);
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()) == Cell.HOL);
+		guard.step();
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()) == Cell.HOL);
+		guard.step();
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()) == Cell.HOL);
+		guard.step();
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()) == Cell.HOL);
+		guard.step();
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()) == Cell.HOL);
+		guard.step();
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()) == Cell.HOL);
+		guard.step();
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()) == Cell.HOL);
+		guard.step();
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()) == Cell.HOL);
+		guard.step();
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()) == Cell.HOL);
+		guard.step();
+		assertTrue(guard.getWdt() == wdt_capture-3);
+		assertTrue(guard.getHgt() == hgt_capture-1);
+		assertTrue(guard.getBehaviour()==Command.LEFT);
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()) == Cell.HOL);
+		guard.step();
+		assertTrue(guard.getWdt() == wdt_capture-4);
+		assertTrue(guard.getHgt() == hgt_capture);
+		assertTrue(guard.getBehaviour()==Command.LEFT);
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()) == Cell.EMP);
+		guard.step();
+		assertTrue(guard.getWdt() == wdt_capture-5);
+		assertTrue(guard.getHgt() == hgt_capture);
+		assertTrue(guard.getBehaviour()==Command.LEFT);
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()) == Cell.EMP);
+		guard.step();
+		assertTrue(guard.getWdt() == wdt_capture-6);
+		assertTrue(guard.getHgt() == hgt_capture);
+		assertTrue(guard.getBehaviour()==Command.LEFT);
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()) == Cell.EMP);
+		guard.step();
+		//ORACLE
+		assertTrue(guard.getWdt() == wdt_capture-7);
+		assertTrue(guard.getHgt() == hgt_capture);
+		assertTrue(guard.getBehaviour()==Command.NEUTRAL);
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()) == Cell.EMP);
+		assertTrue(guard.getWdt() == guard.getTarget().getWdt() && guard.getHgt() == guard.getTarget().getHgt());
+		checkinvG();
+	}
 		
+	@Test
+	public void scenarioStepUp() {
+		//CI
+		ArrayList<Coord> g_list = new ArrayList<>();
+		g_list.add(new Coord(6, 2));
+		ArrayList<Item> item_list = new ArrayList<>();
+		item_list.add(new Item(7,2,ItemType.Treasure));
+		ArrayList<Teleporteur> tp_list = new ArrayList<>();
+		es.setNature(3, 2, Cell.LAD);
+		es.setNature(3, 3, Cell.LAD);
+		es.setNature(3, 4, Cell.LAD);
+		es.setNature(2, 4, Cell.PLT);
+		engine.init(es, new Coord(2,5), g_list, item_list,tp_list,new Item(0,2,ItemType.Gauntlet));
+		envi = engine.getEnvi();
+		player = engine.getPlayer();
+		guard = engine.getGuards().get(0);
+		c = (CharacterContract)guard;
+		int wdt_capture = guard.getWdt();
+		int hgt_capture = guard.getHgt();
+		//OP
+		guard.step();
+		assertTrue(guard.getWdt() == wdt_capture-1);
+		assertTrue(guard.getHgt() == hgt_capture);
+		assertTrue(guard.getBehaviour()==Command.LEFT);
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()) == Cell.EMP);
+		guard.step();
+		assertTrue(guard.getWdt() == wdt_capture-2);
+		assertTrue(guard.getHgt() == hgt_capture);
+		assertTrue(guard.getBehaviour()==Command.LEFT);
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()) == Cell.EMP);
+		guard.step();
+		assertTrue(guard.getWdt() == wdt_capture-3);
+		assertTrue(guard.getHgt() == hgt_capture);
+		assertTrue(guard.getBehaviour()==Command.UP);
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()) == Cell.LAD);
+		guard.step();
+		assertTrue(guard.getWdt() == wdt_capture-3);
+		assertTrue(guard.getHgt() == hgt_capture+1);
+		assertTrue(guard.getBehaviour()==Command.UP);
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()) == Cell.LAD);
+		guard.step();
+		assertTrue(guard.getWdt() == wdt_capture-3);
+		assertTrue(guard.getHgt() == hgt_capture+2);
+		assertTrue(guard.getBehaviour()==Command.UP);
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()) == Cell.LAD);
+		guard.step();
+		assertTrue(guard.getWdt() == wdt_capture-3);
+		assertTrue(guard.getHgt() == hgt_capture+3);
+		assertTrue(guard.getBehaviour()==Command.LEFT);
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()) == Cell.EMP);
+		guard.step();
+		//oracle
+		assertTrue(guard.getWdt() == wdt_capture-4);
+		assertTrue(guard.getHgt() == hgt_capture+3);
+		assertTrue(guard.getBehaviour()==Command.NEUTRAL);
+		assertTrue(engine.getEnvi().getCellNature(guard.getWdt(),guard.getHgt()) == Cell.EMP);
+		assertTrue(guard.getWdt() == guard.getTarget().getWdt() && guard.getHgt() == guard.getTarget().getHgt());
+		checkinvG();
+	}
 }

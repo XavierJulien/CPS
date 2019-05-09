@@ -376,7 +376,57 @@ public class CharacterTest {
 		checkinv();
 	}
 	
+	/**
+	 * SCENARIO
+	 */
 	
+	@Test public void fromLefttoRightScreen() {
+		//CI
+		es.setNature(5, 2, Cell.LAD);
+		es.setNature(5, 3, Cell.LAD);
+		es.setNature(4, 3, Cell.PLT);
+		es.setNature(3, 3, Cell.PLT);
+		es.setNature(2, 3, Cell.PLT);
+		es.setNature(1, 3, Cell.PLT);
+		envi.init(es);
+		c.init(envi, 0, 2, -1);
+		int hgt_capture = c.getHgt();
+		int wdt_capture = c.getWdt();
+		//OP
+		for(int i = 0;i<envi.getWidth();i++) {
+			c.goRight();
+		}
+		assertTrue(c.getWdt() == envi.getWidth()-1);
+		assertTrue(c.getHgt() == hgt_capture);
+		for(int i = envi.getWidth()-1;i>=0;i--) {
+			c.goLeft();
+		}
+		assertTrue(c.getWdt() == wdt_capture);
+		assertTrue(c.getHgt() == hgt_capture);
+		c.goRight();
+		c.goRight();
+		c.goRight();
+		c.goRight();
+		c.goRight();
+		assertTrue(c.getWdt() == wdt_capture+5);
+		assertTrue(c.getHgt() == hgt_capture);
+		c.goUp();
+		c.goUp();
+		assertTrue(c.getWdt() == wdt_capture+5);
+		assertTrue(c.getHgt() == hgt_capture+2);
+		c.goLeft();
+		c.goLeft();
+		c.goLeft();
+		c.goLeft();
+		c.goLeft();
+		assertTrue(c.getWdt() == wdt_capture);
+		assertTrue(c.getHgt() == hgt_capture+2);
+		c.goDown();
+		c.goDown();
+		assertTrue(c.getWdt() == wdt_capture);
+		assertTrue(c.getHgt() == hgt_capture);
+		//ORACLE
+	}
 		
 
 

@@ -42,13 +42,11 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 				if(getEngine().getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.TLP) {
 					for(Teleporteur tel : getEngine().getTeleporteurs()) {
 						if(tel.getPosB().getX() == getWdt() && tel.getPosB().getY() == getHgt()-1) {
-							setWdt(tel.getPosA().getX());
-							setHgt(tel.getPosA().getY()+1);
+							setPos(tel.getPosA().getX(),tel.getPosA().getY()+1);
 							break;
 						}
 						if(tel.getPosA().getX() == getWdt() && tel.getPosA().getY() == getHgt()-1) {
-							setWdt(tel.getPosB().getX());
-							setHgt(tel.getPosB().getY()+1);
+							setPos(tel.getPosB().getX(),tel.getPosB().getY()+1);
 						}
 					}
 				}
@@ -90,13 +88,11 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 		if(getEngine().getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.TLP) {
 			for(Teleporteur tel : getEngine().getTeleporteurs()) {
 				if(tel.getPosB().getX() == getWdt() && tel.getPosB().getY() == getHgt()-1) {
-					setWdt(tel.getPosA().getX());
-					setHgt(tel.getPosA().getY()+1);
+					setPos(tel.getPosA().getX(),tel.getPosA().getY()+1);
 					break;
 				}
 				if(tel.getPosA().getX() == getWdt() && tel.getPosA().getY() == getHgt()-1) {
-					setWdt(tel.getPosB().getX());
-					setHgt(tel.getPosB().getY()+1);
+					setPos(tel.getPosB().getX(),tel.getPosB().getY()+1);
 				}
 			}
 		}

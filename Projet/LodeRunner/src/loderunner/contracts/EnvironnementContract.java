@@ -61,7 +61,6 @@ public class EnvironnementContract extends ScreenContract implements Environneme
 	@Override
 	public void init(EditableScreenService e) {
 		//1.pre
-		//none
 		//2.run
 		delegate.init(e);
 		//3.checkInvariants
