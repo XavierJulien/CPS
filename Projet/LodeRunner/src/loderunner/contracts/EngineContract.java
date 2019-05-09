@@ -186,7 +186,7 @@ public class EngineContract extends EngineDecorator{
 		//1.pre
 
 		if(!e.isPlayable()) throw new PreconditionError("init : l'ecran n'est pas dÃ©fini comme jouable");
-		if(player.getY() == gauntlet.getCol() && player.getY() == gauntlet.getHgt()) throw new PreconditionError("init : un player ne peut pas Ãªtre init dans une case qui contient un gant");
+		if(player.getX() == gauntlet.getCol() && player.getY() == gauntlet.getHgt()) throw new PreconditionError("init : un player ne peut pas Ãªtre init dans une case qui contient un gant");
 
 		for(Item treasure : treasures) {
 			if(treasure.getCol() < 0 || treasure.getCol() >= e.getWidth() || treasure.getHgt() < 0 || treasure.getHgt() > e.getHeight())

@@ -629,7 +629,6 @@ public class GuardTest extends CharacterTest {
 		//OP
 		guard.goLeft();
 		guard.goRight();
-		System.out.println(guard.getWdt());
 		//ORACLE
 		assertEquals(engine.getEnvi().getCellContent(wdt_capture, hgt_capture).getGuard(),null);
 		assertTrue(guard.getWdt() == wdt_capture);
@@ -657,7 +656,6 @@ public class GuardTest extends CharacterTest {
 		//OP
 		guard.goDown();
 		guard.climbLeft();
-		System.out.println(guard.getWdt());
 		//ORACLE
 		assertEquals(engine.getEnvi().getCellContent(wdt_capture, hgt_capture).getGuard(),null);
 		assertTrue(guard.getWdt() == wdt_capture-1);
@@ -684,7 +682,6 @@ public class GuardTest extends CharacterTest {
 		//OP
 		guard.goDown();
 		guard.climbRight();
-		System.out.println(guard.getWdt());
 		//ORACLE
 		assertEquals(engine.getEnvi().getCellContent(wdt_capture, hgt_capture).getGuard(),null);
 		assertTrue(guard.getWdt() == wdt_capture+1);

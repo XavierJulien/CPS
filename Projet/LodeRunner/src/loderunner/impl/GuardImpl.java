@@ -189,7 +189,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			if (getEnvi().getCellNature(getWdt()+1, getHgt()+1) != Cell.PLT
 				&& getEnvi().getCellNature(getWdt()+1, getHgt()+1) != Cell.MTL) {
 				if (getEnvi().getCellContent(getWdt()+1, getHgt()+1).getGuard() == null) {
-					setPos(getWdt()-1,getHgt()+1);
+					setPos(getWdt()+1,getHgt()+1);
 					timeInHole=0;
 				}
 			}

@@ -357,7 +357,8 @@ public class GuardContract extends CharacterContract implements GuardService {
 		//post
 		if (getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.PLT && 
 			getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.MTL &&
-			getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.TLP) {
+			getEnvi().getCellNature(wdt_atpre, hgt_atpre+1) != Cell.TLP && 
+			getEnvi().getCellContent(wdt_atpre, hgt_atpre+1).getGuard() == null) {
 			if (getEnvi().getCellNature(wdt_atpre+1, hgt_atpre+1) != Cell.PLT && 
 				getEnvi().getCellNature(wdt_atpre+1, hgt_atpre+1) != Cell.MTL &&
 				getEnvi().getCellNature(wdt_atpre+1, hgt_atpre+1) != Cell.TLP) {
