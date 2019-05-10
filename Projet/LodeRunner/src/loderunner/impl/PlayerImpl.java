@@ -25,7 +25,8 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 	@Override
 	public void init(EngineService e,Coord player) {
 		this.engine = e;
-		this.gauntlet = e.getGauntlet();
+		this.gauntlet = null;
+		//this.gauntlet = e.getGauntlet();
 		super.init(e.getEnvi(), player.getX(), player.getY(),-1);
 	}
 	
@@ -150,10 +151,10 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 				getEnvi().getCellContent(i, getHgt()).setGuard(null);
 				getEngine().getGuards().remove(g);
 				getEnvi().getCellContent(i, getHgt()).setItem(g.getTreasure());
-				setGauntlet(null);
 				break;
 			}
 		}
+		setGauntlet(null);
 	}
 	
 	@Override
@@ -169,9 +170,9 @@ public class PlayerImpl extends CharacterImpl implements PlayerService{
 				getEnvi().getCellContent(i, getHgt()).setGuard(null);
 				getEngine().getGuards().remove(g);
 				getEnvi().getCellContent(i, getHgt()).setItem(g.getTreasure());
-				setGauntlet(null);
 				break;
 			}
 		}
+		setGauntlet(null);
 	}
 }

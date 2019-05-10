@@ -129,6 +129,7 @@ public class PlayerImplBug extends CharacterImpl implements PlayerService{
 				getEngine().getGuards().remove(g);
 				getEnvi().getCellContent(i, getHgt()).setItem(g.getTreasure());
 				setGauntlet(null);
+				System.out.println("no gauntlet");
 				break;
 			}
 		}
@@ -148,6 +149,7 @@ public class PlayerImplBug extends CharacterImpl implements PlayerService{
 				getEngine().getGuards().remove(g);
 				getEnvi().getCellContent(i, getHgt()).setItem(g.getTreasure());
 				setGauntlet(null);
+				System.out.println("no gauntlet");
 				break;
 			}
 		}

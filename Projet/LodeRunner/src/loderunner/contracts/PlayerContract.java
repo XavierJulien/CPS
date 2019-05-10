@@ -138,8 +138,14 @@ public class PlayerContract extends CharacterContract implements PlayerService{
 				case NEUTRAL : break;
 				case DIGL : {clone.getDelegate().getEnvi().dig(clone.getWdt()-1, clone.getHgt()-1);clone.getEngine().getHoles().add(new Hole(clone.getWdt()-1, clone.getHgt()-1,0,-1));break;}
 				case DIGR : {clone.getDelegate().getEnvi().dig(clone.getWdt()+1, clone.getHgt()-1);clone.getEngine().getHoles().add(new Hole(clone.getWdt()+1, clone.getHgt()-1,0,-1));break;}
-				case HITR : {clone.setGauntlet(new Item(0, 0, ItemType.Gauntlet));clone.hitRight();break;}
-				case HITL : {clone.setGauntlet(new Item(0, 0, ItemType.Gauntlet));clone.hitLeft();break;}
+				case HITR : {if(delegate.hasGauntlet()) {
+								clone.setGauntlet(new Item(0, 0, ItemType.Gauntlet));
+							 }
+							 clone.hitRight();break;}
+				case HITL : {if(delegate.hasGauntlet()) {
+								clone.setGauntlet(new Item(0, 0, ItemType.Gauntlet));
+							 }
+							 clone.hitLeft();break;}
 
 			}
 		}
