@@ -1,6 +1,6 @@
 # CPS
 
-## Projet Clone de LodeRunner
+## Projet Clone de LodeRunner : dans le dossier Projet
 
 - Approche Design-by-Contracts
 - Tests 
